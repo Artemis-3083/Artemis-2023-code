@@ -12,7 +12,6 @@ public class TurretTurnRight extends CommandBase {
   TurretSystem turretSystem;
 
 
-  /** Creates a new TurnRight. */
   public TurretTurnRight(TurretSystem turretSystem) {
     this.turretSystem = turretSystem;
     addRequirements(turretSystem);
