@@ -9,4 +9,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     
     public static final double TALON_FX_PPR = 2048;
+    public static final double GEAR_RATIO_ELEVATOR = 1;
+    public static final double RADIUS_ELEVATOR = 1;
+    public static final double ELEVATOR_HEIGHT =1;
 }
