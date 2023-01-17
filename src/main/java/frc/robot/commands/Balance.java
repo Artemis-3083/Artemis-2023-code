@@ -11,8 +11,9 @@ public class Balance extends CommandBase {
   
   DriveSystem driveSystem;
 
-  public Balance() {
-    driveSystem = new DriveSystem();
+  public Balance(DriveSystem driveSystem) {
+    this.driveSystem = driveSystem;
+    addRequirements(driveSystem);
   }
 
   @Override
@@ -21,9 +22,9 @@ public class Balance extends CommandBase {
   @Override
   public void execute() {
     if(driveSystem.getPitch() > 0){
-      driveSystem.drive(0.1, 0, 0);
+      driveSystem.drive(0.3, 0, 0);
     }else{
-      driveSystem.drive(0, 0.1, 0);
+      driveSystem.drive(0, 0.3, 0);
     }
     System.out.println("called check");
   }
@@ -35,6 +36,6 @@ public class Balance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return 2 > driveSystem.getPitch() && driveSystem.getPitch() > -2;
+    return -2 > driveSystem.getPitch() || driveSystem.getPitch() > 2;
   }
 }

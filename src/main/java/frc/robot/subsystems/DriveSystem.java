@@ -96,6 +96,6 @@ public class DriveSystem extends SubsystemBase {
   }
 
   public double getPitch(){
-    return navie.getPitch();
+    return navie.getRoll();
   }
 }
