@@ -7,12 +7,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.ElevatorSystem;
 
 public class ElevatorDown extends CommandBase {
-  /** Creates a new ElevatorDown. */
-  public Elevator elevator;
-  public ElevatorDown(Elevator elevator) {
+
+  public ElevatorSystem elevator;
+  
+  public ElevatorDown(ElevatorSystem elevator) {
     this.elevator = elevator;
     addRequirements(elevator);
   }
@@ -26,7 +27,7 @@ public class ElevatorDown extends CommandBase {
   public void execute() {}
 
   @Override
-  public void end(boolean interrDownted) {
+  public void end(boolean interrupted) {
     elevator.stop();
   }
 

@@ -7,12 +7,17 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ElevatorDown;
+import frc.robot.commands.ElevatorUp;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
 
 public class Robot extends TimedRobot {
   
+  ElevatorSystem elevator;
   DriveSystem driveSystem;
   LimelightSystem limelight;
   PS4Controller controller;
@@ -24,6 +29,9 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+
+    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
+    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
   }
 
   @Override
