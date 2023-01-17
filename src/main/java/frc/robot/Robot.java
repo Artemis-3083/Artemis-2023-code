@@ -34,8 +34,8 @@ public class Robot extends TimedRobot {
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).whenPressed(new Balance());
-    new POVButton(controller, 90).onTrue(new TurretTurnRight(turretSystem));
-    new POVButton(controller, 270).onTrue(new TurretTurnLeft(turretSystem));
+    new POVButton(controller, 90).whileTrue(new TurretTurnRight(turretSystem));
+    new POVButton(controller, 270).whileTrue(new TurretTurnLeft(turretSystem));
   }
 
   @Override
