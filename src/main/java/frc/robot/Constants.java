@@ -9,4 +9,6 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     
     public static final double TALON_FX_PPR = 2048;
+    public static final double TurretTurnLimit = 90; //in degrees
+    public static final double TurretTurnSpeed = 0.5; // -1 to 1
 }

@@ -8,26 +8,34 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.TurretTurnLeft;
+import frc.robot.commands.TurretTurnRight;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
+import frc.robot.subsystems.TurretSystem;
 
 public class Robot extends TimedRobot {
   
   DriveSystem driveSystem;
   LimelightSystem limelight;
   PS4Controller controller;
+  TurretSystem turretSystem;
 
   @Override
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     controller = new PS4Controller(0);
+    turretSystem = new TurretSystem();
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).whenPressed(new Balance());
+    new POVButton(controller, 90).onTrue(new TurretTurnRight(turretSystem));
+    new POVButton(controller, 270).onTrue(new TurretTurnLeft(turretSystem));
   }
 
   @Override
