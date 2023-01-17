@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.Balance;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
@@ -24,6 +26,8 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+
+    new JoystickButton(controller, PS4Controller.Button.kCircle.value).whenPressed(new Balance());
   }
 
   @Override
