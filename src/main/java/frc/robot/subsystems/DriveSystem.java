@@ -18,9 +18,10 @@ public class DriveSystem extends SubsystemBase {
   private WPI_TalonFX talonRR;
   private WPI_TalonFX talonRF;
 
-  AHRS navie = new AHRS(SPI.Port.kMXP);
+  private AHRS navie;
   
   public DriveSystem() {
+
     talonLF = new WPI_TalonFX(2);
     talonLR = new WPI_TalonFX(1);
     talonRR = new WPI_TalonFX(3);
@@ -30,6 +31,8 @@ public class DriveSystem extends SubsystemBase {
     talonLR.setInverted(false);
     talonRF.setInverted(true);
     talonRR.setInverted(true);
+
+    navie = new AHRS(SPI.Port.kMXP);
 
     navie.reset();
   }
@@ -92,4 +95,7 @@ public class DriveSystem extends SubsystemBase {
     talonRF.setSelectedSensorPosition(0);
   }
 
+  public double getPitch(){
+    return navie.getRoll();
+  }
 }
