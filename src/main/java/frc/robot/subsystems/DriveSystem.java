@@ -34,7 +34,7 @@ public class DriveSystem extends SubsystemBase {
 
     navie = new AHRS(SPI.Port.kMXP);
 
-    navie.reset();
+    //navie.reset();
   }
 
   public void drive(double R2, double L2, double turn){

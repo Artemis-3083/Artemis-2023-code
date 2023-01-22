@@ -38,21 +38,19 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
-    
-    new JoystickButton(controller, PS4Controller.Button.kR2.value).whileFalse(new Balance(driveSystem));
 
     camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
     camera.setDriverMode(false);
     camera.setPipelineIndex(0);
   }
-
+ 
   @Override
   public void robotPeriodic() {
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     CommandScheduler.getInstance().run();
 
     PhotonPipelineResult result = camera.getLatestResult();
-    var result2 = camera.getLatestResult();
+    //var result2 = camera.getLatestResult();
     if (result.hasTargets()) {
       PhotonTrackedTarget trackedResult = result.getBestTarget();
       Transform3d transform3d = trackedResult.getBestCameraToTarget();

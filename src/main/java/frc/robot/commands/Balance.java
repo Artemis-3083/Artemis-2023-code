@@ -26,7 +26,6 @@ public class Balance extends CommandBase {
     }else{
       driveSystem.drive(0, 0.3, 0);
     }
-    System.out.println("called check");
   }
 
   @Override
@@ -36,6 +35,6 @@ public class Balance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return -2 > driveSystem.getPitch() || driveSystem.getPitch() > 2;
+    return -5 < driveSystem.getPitch() && driveSystem.getPitch() < 5;
   }
 }
