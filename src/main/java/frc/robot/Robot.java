@@ -16,10 +16,12 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveForward;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
 
@@ -37,15 +39,19 @@ public class Robot extends TimedRobot {
     driveSystem = new DriveSystem();
     controller = new PS4Controller(0);
 
+   
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+
 
     camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
     camera.setDriverMode(false);
     camera.setPipelineIndex(0);
+    
   }
  
   @Override
   public void robotPeriodic() {
+
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     CommandScheduler.getInstance().run();
 
@@ -65,7 +71,9 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();;
+  }
 
   @Override
   public void autonomousPeriodic() {}

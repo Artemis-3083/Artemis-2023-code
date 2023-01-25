@@ -7,34 +7,34 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
 
-public class Balance extends CommandBase {
+public class DriveForward extends CommandBase {
   
   DriveSystem driveSystem;
 
-  public Balance(DriveSystem driveSystem) {
+  public DriveForward(DriveSystem driveSystem) {
     this.driveSystem = driveSystem;
     addRequirements(driveSystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(driveSystem.getPitch() > 0){
-      driveSystem.drive(driveSystem.getPitch()*0.017, 0, 0);
-    }else{ //if (driveSystem.getPitch() < -4)
-      driveSystem.drive(0, -driveSystem.getPitch()*0.017, 0);
-    }
+    driveSystem.drive(1, 0, 0);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveSystem.stop();
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return -4 < driveSystem.getPitch() && driveSystem.getPitch() < 4;
+    return false;
   }
 }
