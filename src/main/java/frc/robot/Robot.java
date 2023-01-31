@@ -22,11 +22,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.MethBalance;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
+import frc.robot.subsystems.PLEASE_GOD_HELPME_END_MY_SUFFERING;
 
 public class Robot extends TimedRobot {
   
+  PLEASE_GOD_HELPME_END_MY_SUFFERING altDriveSystem;
   DriveSystem driveSystem;
   LimelightSystem limelight;
   PS4Controller controller;
@@ -38,10 +41,11 @@ public class Robot extends TimedRobot {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     controller = new PS4Controller(0);
+    altDriveSystem = new PLEASE_GOD_HELPME_END_MY_SUFFERING();
 
    
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
-
+    altDriveSystem.setDefaultCommand(new MethBalance(altDriveSystem, driveSystem));
 
     camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
     camera.setDriverMode(false);
