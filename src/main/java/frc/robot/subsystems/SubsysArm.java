@@ -7,46 +7,51 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SubsysArm extends SubsystemBase {
-  
-  CANSparkMax armspark;
+  private CANSparkMax cloesSpark;
+  private CANSparkMax farSpark;
+  private Encoder closeEncoder;
+  private Encoder farEncoder;
+  private double speed = 0;
+  private double wdith;
 
   public SubsysArm() {
-    armspark = new CANSparkMax(0, MotorType.kBrushless);
-    armspark.getEncoder().getPosition();
+    cloesSpark = new CANSparkMax(0, MotorType.kBrushless);
+    farSpark = new CANSparkMax(0, MotorType.kBrushless);
+    closeEncoder = new Encoder(0, 0);
+    farEncoder = new Encoder(0, 0);
   }
 
-  private double routation = armspark.getEncoder().getPosition();
+  public void moveBoth(double speed) {
+    cloesSpark.set(speed);
+    farSpark.set(speed);
+  }
+
+  public void stop() {
+    cloesSpark.set(0);
+    farSpark.set(0);
+  }
+
+  public double closegetencoder() {
+    return  wdith*closeEncoder.get(); //change to right calcuation
+  }
+
+  public double farEncoderget() {
+    return wdith * farEncoder.get(); //change to right calcuation
+  }
+
+  public void closeSpark(double speed) {
+    cloesSpark.set(speed);
+  } 
+
+  public void farSpark(double speed) {
+    farSpark.set(speed);
+  }
+ 
   
-  private int gear = 1;
-  private double speed = 0;
-  private double deg = 0;
 
-  public void motorspeedincrees() {
-    if(speed <= 1)
-    speed = speed + 0.05;
-    
-    armspark.set(speed);
-  }
-
-  
-  public void motorspeeddecreas() {
-    speed = speed - 0.05;
-    armspark.set(speed);
-  }
-
-  public void motorstop() {
-    armspark.set(0);
-  }
-
-  public double degries() {
-    deg = (routation * 360) / gear;
-    return deg; 
-  }
-
-  public double spied() {
-    return speed;
-  }
 }
