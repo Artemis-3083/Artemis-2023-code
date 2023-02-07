@@ -9,4 +9,5 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     
     public static final double TALON_FX_PPR = 2048;
+    public static final double collectMotorSpeed = 0.5;
 }
