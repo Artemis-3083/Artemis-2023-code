@@ -24,29 +24,23 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveForward;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
+import frc.robot.subsystems.VisionSystem;
 
 public class Robot extends TimedRobot {
   
   DriveSystem driveSystem;
   LimelightSystem limelight;
   PS4Controller controller;
-
-  PhotonCamera camera;
+  VisionSystem visionSystem;
 
   @Override
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     controller = new PS4Controller(0);
-
+    visionSystem = new VisionSystem();
    
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
-
-
-    camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
-    camera.setDriverMode(false);
-    camera.setPipelineIndex(0);
-    
   }
  
   @Override
@@ -55,13 +49,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     CommandScheduler.getInstance().run();
 
-    PhotonPipelineResult result = camera.getLatestResult();
-    //var result2 = camera.getLatestResult();
-    if (result.hasTargets()) {
-      PhotonTrackedTarget trackedResult = result.getBestTarget();
-      Transform3d transform3d = trackedResult.getBestCameraToTarget();
-      SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", transform3d.getX(), transform3d.getY(), transform3d.getZ()));
-    }
+    SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getDistance(), visionSystem.getHight(), visionSystem.getAngle()));
   }
 
   @Override
