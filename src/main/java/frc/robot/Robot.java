@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveUntilDistance;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
 import frc.robot.subsystems.VisionSystem;
@@ -40,7 +41,7 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
    
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    driveSystem.setDefaultCommand(new DriveUntilDistance(0.5, driveSystem, visionSystem));
   }
  
   @Override
