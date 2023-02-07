@@ -1,14 +1,23 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ElevatorSystem extends SubsystemBase {
-    WPI_TalonFX motor;
+    CANSparkMax  motor;
+    DigitalInput digitalInput;
+    Encoder encoder;
     static final int speed = 1;
     public ElevatorSystem(){
-        motor = new WPI_TalonFX(0);
+        digitalInput = new DigitalInput(0);
+        motor = new CANSparkMax(0,MotorType.kBrushless);
+        encoder = new Encoder(0, 0);
+        
     }
     public void elevatorUp(){
         motor.set(speed);
@@ -19,9 +28,15 @@ public class ElevatorSystem extends SubsystemBase {
     public void stop(){
         motor.set(0);
     }
+    public void resetEncoder(){
+        encoder.reset();
+    }
+    public boolean getLimitSwitch(){
+        return digitalInput.get();
+    }
     public double getHeight(){
-        return((motor.getSelectedSensorPosition()
-                /Constants.TALON_FX_PPR)*Constants.GEAR_RATIO_ELEVATOR
+        return(encoder.get()
+                *Constants.GEAR_RATIO_ELEVATOR
                 *(Math.PI*Constants.RADIUS_ELEVATOR*2));
     }
 }
