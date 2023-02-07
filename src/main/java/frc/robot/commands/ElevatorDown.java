@@ -33,6 +33,6 @@ public class ElevatorDown extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return elevator.getHeight()<=0;
+    return elevator.getLimitSwitch();
   }
 }
