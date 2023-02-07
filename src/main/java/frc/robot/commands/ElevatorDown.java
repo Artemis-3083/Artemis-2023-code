@@ -19,15 +19,16 @@ public class ElevatorDown extends CommandBase {
   }
 
   @Override
-  public void initialize() {
+  public void initialize() {}
+
+  @Override
+  public void execute() {
     elevator.elevatorDown();
   }
 
   @Override
-  public void execute() {}
-
-  @Override
   public void end(boolean interrupted) {
+    elevator.resetEncoder();
     elevator.stop();
   }
 
