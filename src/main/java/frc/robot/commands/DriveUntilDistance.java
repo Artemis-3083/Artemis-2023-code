@@ -31,9 +31,9 @@ public class DriveUntilDistance extends CommandBase {
   public void execute() {
     distance = visionSystem.getDistance();
     if(distance > goal){
-      driveSystem.drive(0.1, 0, 0);
+      driveSystem.drive(0.2, 0, 0);
     }else{
-      driveSystem.drive(0, 0.1, 0);
+      driveSystem.drive(0, 0.2, 0);
     }
   }
 
@@ -46,6 +46,6 @@ public class DriveUntilDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return distance > goal+5 && distance < goal-5;
+    return distance > goal+1000 && distance < goal-1000;
   }
 }

@@ -40,13 +40,15 @@ public class Robot extends TimedRobot {
     driveSystem = new DriveSystem();
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
-   
-    driveSystem.setDefaultCommand(new DriveUntilDistance(0.5, driveSystem, visionSystem));
+
+    driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
   }
  
   @Override
   public void robotPeriodic() {
 
+    
+    
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     CommandScheduler.getInstance().run();
 
@@ -61,7 +63,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();;
+    new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
   }
 
   @Override
@@ -71,7 +73,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
   public void testInit() {
