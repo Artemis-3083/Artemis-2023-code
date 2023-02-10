@@ -7,9 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SubsysArm;
 
-public class ArmDown extends CommandBase {
+public class ArmUp extends CommandBase {
   SubsysArm arm;
-  public ArmDown(SubsysArm arm) {
+  public ArmUp(SubsysArm arm) {
     this.arm = arm;
     addRequirements(arm);
   }
@@ -21,7 +21,7 @@ public class ArmDown extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    arm.closeSpark(-1);
+    arm.closeSpark(1);
   }
 
   // Called once the command ends or is interrupted.
@@ -33,6 +33,6 @@ public class ArmDown extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return arm.getCloseEncoderAngleDegrees()<=0;
+    return arm.getCloseEncoderAngleDegrees()>=180;
   }
 }
