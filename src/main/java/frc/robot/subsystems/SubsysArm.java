@@ -5,19 +5,21 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.sim.ArmSystemSim;
 
 public class SubsysArm extends SubsystemBase {
     private CANSparkMax cloesSpark;
     private CANSparkMax farSpark;
-    private Encoder closeEncoder;
-    private Encoder farEncoder;
+    private RelativeEncoder closeEncoder;
+    private RelativeEncoder farEncoder;
     private double speed = 0;
     private double wdith;
 
@@ -26,8 +28,8 @@ public class SubsysArm extends SubsystemBase {
     public SubsysArm() {
         cloesSpark = new CANSparkMax(0, MotorType.kBrushless);
         farSpark = new CANSparkMax(1, MotorType.kBrushless);
-        //closeEncoder = new Encoder(0, 0);
-        //farEncoder = new Encoder(0, 0);
+        closeEncoder = cloesSpark.getEncoder();
+        farEncoder = farSpark.getEncoder();
 
         if (Robot.isSimulation()) {
             sim = new ArmSystemSim();
@@ -50,7 +52,7 @@ public class SubsysArm extends SubsystemBase {
         if (Robot.isSimulation()) {
             return sim.getFirstJointAngleDegrees();
         } else {
-            return  wdith*closeEncoder.get(); //change to right calcuation
+            return  360*closeEncoder.getPosition()*Constants.ARM_CLOSE_MOTOR_GEAR_RATIO; //change to right calcuation
         }
     }
 
@@ -58,7 +60,7 @@ public class SubsysArm extends SubsystemBase {
         if (Robot.isSimulation()) {
             return sim.getSecondJointAngleDegrees();
         } else {
-            return wdith * farEncoder.get(); //change to right calcuation
+            return 360*farEncoder.getPosition()*Constants.ARM_FAR_MOTOR_GEAR_RATIO; //change to right calcuation
         }
     }
 
