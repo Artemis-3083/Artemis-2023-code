@@ -10,17 +10,20 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
+import frc.robot.subsystems.SubsysArm;
 
 public class Robot extends TimedRobot {
   
   DriveSystem driveSystem;
   LimelightSystem limelight;
+  SubsysArm arm;
   PS4Controller controller;
 
   @Override
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
+    arm = new SubsysArm();
     controller = new PS4Controller(0);
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
@@ -41,7 +44,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {}
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+  }
 
   @Override
   public void teleopInit() {}
