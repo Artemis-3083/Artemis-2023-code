@@ -26,6 +26,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
+    elevator = new ElevatorSystem();
     controller = new PS4Controller(0);
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
@@ -46,7 +47,9 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+
+  }
 
   @Override
   public void autonomousPeriodic() {}

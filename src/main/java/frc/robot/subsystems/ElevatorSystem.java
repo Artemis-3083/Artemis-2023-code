@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -66,6 +67,12 @@ public class ElevatorSystem extends SubsystemBase {
                     *Constants.GEAR_RATIO_ELEVATOR
                     *(Math.PI*Constants.RADIUS_ELEVATOR*2));
         }
+    }
+
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Elevator.Height", getHeight());
+        SmartDashboard.putBoolean("Elevator.Limit", getLimitSwitch());
     }
 
     @Override
