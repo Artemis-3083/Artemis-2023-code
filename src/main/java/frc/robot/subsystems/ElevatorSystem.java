@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -14,15 +15,14 @@ import frc.robot.sim.ElevatorSystemSim;
 public class ElevatorSystem extends SubsystemBase {
     CANSparkMax  motor;
     DigitalInput digitalInput;
-    Encoder encoder;
     static final int speed = 1;
-
+    RelativeEncoder encoder;
     private final ElevatorSystemSim sim;
 
     public ElevatorSystem(){
         digitalInput = new DigitalInput(0);
         motor = new CANSparkMax(0,MotorType.kBrushless);
-        encoder = new Encoder(0, 0);
+        encoder = motor.getEncoder();
 
         if (Robot.isSimulation()) {
             sim = new ElevatorSystemSim();
@@ -47,7 +47,7 @@ public class ElevatorSystem extends SubsystemBase {
         if (Robot.isSimulation()) {
             sim.reset();
         } else {
-            encoder.reset();
+            encoder.setPosition(0);
         }
     }
 
@@ -63,7 +63,7 @@ public class ElevatorSystem extends SubsystemBase {
         if (Robot.isSimulation()) {
             return sim.getHeightMeters();
         } else {
-            return(encoder.get()
+            return(encoder.getPosition()
                     *Constants.GEAR_RATIO_ELEVATOR
                     *(Math.PI*Constants.RADIUS_ELEVATOR*2));
         }
