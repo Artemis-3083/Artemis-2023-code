@@ -10,23 +10,23 @@ public class ArmSystemSim {
     // those definitions are robot-specific
     // they are based on actual robot structure, sizes and such
     // please update them according to your actual robot
-    public static final double FIRST_MOTOR_TO_ARM_GEAR_RATIO = 4;
-    public static final double FIRST_ARM_MASS_KG = 10;
-    public static final double FIRST_ARM_LENGTH_METERS = 0.3;
-    public static final int FIRST_MOTOR_COUNT = 2;
-    public static final DCMotor FIRST_MOTORS_TYPE = DCMotor.getCIM(FIRST_MOTOR_COUNT);
+    public static final double FIRST_MOTOR_TO_ARM_GEAR_RATIO = 1;
+    public static final double FIRST_ARM_MASS_KG = 5;
+    public static final double FIRST_ARM_LENGTH_METERS = 0.5;
+    public static final int FIRST_MOTOR_COUNT = 1;
+    public static final DCMotor FIRST_MOTORS_TYPE = DCMotor.getNEO(FIRST_MOTOR_COUNT);
     public static final double FIRST_MIN_ANGLE_RAD = 0;
-    public static final double FIRST_MAX_ANGLE_RAD = 90;
-    public static final double FIRST_MOMENT_OF_INERTIA = (Math.pow(FIRST_ARM_MASS_KG * FIRST_ARM_LENGTH_METERS, 2)) / 3;
+    public static final double FIRST_MAX_ANGLE_RAD = 180;
+    public static final double FIRST_MOMENT_OF_INERTIA = SingleJointedArmSim.estimateMOI(FIRST_ARM_LENGTH_METERS, FIRST_ARM_MASS_KG);
 
-    public static final double SECOND_MOTOR_TO_ARM_GEAR_RATIO = 4;
-    public static final double SECOND_ARM_MASS_KG = 10;
-    public static final double SECOND_ARM_LENGTH_METERS = 0.3;
-    public static final int SECOND_MOTOR_COUNT = 2;
-    public static final DCMotor SECOND_MOTORS_TYPE = DCMotor.getCIM(SECOND_MOTOR_COUNT);
+    public static final double SECOND_MOTOR_TO_ARM_GEAR_RATIO = 1;
+    public static final double SECOND_ARM_MASS_KG = 5;
+    public static final double SECOND_ARM_LENGTH_METERS = 0.5;
+    public static final int SECOND_MOTOR_COUNT = 1;
+    public static final DCMotor SECOND_MOTORS_TYPE = DCMotor.getNEO(SECOND_MOTOR_COUNT);
     public static final double SECOND_MIN_ANGLE_RAD = 0;
-    public static final double SECOND_MAX_ANGLE_RAD = 90;
-    public static final double SECOND_MOMENT_OF_INERTIA = (Math.pow(SECOND_ARM_MASS_KG * SECOND_ARM_LENGTH_METERS, 2)) / 3;
+    public static final double SECOND_MAX_ANGLE_RAD = 180;
+    public static final double SECOND_MOMENT_OF_INERTIA = SingleJointedArmSim.estimateMOI(SECOND_ARM_LENGTH_METERS, SECOND_ARM_MASS_KG);
 
     public static final boolean SIMULATE_GRAVITY = false;
 
@@ -66,10 +66,10 @@ public class ArmSystemSim {
     }
 
     public void update(double firstSpeed, double secondSpeed, double dt) {
-        mFirstArm.setInput(firstSpeed * RobotController.getBatteryVoltage());
+        mFirstArm.setInputVoltage(firstSpeed * RobotController.getBatteryVoltage());
         mFirstArm.update(dt);
 
-        mSecondArm.setInput(secondSpeed * RobotController.getBatteryVoltage());
+        mSecondArm.setInputVoltage(secondSpeed * RobotController.getBatteryVoltage());
         mSecondArm.update(dt);
     }
 }

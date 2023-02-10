@@ -65,10 +65,12 @@ public class SubsysArm extends SubsystemBase {
     }
 
     public void closeSpark(double speed) {
+        SmartDashboard.putNumber("Arm.FirstJoint.Speed", speed);
         cloesSpark.set(speed);
     }
 
     public void farSpark(double speed) {
+        SmartDashboard.putNumber("Arm.SecondJoint.Speed", speed);
         farSpark.set(speed);
     }
 

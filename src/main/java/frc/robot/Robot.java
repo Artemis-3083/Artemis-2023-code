@@ -6,7 +6,16 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismObject2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ArmDown;
+import frc.robot.commands.ArmUp;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.LimelightSystem;
@@ -19,6 +28,11 @@ public class Robot extends TimedRobot {
   SubsysArm arm;
   PS4Controller controller;
 
+  Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  MechanismObject2d elevator;
+  MechanismLigament2d firstArm;
+  MechanismLigament2d secondArm;
+
   @Override
   public void robotInit() {
     limelight = new LimelightSystem();
@@ -27,11 +41,20 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+
+    MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
+    elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
+    firstArm = elevator.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
+    secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
+
+    SmartDashboard.putData("elevator", mechanism2d);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    firstArm.setAngle(180 - arm.getCloseEncoderAngleDegrees());
+    secondArm.setAngle(180 - arm.getFarEncoderAngleDegrees());
   }
 
   @Override
@@ -41,7 +64,9 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {}
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    new ArmUp(arm).schedule();
+  }
 
   @Override
   public void autonomousPeriodic() {
@@ -49,7 +74,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    new ArmDown(arm).schedule();
+  }
 
   @Override
   public void teleopPeriodic() {}
