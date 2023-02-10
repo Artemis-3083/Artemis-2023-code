@@ -41,6 +41,6 @@ public class SetElevatorHeight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return elevator.getHeight()==height;
+    return elevator.getHeight()<=height+0.05&&elevator.getHeight()>=height-0.05;
   }
 }
