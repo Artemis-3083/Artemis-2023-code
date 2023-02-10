@@ -6,11 +6,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorUp;
+import frc.robot.commands.SetElevatorHeight;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
@@ -21,6 +23,8 @@ public class Robot extends TimedRobot {
   DriveSystem driveSystem;
   LimelightSystem limelight;
   PS4Controller controller;
+
+  private Command testCommand;
 
   @Override
   public void robotInit() {
@@ -33,6 +37,8 @@ public class Robot extends TimedRobot {
 
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
+
+    testCommand = new SetElevatorHeight(0.8, elevator);
   }
 
   @Override
@@ -48,15 +54,24 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
+    if (testCommand != null) {
+      testCommand.schedule();
+    }
   }
 
   @Override
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {
+  public void autonomousExit() {
+    if (testCommand != null) {
+      testCommand.cancel();
+    }
+  }
 
+  @Override
+  public void teleopInit() {
+    new ElevatorDown(elevator).schedule();
   }
 
   @Override
