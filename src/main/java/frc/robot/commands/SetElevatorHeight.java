@@ -4,16 +4,24 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSystem;
 
 public class SetElevatorHeight extends CommandBase {
+    private static final double KP = 0.3;
+    private static final double KI = 0.06;
+    private static final double KD = 0;
+    private static final double PERIOD_SEC = 0.02;
+    private final PIDController controller;
 
   public ElevatorSystem elevator;
   public double height;
 
   /** Creates a new SetElevatorHeight. */
   public SetElevatorHeight(double height,ElevatorSystem elevator) {
+    controller = new PIDController(KP, KI, KD, PERIOD_SEC);
     this.elevator=elevator;
     this.height=height;
     addRequirements(elevator);
@@ -26,10 +34,10 @@ public class SetElevatorHeight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(elevator.getHeight()>height)
-      elevator.elevatorDown();
-    else if(elevator.getHeight()<height)
-      elevator.elevatorUp();
+    double processVariable = elevator.getHeight();
+    double output = controller.calculate(processVariable, height);
+    output = MathUtil.clamp(output, -1, 1);
+    elevator.elevatorSetSpeed(output);
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +49,6 @@ public class SetElevatorHeight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return elevator.getHeight()<=height+0.05&&elevator.getHeight()>=height-0.05;
+    return false;
   }
 }

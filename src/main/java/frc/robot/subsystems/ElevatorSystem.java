@@ -39,6 +39,10 @@ public class ElevatorSystem extends SubsystemBase {
         motor.set(-speed);
     }
 
+    public void elevatorSetSpeed(double speed){
+        motor.set(speed);
+    }
+
     public void stop(){
         motor.set(0);
     }
