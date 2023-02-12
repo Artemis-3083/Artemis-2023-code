@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.DoubleEntry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -97,5 +98,9 @@ public class DriveSystem extends SubsystemBase {
 
   public double getPitch(){
     return navie.getRoll();
+  }
+
+  public void followPath(double derivitive, double secDerivitive){ // takes the first and second derivitives of the path function
+    
   }
 }

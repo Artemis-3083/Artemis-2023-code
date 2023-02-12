@@ -4,10 +4,10 @@
 
 package frc.robot;
 
-import org.photonvision.PhotonCamera;
+/*import org.photonvision.PhotonCamera;
 import org.photonvision.RobotPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.targeting.PhotonTrackedTarget;*/
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -33,11 +33,13 @@ public class Robot extends TimedRobot {
   DriveSystem driveSystem;
   LimelightSystem limelight;
   PS4Controller controller;
+  private double[] cnt = new double[1];
 
-  PhotonCamera camera;
+  //PhotonCamera camera;
 
   @Override
   public void robotInit() {
+    cnt[0] = 0;
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     controller = new PS4Controller(0);
@@ -45,11 +47,11 @@ public class Robot extends TimedRobot {
 
    
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
-    altDriveSystem.setDefaultCommand(new MethBalance(altDriveSystem, driveSystem));
+    //altDriveSystem.setDefaultCommand(new MethBalance(altDriveSystem, driveSystem));
 
-    camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
+    /*camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
     camera.setDriverMode(false);
-    camera.setPipelineIndex(0);
+    camera.setPipelineIndex(0);*/
     
   }
  
@@ -57,15 +59,16 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
+    SmartDashboard.putNumber("HAMAGNV SOOG BET", altDriveSystem.kalmanEstametion(cnt,0) );
     CommandScheduler.getInstance().run();
 
-    PhotonPipelineResult result = camera.getLatestResult();
+    /*PhotonPipelineResult result = camera.getLatestResult();
     //var result2 = camera.getLatestResult();
     if (result.hasTargets()) {
       PhotonTrackedTarget trackedResult = result.getBestTarget();
       Transform3d transform3d = trackedResult.getBestCameraToTarget();
       SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", transform3d.getX(), transform3d.getY(), transform3d.getZ()));
-    }
+    }*/
   }
 
   @Override
@@ -76,7 +79,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();;
+    new MethBalance(altDriveSystem, driveSystem).schedule();
   }
 
   @Override
