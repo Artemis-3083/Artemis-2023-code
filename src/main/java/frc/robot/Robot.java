@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
-    SmartDashboard.putNumber("HAMAGNV SOOG BET", altDriveSystem.kalmanEstametion(cnt,0) );
+    SmartDashboard.putNumber("HAMAGNV SOOG BET", altDriveSystem.kalmanEstametion(int count,double [] y_pred) );
     CommandScheduler.getInstance().run();
 
     /*PhotonPipelineResult result = camera.getLatestResult();
