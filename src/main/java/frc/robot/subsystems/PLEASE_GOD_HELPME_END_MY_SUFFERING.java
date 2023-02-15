@@ -9,39 +9,29 @@ import java.util.Arrays;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 import com.kauailabs.navx.frc.AHRS;
 
-import org.opencv.aruco.EstimateParameters;
-
-import edu.wpi.first.networktables.DoubleArrayEntry;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class PLEASE_GOD_HELPME_END_MY_SUFFERING<measurmantArray> extends SubsystemBase {
+public class PLEASE_GOD_HELPME_END_MY_SUFFERING extends SubsystemBase {
 
     private WPI_Pigeon2 pigeon;
-    private double angle;
     private double exp;
     private AHRS navie;
-    private double eest;// current estemation
-    private double Eest_t; // previoes estemation
-    private double kg;// kalman gain
-    private double emeasurmant = 0.2;// the navx musearing error
-    private double imea;// taken when ramp hit 15 deg
     private double[] measurmantArray;
     private double[] weightsArray;
-    private int i = 0;
+    private int count;
 
     public PLEASE_GOD_HELPME_END_MY_SUFFERING() {
-        angle = 0; // change to angle
         exp = Math.exp(1);
         navie = new AHRS(SPI.Port.kMXP);
         pigeon = new WPI_Pigeon2(0);
         measurmantArray = new double[100];
         weightsArray = new double[100];
-        eest = eest;
+        count = 0;
     }
 
     public double getPitch() {
-        return pigeon.getPitch();
+        return navie.getPitch();
     }
 
     public double[] addToPitchArray() {
@@ -92,18 +82,20 @@ public class PLEASE_GOD_HELPME_END_MY_SUFFERING<measurmantArray> extends Subsyst
                       // BETWEEN, I AM GOD'S FAVORITE AND CHOSEN IDOL AND ALL SHALL BOW BEFORE ME
     }
 
-    public double kalmangain(int count,double [] y_pred) {
-        kg = y_pred[count] / (emeasurmant + y_pred[count]);// nigga what is this
-        return kg;
+    public double kalmangain() {
+        count++;
+        return predict()[count] / (0.2 + predict()[count]);//0.2 the navx musearing error
     }
 
-    public double kalmanEstametion(int count,double [] y_pred) {
+    public double kalmanEstametion() {
+        double eest;// current estemation
+        double[] y_pred = predict(); 
         if (count == 0) {
-            eest = y_pred[0] + kalmangain(count,y_pred) * (measurmant() - y_pred[0]);
+            eest = y_pred[0] + kalmangain() * (measurmant() - y_pred[0]);
             count++;
             return eest / 10;
         } else {
-            eest = y_pred[count - 1] + kalmangain(count,y_pred) * (measurmant() - y_pred[count - 1]);
+            eest = y_pred[count - 1] + kalmangain() * (measurmant() - y_pred[count - 1]);
             count++;
             return eest / 100;  
         }
