@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.opencv.core.Mat;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -18,6 +20,8 @@ public class SubsysArm extends SubsystemBase {
   private Encoder farEncoder;
   private double speed = 0;
   private double wdith;
+  private double hight;
+  private double length;// length from game piece
 
   public SubsysArm() {
     cloesSpark = new CANSparkMax(0, MotorType.kBrushless);
@@ -36,12 +40,12 @@ public class SubsysArm extends SubsystemBase {
     farSpark.set(0);
   }
 
-  public double closegetencoder() {
-    return  wdith*closeEncoder.get(); //change to right calcuation
+  public double closeEncoder() {
+    return (closeEncoder.get() * 360) / 1; //change to right calcuation
   }
 
   public double farEncoderget() {
-    return wdith * farEncoder.get(); //change to right calcuation
+    return (farEncoder.get() * 360) / 1; //change to right calcuation
   }
 
   public void closeSpark(double speed) {
@@ -52,6 +56,15 @@ public class SubsysArm extends SubsystemBase {
     farSpark.set(speed);
   }
  
-  
+  public double distance() {
+    return Math.sqrt(Math.pow(0.5,2) + Math.pow(0.4,2) -2 * 0.5 * 0.4 * Math.cos(farEncoderget()));
+  }
 
+  public double hight() {
+    return hight;
+  }
+
+  public double length() {
+    return length;
+  }
 }
