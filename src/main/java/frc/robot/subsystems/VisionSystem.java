@@ -21,17 +21,25 @@ public class VisionSystem extends SubsystemBase {
   public VisionSystem() {
     camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
     camera.setDriverMode(false);
-    camera.setPipelineIndex(0);
+    camera.setPipelineIndex(0); 
+  }
 
+  @Override
+  public void periodic() {
+    update();
+  }
+
+  public void update(){
     result = camera.getLatestResult();
-
-    trackedResult = result.getBestTarget();
-    transform3d = trackedResult.getBestCameraToTarget();
+    if (result.hasTargets()) {
+      trackedResult = result.getBestTarget();
+      transform3d = trackedResult.getBestCameraToTarget();
+    }
   }
 
   public double getDistance(){
     if (result.hasTargets()) {
-      return transform3d.getX();
+      return trackedResult.getBestCameraToTarget().getX();
     }
     return 0;
   }
