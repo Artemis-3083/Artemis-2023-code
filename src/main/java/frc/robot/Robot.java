@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.ArmDown;
-import frc.robot.commands.ArmUp;
+//import frc.robot.commands.ArmDown;
+//import frc.robot.commands.ArmUp;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -46,10 +46,10 @@ public class Robot extends TimedRobot {
   PS4Controller controller;
   VisionSystem visionSystem;
 
-  Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
   MechanismObject2d elevator;
   MechanismLigament2d firstArm;
-  MechanismLigament2d secondArm;
+  MechanismLigament2d secondArm;*/
 
   @Override
   public void robotInit() {

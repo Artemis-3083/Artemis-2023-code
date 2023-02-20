@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SubsysArm;
 
 public class aimarm extends CommandBase {
-SubsysArm arm;
-double angle;
+  SubsysArm arm;
+  double angle;
 
   public aimarm(SubsysArm arm) {
     this.arm = arm;
