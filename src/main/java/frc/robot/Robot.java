@@ -23,6 +23,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+//import frc.robot.commands.ArmDown;
+//import frc.robot.commands.ArmUp;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.ArmDown;
 import frc.robot.commands.ArmUp;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,6 +42,8 @@ import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistance;
 import frc.robot.commands.SetElevatorHeight;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveUntilDistance;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
@@ -52,12 +59,17 @@ public class Robot extends TimedRobot {
   PS4Controller controller;
   VisionSystem visionSystem;
 
-  Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
   MechanismObject2d elevator;
   MechanismLigament2d firstArm;
-  MechanismLigament2d secondArm;
+  MechanismLigament2d secondArm;*/
 
   private Command testCommand;
+
+  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  MechanismObject2d elevator;
+  MechanismLigament2d firstArm;
+  MechanismLigament2d secondArm;*/
 
   @Override
   public void robotInit() {
@@ -86,6 +98,13 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("elevator", mechanism2d);*/
     //driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
+    /*MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
+    elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
+    firstArm = elevator.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
+    secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
+
+    SmartDashboard.putData("elevator", mechanism2d);*/
+    driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
   }
  
   @Override
@@ -129,7 +148,8 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopInit() {
-    new ElevatorDown(elevator).schedule();
+    //new ElevatorDown(elevator).schedule();
+    //new ArmDown(arm).schedule();
   }
 
   @Override
