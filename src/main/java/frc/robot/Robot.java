@@ -36,6 +36,7 @@ import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistance;
+import frc.robot.commands.SetElevatorHeight;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
@@ -56,11 +57,14 @@ public class Robot extends TimedRobot {
   MechanismLigament2d firstArm;
   MechanismLigament2d secondArm;
 
+  private Command testCommand;
+
   @Override
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     arm = new SubsysArm();
+    elevator = new ElevatorSystem();
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
 
@@ -69,8 +73,11 @@ public class Robot extends TimedRobot {
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
 
+    //testCommand = new SetElevatorHeight(0.8, elevator);
+  }
+
     
-    new JoystickButton(controller, PS4Controller.Button.kR2.value).whileFalse(new Balance(driveSystem));
+    //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileFalse(new Balance(driveSystem));
 
     /*MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
     elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
@@ -78,7 +85,7 @@ public class Robot extends TimedRobot {
     secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
 
     SmartDashboard.putData("elevator", mechanism2d);*/
-    driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
+    //driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
   }
  
   @Override
@@ -103,6 +110,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     //new ArmUp(arm).schedule();
     new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
+    if (testCommand != null) {
+      testCommand.schedule();
+    }
   }
 
   @Override
@@ -111,8 +121,15 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void autonomousExit() {
+    if (testCommand != null) {
+      testCommand.cancel();
+    }
+  }
+  
+  @Override
   public void teleopInit() {
-    //new ArmDown(arm).schedule();
+    new ElevatorDown(elevator).schedule();
   }
 
   @Override

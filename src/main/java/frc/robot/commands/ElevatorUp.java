@@ -18,12 +18,12 @@ public class ElevatorUp extends CommandBase {
   }
 
   @Override
-  public void initialize() {
-    elevator.elevatorUp();
-  }
+  public void initialize() {}
 
   @Override
-  public void execute() {}
+  public void execute() {
+    elevator.elevatorUp();
+  }
 
   @Override
   public void end(boolean interrupted) {
