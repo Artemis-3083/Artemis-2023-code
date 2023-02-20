@@ -28,18 +28,31 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ArmDown;
+import frc.robot.commands.ArmUp;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ElevatorDown;
+import frc.robot.commands.ElevatorUp;
+import frc.robot.commands.DriveForward;
+import frc.robot.commands.DriveUntilDistance;
+import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistance;
 import frc.robot.subsystems.DriveSystem;
+import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
 import frc.robot.subsystems.SubsysArm;
 import frc.robot.subsystems.VisionSystem;
 
 public class Robot extends TimedRobot {
   
+  ElevatorSystem elevator;
   DriveSystem driveSystem;
   LimelightSystem limelight;
   SubsysArm arm;
@@ -51,16 +64,40 @@ public class Robot extends TimedRobot {
   MechanismLigament2d firstArm;
   MechanismLigament2d secondArm;*/
 
+  private Command testCommand;
+
+  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  MechanismObject2d elevator;
+  MechanismLigament2d firstArm;
+  MechanismLigament2d secondArm;*/
+
   @Override
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     arm = new SubsysArm();
+    elevator = new ElevatorSystem();
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
+    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
+    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
+
+    //testCommand = new SetElevatorHeight(0.8, elevator);
+  }
+
+    
+    //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileFalse(new Balance(driveSystem));
+
+    /*MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
+    elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
+    firstArm = elevator.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
+    secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
+
+    SmartDashboard.putData("elevator", mechanism2d);*/
+    //driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
     /*MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
     elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
     firstArm = elevator.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
@@ -92,6 +129,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     //new ArmUp(arm).schedule();
     new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
+    if (testCommand != null) {
+      testCommand.schedule();
+    }
   }
 
   @Override
@@ -100,7 +140,15 @@ public class Robot extends TimedRobot {
   }
 
   @Override
+  public void autonomousExit() {
+    if (testCommand != null) {
+      testCommand.cancel();
+    }
+  }
+  
+  @Override
   public void teleopInit() {
+    //new ElevatorDown(elevator).schedule();
     //new ArmDown(arm).schedule();
   }
 
