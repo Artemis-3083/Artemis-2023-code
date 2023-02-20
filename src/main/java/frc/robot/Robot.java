@@ -23,13 +23,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.util.Color8Bit;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-//import frc.robot.commands.ArmDown;
-//import frc.robot.commands.ArmUp;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.ArmDown;
-import frc.robot.commands.ArmUp;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -59,17 +55,12 @@ public class Robot extends TimedRobot {
   PS4Controller controller;
   VisionSystem visionSystem;
 
-  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
-  MechanismObject2d elevator;
+  Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  MechanismObject2d elevator2d;
   MechanismLigament2d firstArm;
-  MechanismLigament2d secondArm;*/
+  MechanismLigament2d secondArm;
 
-  private Command testCommand;
-
-  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
-  MechanismObject2d elevator;
-  MechanismLigament2d firstArm;
-  MechanismLigament2d secondArm;*/
+  Command testCommand;
 
   @Override
   public void robotInit() {
@@ -85,25 +76,15 @@ public class Robot extends TimedRobot {
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
 
-    //testCommand = new SetElevatorHeight(0.8, elevator);
-  }
-
-    
-    //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileFalse(new Balance(driveSystem));
-
-    /*MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
-    elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
-    firstArm = elevator.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
+    testCommand = new SetElevatorHeight(0.8, elevator);
+  
+    MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
+    elevator2d = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
+    firstArm = elevator2d.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
     secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
 
-    SmartDashboard.putData("elevator", mechanism2d);*/
-    //driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
-    /*MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
-    elevator = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
-    firstArm = elevator.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
-    secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
+    SmartDashboard.putData("elevator", mechanism2d);
 
-    SmartDashboard.putData("elevator", mechanism2d);*/
     driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
   }
  
