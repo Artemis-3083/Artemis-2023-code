@@ -92,14 +92,14 @@ public class PLEASE_GOD_HELPME_END_MY_SUFFERING<measurmantArray> extends Subsyst
                       // BETWEEN, I AM GOD'S FAVORITE AND CHOSEN IDOL AND ALL SHALL BOW BEFORE ME
     }
 
-    public double kalmangain(int count,double [] y_pred) {
+    public double kalmangain(int count, double [] y_pred) {
         kg = y_pred[count] / (emeasurmant + y_pred[count]);// nigga what is this
         return kg;
     }
 
-    public double kalmanEstametion(int count,double [] y_pred) {
+    public double kalmanEstametion(int count, double [] y_pred) {
         if (count == 0) {
-            eest = y_pred[0] + kalmangain(count,y_pred) * (measurmant() - y_pred[0]);
+            eest = y_pred[0] + kalmangain(count, y_pred) * (measurmant() - y_pred[0]);
             count++;
             return eest / 10;
         } else {
