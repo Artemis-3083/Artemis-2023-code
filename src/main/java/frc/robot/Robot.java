@@ -32,9 +32,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
+import frc.robot.commands.CloseArm;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorUp;
+import frc.robot.commands.OpenArm;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.commands.SetElevatorHeight;
@@ -80,8 +82,8 @@ public class Robot extends TimedRobot {
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));
-    new POVButton(controller, 90).whileTrue(new );
-    new POVButton(controller, 270).whileTrue(new ElevatorDown(elevator));
+    new POVButton(controller, 90).whileTrue(new OpenArm(arm));
+    new POVButton(controller, 270).whileTrue(new CloseArm(arm));
 
     /*testCommand = new SetElevatorHeight(0.8, elevator);
   
