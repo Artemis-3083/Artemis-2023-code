@@ -57,12 +57,12 @@ public class Robot extends TimedRobot {
   PS4Controller controller;
   VisionSystem visionSystem;
 
-  Mechanism2d mechanism2d = new Mechanism2d(3, 3);
+  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
   MechanismObject2d elevator2d;
   MechanismLigament2d firstArm;
   MechanismLigament2d secondArm;
 
-  Command testCommand;
+  Command testCommand;*/
 
   @Override
   public void robotInit() {
@@ -73,23 +73,26 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
 
-    //driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
+    new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));
+    new POVButton(controller, 90).whileTrue(new );
+    new POVButton(controller, 270).whileTrue(new ElevatorDown(elevator));
 
-    testCommand = new SetElevatorHeight(0.8, elevator);
+    /*testCommand = new SetElevatorHeight(0.8, elevator);
   
     MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
     elevator2d = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
     firstArm = elevator2d.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
     secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
 
-    SmartDashboard.putData("elevator", mechanism2d);
+    SmartDashboard.putData("elevator", mechanism2d);*/
 
-    //driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
+    //driveSystem.setDefaultCommand(new DriveUntilDistanceFromTag(0.6, driveSystem, visionSystem));
   }
  
   @Override
@@ -112,11 +115,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    //new ArmUp(arm).schedule();
     //new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
-    if (testCommand != null) {
-      testCommand.schedule();
-    }
+    /*if (autoCommand != null) {
+      autoCommand.schedule();
+    }*/
   }
 
   @Override
@@ -126,9 +128,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
-    if (testCommand != null) {
-      testCommand.cancel();
-    }
+    /*if (autoCommand != null) {
+      autoCommand.cancel();
+    }*/
   }
   
   @Override

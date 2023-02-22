@@ -29,6 +29,10 @@ public class VisionSystem extends SubsystemBase {
     update();
   }
 
+  public int getID(){
+    return camera.getLatestResult().getBestTarget().getFiducialId();
+  }
+
   public void update(){
     result = camera.getLatestResult();
     if (result.hasTargets()) {
