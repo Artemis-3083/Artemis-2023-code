@@ -33,10 +33,12 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Balance;
 import frc.robot.commands.CloseArm;
+import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.OpenArm;
+import frc.robot.commands.ReleaseGamePiece;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.commands.SetElevatorHeight;
@@ -47,10 +49,12 @@ import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CollectorSystem;
 import frc.robot.subsystems.VisionSystem;
 
 public class Robot extends TimedRobot {
   
+  CollectorSystem collectorSystem;
   ElevatorSystem elevator;
   DriveSystem driveSystem;
   LimelightSystem limelight;
@@ -68,6 +72,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    collectorSystem = new CollectorSystem();
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     arm = new ArmSubsystem();
@@ -75,7 +80,7 @@ public class Robot extends TimedRobot {
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
 
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
 
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
@@ -84,6 +89,8 @@ public class Robot extends TimedRobot {
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));
     new POVButton(controller, 90).whileTrue(new OpenArm(arm));
     new POVButton(controller, 270).whileTrue(new CloseArm(arm));
+    new JoystickButton(controller, PS4Controller.Axis.kR2.value).whileTrue(new CollectGamePiece(collectorSystem));
+    new JoystickButton(controller, PS4Controller.Axis.kL2.value).whileTrue(new ReleaseGamePiece(collectorSystem));
 
     /*testCommand = new SetElevatorHeight(0.8, elevator);
   

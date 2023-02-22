@@ -28,6 +28,11 @@ public class CollectorSystem extends SubsystemBase {
     left.set(1);
   }
 
+  public void release(){
+    right.set(-1);
+    left.set(-1);
+  }
+
   public void stop(){
     right.set(0);
     left.set(0);

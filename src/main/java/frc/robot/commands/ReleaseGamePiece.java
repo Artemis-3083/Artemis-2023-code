@@ -4,36 +4,31 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CollectorSystem;
 
-public class Collect extends CommandBase {
+public class ReleaseGamePiece extends CommandBase {
   
-  CollectorSystem collector;
+  CollectorSystem collectorSystem;
 
-  public Collect(CollectorSystem collector) {
-    this.collector = collector;
-    addRequirements(collector);
+  public ReleaseGamePiece(CollectorSystem collectorSystem) {
+    this.collectorSystem = collectorSystem;
+    addRequirements(collectorSystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    collector.collect();
+    collectorSystem.release();
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    collector.stop();
+    collectorSystem.stop();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
