@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class SubsysArm extends SubsystemBase {
+public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax cloesSpark;
   private CANSparkMax farSpark;
   private Encoder closeEncoder;
@@ -21,7 +21,7 @@ public class SubsysArm extends SubsystemBase {
   private double disstance;
   private double hight;
 
-  public SubsysArm() {
+  public ArmSubsystem() {
     cloesSpark = new CANSparkMax(0, MotorType.kBrushless);
     farSpark = new CANSparkMax(0, MotorType.kBrushless);
     closeEncoder = new Encoder(0, 0);

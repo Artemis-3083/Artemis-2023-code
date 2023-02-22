@@ -5,13 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SubsysArm;
+import frc.robot.subsystems.ArmSubsystem;
 
 public class aimarm extends CommandBase {
-SubsysArm arm;
-double angle;
+  
+  ArmSubsystem arm;
+  double angle;
 
-  public aimarm(SubsysArm arm) {
+  public aimarm(ArmSubsystem arm) {
     this.arm = arm;
   }
   

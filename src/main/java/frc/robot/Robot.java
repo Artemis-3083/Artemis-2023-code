@@ -36,14 +36,15 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.DriveForward;
-import frc.robot.commands.DriveUntilDistance;
+import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.commands.SetElevatorHeight;
+import frc.robot.commands.TurnToTag;
 import frc.robot.commands.DriveForward;
-import frc.robot.commands.DriveUntilDistance;
+import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
-import frc.robot.subsystems.SubsysArm;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.VisionSystem;
 
 public class Robot extends TimedRobot {
@@ -51,7 +52,8 @@ public class Robot extends TimedRobot {
   ElevatorSystem elevator;
   DriveSystem driveSystem;
   LimelightSystem limelight;
-  SubsysArm arm;
+  ArmSubsystem arm;
+  PS4Controller driveController;
   PS4Controller controller;
   VisionSystem visionSystem;
 
@@ -66,15 +68,17 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
-    arm = new SubsysArm();
+    arm = new ArmSubsystem();
     elevator = new ElevatorSystem();
     controller = new PS4Controller(0);
     visionSystem = new VisionSystem();
 
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    //driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevator));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevator));
+    new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
+    new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));
 
     testCommand = new SetElevatorHeight(0.8, elevator);
   
@@ -85,7 +89,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData("elevator", mechanism2d);
 
-    driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
+    //driveSystem.setDefaultCommand(new DriveUntilDistance(0.6, driveSystem, visionSystem));
   }
  
   @Override
@@ -96,7 +100,7 @@ public class Robot extends TimedRobot {
     //firstArm.setAngle(180 - arm.getCloseEncoderAngleDegrees());
     //secondArm.setAngle(180 - arm.getFarEncoderAngleDegrees());
 
-    SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getDistance(), visionSystem.getHight(), visionSystem.getAngle()));
+    SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getTagDistance(), visionSystem.getTagHight(), visionSystem.getTagAngle()));
 
   }
 
@@ -109,7 +113,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     //new ArmUp(arm).schedule();
-    new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
+    //new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
     if (testCommand != null) {
       testCommand.schedule();
     }

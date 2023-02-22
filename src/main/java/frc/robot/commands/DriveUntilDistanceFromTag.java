@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.VisionSystem;
 
-public class DriveUntilDistance extends CommandBase {
+public class DriveUntilDistanceFromTag extends CommandBase {
 
   DriveSystem driveSystem;
   VisionSystem visionSystem;
   double goal; //in m
   double distance; //in m
   
-  public DriveUntilDistance(double goal, DriveSystem driveSystem, VisionSystem visionSystem) {
+  public DriveUntilDistanceFromTag(double goal, DriveSystem driveSystem, VisionSystem visionSystem) {
     this.goal = goal;
     this.driveSystem = driveSystem;
     this.visionSystem = visionSystem;
@@ -29,7 +29,7 @@ public class DriveUntilDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    distance = visionSystem.getDistance();
+    distance = visionSystem.getTagDistance();
     if(distance > goal){
       driveSystem.drive(0.2*distance, 0, 0);
     }else{

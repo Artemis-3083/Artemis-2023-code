@@ -37,21 +37,21 @@ public class VisionSystem extends SubsystemBase {
     }
   }
 
-  public double getDistance(){
+  public double getTagDistance(){
     if (result.hasTargets()) {
       return trackedResult.getBestCameraToTarget().getX();
     }
     return 0;
   }
 
-  public double getHight(){
+  public double getTagHight(){
     if (result.hasTargets()) {
       return transform3d.getY();
     }
     return 0;
   }
 
-  public double getAngle(){
+  public double getTagAngle(){
     if (result.hasTargets()) {
       return transform3d.getZ();
     }

@@ -11,5 +11,12 @@ public final class Constants {
     public static final double ARM_CLOSE_MOTOR_GEAR_RATIO = 1;
     public static final double GEAR_RATIO_ELEVATOR = 1;
     public static final double RADIUS_ELEVATOR = 1;
-    public static final double ELEVATOR_HEIGHT =1;
+    public static final double ELEVATOR_HEIGHT = 1;
+
+    public static final double REFLECTIVE_HIGH_HEIGHT_INCH = 43.875;
+    public static final double REFLECTIVE_LOW_HEIGHT_INCH = 24.125;
+    public static final double LIMELIGHT_HEIGHT = 1;
+    public static final double LIMELIGHT_ANGLE = 1;
+
+    
 }
