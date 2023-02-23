@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// CopyrightSpin (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -13,32 +13,41 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CollectorSystem extends SubsystemBase {
   
-  CANSparkMax right, left;
-  Solenoid piston;
+  private CANSparkMax leftSpin; 
+  private CANSparkMax rightSpin;
+  private CANSparkMax grip;
 
   public CollectorSystem() {
-    right = new CANSparkMax(0, MotorType.kBrushless);
-    left = new CANSparkMax(0, MotorType.kBrushless);
-    left.setInverted(true);
-    piston = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+    leftSpin = new CANSparkMax(0, MotorType.kBrushless);
+    rightSpin = new CANSparkMax(0, MotorType.kBrushless);
+    leftSpin.setInverted(true);
+    grip = new CANSparkMax(0, MotorType.kBrushless);
   }
 
   public void collect(){
-    right.set(1);
-    left.set(1);
+    rightSpin.set(1);
+    leftSpin.set(1);
   }
 
   public void release(){
-    right.set(-1);
-    left.set(-1);
+    rightSpin.set(-1);
+    leftSpin.set(-1);
   }
 
-  public void stop(){
-    right.set(0);
-    left.set(0);
+  public void stopSpin(){
+    rightSpin.set(0);
+    leftSpin.set(0);
   }
 
-  public void grabOrRelease(){
-    piston.toggle();
+  public void open(){
+    grip.set(0.5);
+  }
+
+  public void close(){
+    grip.set(0.5);
+  }
+
+  public void stopGrip(){
+    grip.set(0);
   }
 }

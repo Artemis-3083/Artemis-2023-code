@@ -8,11 +8,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CollectorSystem;
 
 
-public class CollectorToggleState extends CommandBase {
+public class CollectorOpen extends CommandBase {
   
   CollectorSystem collector;
   
-  public CollectorToggleState(CollectorSystem collector) {
+  public CollectorOpen(CollectorSystem collector) {
     this.collector = collector;
     addRequirements(collector);
   }
@@ -24,12 +24,14 @@ public class CollectorToggleState extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    collector.grabOrRelease();
+    collector.open();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    collector.stopGrip();
+  }
 
   // Returns true when the command should end.
   @Override

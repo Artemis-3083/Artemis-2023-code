@@ -4,19 +4,44 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ArmSubsystem extends SubsystemBase {
-  private CANSparkMax closeJoint;
+
+  private DigitalInput closeSwitch;
+  private DigitalInput farSwitch;
+
+  private TalonFX closeJoint;
   private CANSparkMax farJoint;
 
   public ArmSubsystem() {
-    closeJoint = new CANSparkMax(0, MotorType.kBrushless);
+    closeJoint = new TalonFX(0);
     farJoint = new CANSparkMax(0, MotorType.kBrushless);
+    closeSwitch = new DigitalInput(0);
+    farSwitch = new DigitalInput(0);
+  }
+
+  public void getCloseSwitch(){
+    closeSwitch.get();
+  }
+
+  public void getFarSwitch(){
+    farSwitch.get();
+  }
+
+  public void resetCLose(){
+    closeJoint.setSelectedSensorPosition(0);
+  }
+
+  public void resetFar(){
+    farJoint.getEncoder().setPosition(0);
   }
 
   public void stopFarJoint() {
@@ -24,19 +49,23 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void stopCloseJoint() {
-    closeJoint.set(0);
+    closeJoint.set(ControlMode.PercentOutput, 0);
   }
 
   public double getCloseJoint() {
-    return closeJoint.getEncoder().getPosition() / Constants.SPARK_MAX_PPR / Constants.ARM_CLOSE_MOTOR_GEAR_RATIO * Constants.ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M;
+    return closeJoint.getSelectedSensorPosition() / Constants.SPARK_MAX_PPR / Constants.ARM_CLOSE_MOTOR_GEAR_RATIO * Constants.ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M;
   }
   
   public double getFarJoint() {
     return farJoint.getEncoder().getPosition() / Constants.SPARK_MAX_PPR / Constants.ARM_FAR_MOTOR_GEAR_RATIO * Constants.ARM_FAR_WHEEL_CIRCUMEFERENCE_M;
   }
 
+  public double getArmLength(){
+    return getFarJoint() + getCloseJoint();
+  }
+
   public void moveCloseJoint(double speed) {
-    closeJoint.set(speed);
+    closeJoint.set(ControlMode.PercentOutput, speed);
   } 
 
   public void moveFarJoint(double speed) {

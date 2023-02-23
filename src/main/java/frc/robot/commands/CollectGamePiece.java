@@ -29,7 +29,7 @@ public class CollectGamePiece extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    collector.stop();
+    collector.stopSpin();
   }
 
   // Returns true when the command should end.

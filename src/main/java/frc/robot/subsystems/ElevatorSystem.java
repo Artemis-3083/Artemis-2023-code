@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.sim.ElevatorSystemSim;
 
 public class ElevatorSystem extends SubsystemBase {
+    
     CANSparkMax  motor;
     DigitalInput digitalInput;
     static final int speed = 1;
@@ -68,7 +69,7 @@ public class ElevatorSystem extends SubsystemBase {
         } else {
             return(encoder.getPosition()
                     *Constants.GEAR_RATIO_ELEVATOR
-                    *(Math.PI*Constants.RADIUS_ELEVATOR*2));
+                    *(Math.PI*Constants.RADIUS_ELEVATOR_M*2));
         }
     }
 

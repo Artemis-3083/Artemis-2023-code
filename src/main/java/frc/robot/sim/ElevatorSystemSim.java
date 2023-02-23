@@ -15,7 +15,7 @@ public class ElevatorSystemSim {
     public static final double DRUM_RADIUS_M = Units.inchesToMeters(2.5);
     public static final double CARRIAGE_MASS_KG = 20;
     public static final double MIN_HEIGHT_METERS = 0;
-    public static final double MAX_HEIGHT_METERS = Constants.ELEVATOR_HEIGHT;
+    public static final double MAX_HEIGHT_METERS = Constants.ELEVATOR_HEIGHT_M;
     public static final int MOTOR_COUNT = 1;
     public static final DCMotor MOTORS_TYPE = DCMotor.getCIM(MOTOR_COUNT);
     public static final boolean SIMULATE_GRAVITY = false;

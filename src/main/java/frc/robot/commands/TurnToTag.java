@@ -25,9 +25,9 @@ public class TurnToTag extends CommandBase {
   @Override
   public void execute() {
     if(visionSystem.getTagAngle() > 0){
-      driveSystem.drive(0, 0, 0.5);
+      driveSystem.drive(0, 0, 0.1 * visionSystem.getTagAngle());
     }else{
-      driveSystem.drive(0, 0, -0.5);
+      driveSystem.drive(0, 0, -0.1 * visionSystem.getTagAngle());
     }
   }
 

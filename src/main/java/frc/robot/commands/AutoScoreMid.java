@@ -11,7 +11,7 @@ import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.VisionSystem;
 
-public class AutoScore extends CommandBase {
+public class AutoScoreMid extends CommandBase {
   
   CollectorSystem collectorSystem;
   DriveSystem driveSystem;
@@ -20,7 +20,7 @@ public class AutoScore extends CommandBase {
   VisionSystem visionSystem;
 
 
-  public AutoScore(CollectorSystem collectorSystem, ArmSubsystem armSubsystem, ElevatorSystem elevatorSystem, DriveSystem driveSystem) {
+  public AutoScoreMid(CollectorSystem collectorSystem, ArmSubsystem armSubsystem, ElevatorSystem elevatorSystem, DriveSystem driveSystem) {
     this.armSubsystem = armSubsystem;
     this.collectorSystem = collectorSystem;
     this.elevatorSystem = elevatorSystem;
@@ -35,7 +35,10 @@ public class AutoScore extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {} //open to 1.58 m
+  public void execute() {
+    //make a command that open to 1 m distance (goal)
+    
+  }
 
   // Called once the command ends or is interrupted.
   @Override

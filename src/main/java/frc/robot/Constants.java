@@ -18,14 +18,21 @@ public final class Constants {
 
     //ELEVATOR
     public static final double GEAR_RATIO_ELEVATOR = 1;
-    public static final double RADIUS_ELEVATOR = 1;
-    public static final double ELEVATOR_HEIGHT = 1;
+    public static final double RADIUS_ELEVATOR_M = 1;
+    public static final double ELEVATOR_HEIGHT_M = 1;
+
+    //DRIVE
+    public static final double DRIVE_GEAR_RATIO = 1;
+    public static final double DRIVE_WHEEL_CIRCUMEFERENCE_M = 1;
 
     //LIMELIGHT
-    public static final double REFLECTIVE_HIGH_HEIGHT_INCH = 43.875;
-    public static final double REFLECTIVE_LOW_HEIGHT_INCH = 24.125;
-    public static final double LIMELIGHT_HEIGHT = 1;
+    public static final double REFLECTIVE_HIGH_HEIGHT_M = 1.12;
+    public static final double REFLECTIVE_LOW_HEIGHT_M = 0.6;
+    public static final double LIMELIGHT_HEIGHT_M = 1;
     public static final double LIMELIGHT_ANGLE = 1;
 
+    //GAME PIECES
+    public static final double CONE_HEIGHT_M = 0.33;
+    public static final double CUBE_HEIGHT_M = 0.24;
     
 }

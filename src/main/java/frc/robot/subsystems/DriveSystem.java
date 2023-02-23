@@ -79,11 +79,11 @@ public class DriveSystem extends SubsystemBase {
   }
 
   public double getDistancePassedLeftM() {
-    return talonLF.getSelectedSensorPosition() / Constants.TALON_FX_PPR /*/ Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M*/;
+    return talonLF.getSelectedSensorPosition() / Constants.TALON_FX_PPR / Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M;
   }
 
   public double getDistancePassedRightM() {
-    return talonRF.getSelectedSensorPosition() / Constants.TALON_FX_PPR /*/ Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M*/;
+    return talonRF.getSelectedSensorPosition() / Constants.TALON_FX_PPR / Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M;
   }
 
   public double getDistancePassedM() {

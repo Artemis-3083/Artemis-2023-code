@@ -26,7 +26,7 @@ public class ReleaseGamePiece extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    collectorSystem.stop();
+    collectorSystem.stopSpin();
   }
 
   @Override
