@@ -22,18 +22,18 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax farJoint;
 
   public ArmSubsystem() {
-    closeJoint = new TalonFX(0);
-    farJoint = new CANSparkMax(0, MotorType.kBrushless);
-    closeSwitch = new DigitalInput(0);
-    farSwitch = new DigitalInput(0);
+    closeJoint = new TalonFX(8);
+    farJoint = new CANSparkMax(6, MotorType.kBrushless);
+    closeSwitch = new DigitalInput(7);
+    farSwitch = new DigitalInput(6);
   }
 
-  public void getCloseSwitch(){
-    closeSwitch.get();
+  public boolean getCloseSwitch(){
+    return !closeSwitch.get();
   }
 
-  public void getFarSwitch(){
-    farSwitch.get();
+  public boolean getFarSwitch(){
+    return !farSwitch.get();
   }
 
   public void resetCLose(){
@@ -74,5 +74,14 @@ public class ArmSubsystem extends SubsystemBase {
  
   public double distance(double disstance,double hight) { //??????
     return Math.sqrt(Math.pow(0.5,2) + Math.pow(0.4,2) - 2 * 0.5 * 0.4 * Math.cos(getFarJoint()));
-  }     
+  }
+
+  @Override
+    public void periodic() {
+      if(getCloseSwitch()){
+        resetCLose();
+      }if(getFarSwitch()){
+        resetFar();
+      }
+    }
 }

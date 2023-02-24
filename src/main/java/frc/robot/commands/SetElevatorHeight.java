@@ -14,7 +14,7 @@ import frc.robot.subsystems.ElevatorSystem;
 public class SetElevatorHeight extends CommandBase {
   private static final double KP = 0.1;
   private static final double KI = 0;
-  private static final double KD = 0.05;
+  private static final double KD = 0.0;
   private static final double PERIOD_SEC = 0.02;
   private static final double TIME_STABILIZED_SEC = 1;
 

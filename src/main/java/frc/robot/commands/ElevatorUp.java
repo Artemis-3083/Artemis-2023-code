@@ -32,6 +32,6 @@ public class ElevatorUp extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return elevator.getHeight()>=Constants.ELEVATOR_HEIGHT_M;
+    return false;//elevator.getHeight()>=Constants.ELEVATOR_HEIGHT_M;
   }
 }

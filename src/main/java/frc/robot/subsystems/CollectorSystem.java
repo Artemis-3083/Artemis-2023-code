@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+/*package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -18,10 +18,10 @@ public class CollectorSystem extends SubsystemBase {
   private CANSparkMax grip;
 
   public CollectorSystem() {
-    leftSpin = new CANSparkMax(0, MotorType.kBrushless);
-    rightSpin = new CANSparkMax(0, MotorType.kBrushless);
+    leftSpin = new CANSparkMax(20, MotorType.kBrushless);
+    rightSpin = new CANSparkMax(21, MotorType.kBrushless);
     leftSpin.setInverted(true);
-    grip = new CANSparkMax(0, MotorType.kBrushless);
+    grip = new CANSparkMax(22, MotorType.kBrushless);
   }
 
   public void collect(){
@@ -51,3 +51,4 @@ public class CollectorSystem extends SubsystemBase {
     grip.set(0);
   }
 }
+*/

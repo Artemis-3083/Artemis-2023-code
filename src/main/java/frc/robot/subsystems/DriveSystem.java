@@ -22,10 +22,10 @@ public class DriveSystem extends SubsystemBase {
   
   public DriveSystem() {
 
-    talonLF = new WPI_TalonFX(2);
-    talonLR = new WPI_TalonFX(1);
-    talonRR = new WPI_TalonFX(3);
-    talonRF = new WPI_TalonFX(4);
+    talonLF = new WPI_TalonFX(4);
+    talonLR = new WPI_TalonFX(3);
+    talonRR = new WPI_TalonFX(1);
+    talonRF = new WPI_TalonFX(2);
 
     talonLF.setInverted(false);
     talonLR.setInverted(false);

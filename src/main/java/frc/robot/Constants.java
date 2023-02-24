@@ -17,7 +17,8 @@ public final class Constants {
     public static final double ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M = 1;
 
     //ELEVATOR
-    public static final double GEAR_RATIO_ELEVATOR = 1;
+    public static final double ELEVATOR_CLOSE_WHEEL_CIRCUMEFERENCE_M = 1;
+    public static final double GEAR_RATIO_ELEVATOR = 1/50;
     public static final double RADIUS_ELEVATOR_M = 1;
     public static final double ELEVATOR_HEIGHT_M = 1;
 
