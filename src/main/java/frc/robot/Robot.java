@@ -35,6 +35,7 @@ import frc.robot.commands.Balance;
 import frc.robot.commands.CloseArm;
 import frc.robot.commands.CloseCloseJoint;
 import frc.robot.commands.CloseFarJoint;
+import frc.robot.commands.CloseGripper;
 //import frc.robot.commands.CollectGamePiece;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
@@ -42,6 +43,7 @@ import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.OpenArm;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
+import frc.robot.commands.OpenGripper;
 //import frc.robot.commands.ReleaseGamePiece;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
@@ -53,12 +55,12 @@ import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
 import frc.robot.subsystems.ArmSubsystem;
-//import frc.robot.subsystems.CollectorSystem;
+import frc.robot.subsystems.GripperSystem;
 import frc.robot.subsystems.VisionSystem;
 
 public class Robot extends TimedRobot {
   
-  //CollectorSystem collectorSystem;
+  GripperSystem gripperSystem;
   ElevatorSystem elevatorSystem;
   DriveSystem driveSystem;
   LimelightSystem limelight;
@@ -76,7 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    //collectorSystem = new CollectorSystem();
+    gripperSystem = new GripperSystem();
     limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     armSystem = new ArmSubsystem();
@@ -88,13 +90,13 @@ public class Robot extends TimedRobot {
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
 
     //elevator.setDefaultCommand(new SetElevatorHeight(20, elevator));
-    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
-    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
+    // new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
+    // new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));*/
-    new POVButton(controller, 90).whileTrue(new OpenCloseJoint(armSystem));
-    new POVButton(controller, 270).whileTrue(new CloseCloseJoint(armSystem));
+    new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
+    new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Axis.kR2.value).whileTrue(new CollectGamePiece(collectorSystem));
     new JoystickButton(controller, PS4Controller.Axis.kL2.value).whileTrue(new ReleaseGamePiece(collectorSystem));*/
 

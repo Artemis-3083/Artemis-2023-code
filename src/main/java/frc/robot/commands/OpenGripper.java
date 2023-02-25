@@ -5,14 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.CollectorSystem;
+import frc.robot.subsystems.GripperSystem;
 
 
 public class OpenGripper extends CommandBase {
   
-  CollectorSystem collector;
+  GripperSystem collector;
   
-  public OpenGripper(CollectorSystem collector) {
+  public OpenGripper(GripperSystem collector) {
     this.collector = collector;
     addRequirements(collector);
   }
@@ -36,6 +36,6 @@ public class OpenGripper extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

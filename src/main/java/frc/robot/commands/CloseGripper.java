@@ -5,13 +5,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.CollectorSystem;
+import frc.robot.subsystems.GripperSystem;
 
 public class CloseGripper extends CommandBase {
   
-  CollectorSystem collectorSystem;
+  GripperSystem collectorSystem;
 
-  public CloseGripper(CollectorSystem collectorSystem) {
+  public CloseGripper(GripperSystem collectorSystem) {
     this.collectorSystem = collectorSystem;
     addRequirements(collectorSystem);
   }
