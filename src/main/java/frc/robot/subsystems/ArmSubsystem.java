@@ -58,7 +58,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
   
   public double getFarJoint() {
-    return farJoint.getEncoder().getPosition();// * Constants.ARM_ANGLE_PER_PULSE;// / Constants.SPARK_MAX_PPR / Constants.ARM_FAR_MOTOR_GEAR_RATIO * Constants.ARM_FAR_WHEEL_CIRCUMEFERENCE_M;
+    return farJoint.getEncoder().getPosition() * Constants.FAR_JOINT_ANGLE_PER_PULSE;// / Constants.SPARK_MAX_PPR / Constants.ARM_FAR_MOTOR_GEAR_RATIO * Constants.ARM_FAR_WHEEL_CIRCUMEFERENCE_M;
   }
 
   public double getArmLength(){

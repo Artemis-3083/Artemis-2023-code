@@ -10,11 +10,11 @@ import frc.robot.subsystems.GripperSystem;
 
 public class OpenGripper extends CommandBase {
   
-  GripperSystem collector;
+  GripperSystem gripperSystem;
   
-  public OpenGripper(GripperSystem collector) {
-    this.collector = collector;
-    addRequirements(collector);
+  public OpenGripper(GripperSystem gripperSystem) {
+    this.gripperSystem = gripperSystem;
+    addRequirements(gripperSystem);
   }
 
   // Called when the command is initially scheduled.
@@ -24,13 +24,15 @@ public class OpenGripper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    collector.open();
+    if(gripperSystem.getEncoder() < 0.98){
+      gripperSystem.move(1);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    collector.stop();
+    gripperSystem.stop();
   }
 
   // Returns true when the command should end.

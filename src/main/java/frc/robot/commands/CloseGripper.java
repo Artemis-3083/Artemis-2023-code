@@ -9,11 +9,11 @@ import frc.robot.subsystems.GripperSystem;
 
 public class CloseGripper extends CommandBase {
   
-  GripperSystem collectorSystem;
+  GripperSystem gripperSystem;
 
-  public CloseGripper(GripperSystem collectorSystem) {
-    this.collectorSystem = collectorSystem;
-    addRequirements(collectorSystem);
+  public CloseGripper(GripperSystem gripperSystem) {
+    this.gripperSystem = gripperSystem;
+    addRequirements(gripperSystem);
   }
 
   @Override
@@ -21,12 +21,12 @@ public class CloseGripper extends CommandBase {
 
   @Override
   public void execute() {
-    collectorSystem.close();
+    gripperSystem.move(-1);
   }
 
   @Override
   public void end(boolean interrupted) {
-    collectorSystem.stop();
+    gripperSystem.stop();
   }
 
   @Override

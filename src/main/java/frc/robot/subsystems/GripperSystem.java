@@ -5,31 +5,31 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class GripperSystem extends SubsystemBase {
   
   private CANSparkMax motor;
-  Encoder encoder;
 
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
-    
+    motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
   }
 
-  public void open(){
-    motor.set(1);
-  }
-
-  public void close(){
-    motor.set(-1);
+  public void move(double speed){
+    if(speed < 0.5 && speed > -0.5){
+      if(speed > 0){
+        motor.set(0.5);
+      }else{
+        motor.set(-0.5);
+      }
+    }
+    motor.set(speed);
   }
 
   public void stop(){
@@ -37,7 +37,7 @@ public class GripperSystem extends SubsystemBase {
   }
   
   public double getEncoder(){
-    return motor.getEncoder(Type.kQuadrature, 8192).getPosition();
+    return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
   }
 
   @Override
