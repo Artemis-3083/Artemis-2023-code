@@ -26,6 +26,7 @@ public class ArmSubsystem extends SubsystemBase {
     farJoint = new CANSparkMax(6, MotorType.kBrushless);
     closeSwitch = new DigitalInput(7);
     farSwitch = new DigitalInput(6);
+    farJoint.setInverted(false);
   }
 
   public boolean getCloseSwitch(){
@@ -53,11 +54,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getCloseJoint() {
-    return closeJoint.getSelectedSensorPosition() / Constants.SPARK_MAX_PPR / Constants.ARM_CLOSE_MOTOR_GEAR_RATIO * Constants.ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M;
+    return closeJoint.getSelectedSensorPosition();// * Constants.ARM_ANGLE_PER_PULSE;// / Constants.SPARK_MAX_PPR / Constants.ARM_CLOSE_MOTOR_GEAR_RATIO * Constants.ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M;
   }
   
   public double getFarJoint() {
-    return farJoint.getEncoder().getPosition() / Constants.SPARK_MAX_PPR / Constants.ARM_FAR_MOTOR_GEAR_RATIO * Constants.ARM_FAR_WHEEL_CIRCUMEFERENCE_M;
+    return farJoint.getEncoder().getPosition();// * Constants.ARM_ANGLE_PER_PULSE;// / Constants.SPARK_MAX_PPR / Constants.ARM_FAR_MOTOR_GEAR_RATIO * Constants.ARM_FAR_WHEEL_CIRCUMEFERENCE_M;
   }
 
   public double getArmLength(){
@@ -77,11 +78,11 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   @Override
-    public void periodic() {
-      if(getCloseSwitch()){
-        resetCLose();
-      }if(getFarSwitch()){
-        resetFar();
-      }
+  public void periodic() {
+    if(getCloseSwitch()){
+      resetCLose();
+    }if(getFarSwitch()){
+      resetFar();
     }
+  }
 }

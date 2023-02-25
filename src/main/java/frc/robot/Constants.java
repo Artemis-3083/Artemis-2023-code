@@ -11,19 +11,21 @@ public final class Constants {
     public static final double SPARK_MAX_PPR = 42;
 
     //ARM
-    public static final double ARM_FAR_MOTOR_GEAR_RATIO = 1;
-    public static final double ARM_CLOSE_MOTOR_GEAR_RATIO = 1;
+    public static final double ARM_FAR_MOTOR_GEAR_RATIO = 1/50;
+    public static final double ARM_CLOSE_MOTOR_GEAR_RATIO = 1/50;
     public static final double ARM_FAR_WHEEL_CIRCUMEFERENCE_M = 1;
     public static final double ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M = 1;
+    public static final double ARM_ANGLE_PER_PULSE = 238.1 / 141.854;
 
     //ELEVATOR
-    public static final double ELEVATOR_CLOSE_WHEEL_CIRCUMEFERENCE_M = 1;
-    public static final double GEAR_RATIO_ELEVATOR = 1/50;
+    public static final double ELEVATOR_WHEEL_CIRCUMEFERENCE_M = 1.432 * 25.4 / 1000 * 2 * Math.PI;
+    public static final double ELEVATOR_GEAR_RATIO = 1/50;
     public static final double RADIUS_ELEVATOR_M = 1;
     public static final double ELEVATOR_HEIGHT_M = 1;
+    public static final double ELEVATOR_MM_PER_PULSE = 586.0 / 477359; //const for 1 elevator mm/pulse
 
     //DRIVE
-    public static final double DRIVE_GEAR_RATIO = 1;
+    public static final double DRIVE_GEAR_RATIO = 1/6;
     public static final double DRIVE_WHEEL_CIRCUMEFERENCE_M = 1;
 
     //LIMELIGHT

@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -13,16 +15,14 @@ import frc.robot.sim.ElevatorSystemSim;
 
 public class ElevatorSystem extends SubsystemBase {
     
-    CANSparkMax  motor;
+    TalonFX  motor;
     DigitalInput digitalInput;
     static final int speed = 1;
-    RelativeEncoder encoder;
     private final ElevatorSystemSim sim;
 
     public ElevatorSystem(){
         digitalInput = new DigitalInput(0);
-        motor = new CANSparkMax(0,MotorType.kBrushless);
-        encoder = motor.getEncoder();
+        motor = new TalonFX(5);
 
         if (Robot.isSimulation()) {
             sim = new ElevatorSystemSim();
@@ -32,26 +32,26 @@ public class ElevatorSystem extends SubsystemBase {
     }
 
     public void elevatorUp(){
-        motor.set(speed);
+        motor.set(ControlMode.PercentOutput, speed);
     }
 
     public void elevatorDown(){
-        motor.set(-speed);
+        motor.set(ControlMode.PercentOutput, -speed);
     }
 
     public void elevatorSetSpeed(double speed){
-        motor.set(speed);
+        motor.set(ControlMode.PercentOutput, speed);
     }
 
     public void stop(){
-        motor.set(0);
+        motor.set(ControlMode.PercentOutput, 0);
     }
 
     public void resetEncoder(){
         if (Robot.isSimulation()) {
             sim.reset();
         } else {
-            encoder.setPosition(0);
+            motor.setSelectedSensorPosition(0);
         }
     }
 
@@ -59,7 +59,7 @@ public class ElevatorSystem extends SubsystemBase {
         if (Robot.isSimulation()) {
             return sim.getLimitSwitch();
         } else {
-            return digitalInput.get();
+            return !digitalInput.get();
         }
     }
 
@@ -67,9 +67,10 @@ public class ElevatorSystem extends SubsystemBase {
         if (Robot.isSimulation()) {
             return sim.getHeightMeters();
         } else {
-            return(encoder.getPosition()
-                    *Constants.GEAR_RATIO_ELEVATOR
-                    *(Math.PI*Constants.RADIUS_ELEVATOR_M*2));
+            return motor.getSelectedSensorPosition() * Constants.ELEVATOR_MM_PER_PULSE;
+            // (encoder.getPosition()
+                    // *Constants.GEAR_RATIO_ELEVATOR
+                    // *(Math.PI*Constants.RADIUS_ELEVATOR_M*2));
         }
     }
 
@@ -79,8 +80,8 @@ public class ElevatorSystem extends SubsystemBase {
         SmartDashboard.putBoolean("Elevator.Limit", getLimitSwitch());
     }
 
-    @Override
+    /*@Override
     public void simulationPeriodic() {
         sim.update(motor.get(), 0.02);
-    }
+    }*/
 }

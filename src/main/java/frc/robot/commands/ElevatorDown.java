@@ -26,12 +26,11 @@ public class ElevatorDown extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    elevator.resetEncoder();
     elevator.stop();
   }
 
   @Override
   public boolean isFinished() {
-    return elevator.getLimitSwitch();
+    return false;//elevator.getLimitSwitch();
   }
 }

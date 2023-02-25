@@ -5,16 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
-import frc.robot.subsystems.ElevatorSystem;
+import frc.robot.subsystems.CollectorSystem;
 
-public class ElevatorUp extends CommandBase {
-
-  public ElevatorSystem elevator;
+public class CloseGripper extends CommandBase {
   
-  public ElevatorUp(ElevatorSystem elevator) {
-    this.elevator = elevator;
-    addRequirements(elevator);
+  CollectorSystem collectorSystem;
+
+  public CloseGripper(CollectorSystem collectorSystem) {
+    this.collectorSystem = collectorSystem;
+    addRequirements(collectorSystem);
   }
 
   @Override
@@ -22,14 +21,12 @@ public class ElevatorUp extends CommandBase {
 
   @Override
   public void execute() {
-    if(!elevator.getLimitSwitch()){
-      elevator.elevatorUp();
-    }
+    collectorSystem.close();
   }
 
   @Override
   public void end(boolean interrupted) {
-    elevator.stop();
+    collectorSystem.stop();
   }
 
   @Override

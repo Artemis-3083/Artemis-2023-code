@@ -1,37 +1,41 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-/*
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CollectorSystem;
 
-public class ReleaseGamePiece extends CommandBase {
-  
-  CollectorSystem collectorSystem;
 
-  public ReleaseGamePiece(CollectorSystem collectorSystem) {
-    this.collectorSystem = collectorSystem;
-    addRequirements(collectorSystem);
+public class OpenGripper extends CommandBase {
+  
+  CollectorSystem collector;
+  
+  public OpenGripper(CollectorSystem collector) {
+    this.collector = collector;
+    addRequirements(collector);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    collectorSystem.release();
+    collector.open();
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    collectorSystem.stopSpin();
+    collector.stop();
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
-*/

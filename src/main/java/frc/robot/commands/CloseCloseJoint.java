@@ -7,15 +7,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class CloseArm extends CommandBase {
+public class CloseCloseJoint extends CommandBase {
   
   ArmSubsystem armSubsystem;
 
-  public CloseArm(ArmSubsystem armSubsystem) {
+  public CloseCloseJoint(ArmSubsystem armSubsystem) {
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
@@ -23,9 +24,7 @@ public class CloseArm extends CommandBase {
   @Override
   public void execute() {
     if(!armSubsystem.getCloseSwitch()){
-      armSubsystem.moveCloseJoint(-0.3);
-    }if(!armSubsystem.getFarSwitch()){
-      armSubsystem.moveFarJoint(-0.3);
+      armSubsystem.moveCloseJoint(-0.1);
     }
   }
 
@@ -33,7 +32,6 @@ public class CloseArm extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     armSubsystem.stopCloseJoint();
-    armSubsystem.stopFarJoint();
   }
 
   // Returns true when the command should end.
