@@ -24,6 +24,7 @@ public class DriveCommand extends CommandBase {
 
   @Override
   public void execute() {
+    //driveSystem.tankDrive(controller.getRightX(), controller.getLeftX());
     driveSystem.drive(controller.getR2Axis(), controller.getL2Axis(), controller.getRightX());
   }
 

@@ -5,16 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.GripperSystem;
+import frc.robot.subsystems.ArmSubsystem;
 
+public class ResetFarJoint extends CommandBase {
+  
+  ArmSubsystem armSubsystem;
 
-public class OpenGripper extends CommandBase {
-  
-  GripperSystem gripperSystem;
-  
-  public OpenGripper(GripperSystem gripperSystem) {
-    this.gripperSystem = gripperSystem;
-    addRequirements(gripperSystem);
+  public ResetFarJoint(ArmSubsystem armSubsystem) {
+    this.armSubsystem = armSubsystem;
+    addRequirements(armSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -24,20 +23,22 @@ public class OpenGripper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(gripperSystem.getEncoder() < 0.99){
-      gripperSystem.move(0.75);
-    // }
+    /*if(armSubsystem.getCloseSwitch()){
+      armSubsystem.moveCloseJoint(-0.1);*///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    if(!armSubsystem.getFarSwitch()){
+      armSubsystem.moveFarJoint(-0.1);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    gripperSystem.stop();
+    armSubsystem.stopFarJoint();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return armSubsystem.getFarSwitch();
   }
 }

@@ -23,7 +23,7 @@ public class ElevatorUp extends CommandBase {
   @Override
   public void execute() {
     if(!elevator.getLimitSwitch()){
-      elevator.elevatorUp();
+      elevator.move(0.4);
     }
   }
 

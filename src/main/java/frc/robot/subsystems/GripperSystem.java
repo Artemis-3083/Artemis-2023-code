@@ -18,7 +18,8 @@ public class GripperSystem extends SubsystemBase {
 
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
-    motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+    motor.setInverted(true);
+    //resetEncoder();
   }
 
   public void move(double speed){
@@ -36,12 +37,19 @@ public class GripperSystem extends SubsystemBase {
     motor.set(0);
   }
   
-  public double getEncoder(){
+  public double getEncoder(){ 
     return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
+  }
+
+  public void resetEncoder(){
+    motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
   }
 
   @Override
   public void periodic() {
-      SmartDashboard.putNumber("Gripper encoder", getEncoder());
+    if(getEncoder() > 1.5){
+      resetEncoder();
+    }
+    SmartDashboard.putNumber("Gripper encoder", getEncoder());
   }
 }

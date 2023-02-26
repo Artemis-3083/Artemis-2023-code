@@ -21,7 +21,7 @@ public class ElevatorDown extends CommandBase {
 
   @Override
   public void execute() {
-    elevator.elevatorDown();
+    elevator.move(-0.4);
   }
 
   @Override

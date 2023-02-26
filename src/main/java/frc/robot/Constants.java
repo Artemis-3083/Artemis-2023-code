@@ -16,6 +16,7 @@ public final class Constants {
     public static final double ARM_FAR_WHEEL_CIRCUMEFERENCE_M = 1;
     public static final double ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M = 1;
     public static final double FAR_JOINT_ANGLE_PER_PULSE = 238.1 / 141.854;
+    public static final double CLOSE_JOINT_ANGLE_PER_PULSE = 180.0 / 118866;
 
     //ELEVATOR
     public static final double ELEVATOR_WHEEL_CIRCUMEFERENCE_M = 1.432 * 25.4 / 1000 * 2 * Math.PI;
@@ -23,7 +24,8 @@ public final class Constants {
     public static final double RADIUS_ELEVATOR_M = 1;
     public static final double ELEVATOR_HEIGHT_M = 1;
     public static final double ELEVATOR_MM_PER_PULSE = 586.0 / 477359; //const for 1 elevator mm/pulse
-
+//119961
+//
     //DRIVE
     public static final double DRIVE_GEAR_RATIO = 1/6;
     public static final double DRIVE_WHEEL_CIRCUMEFERENCE_M = 1;

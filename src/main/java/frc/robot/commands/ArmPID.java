@@ -5,16 +5,14 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.GripperSystem;
+import frc.robot.subsystems.ArmSubsystem;
 
-
-public class OpenGripper extends CommandBase {
+public class ArmPID extends CommandBase {
   
-  GripperSystem gripperSystem;
+  ArmSubsystem armSubsystem;
   
-  public OpenGripper(GripperSystem gripperSystem) {
-    this.gripperSystem = gripperSystem;
-    addRequirements(gripperSystem);
+  public ArmPID() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
@@ -23,17 +21,11 @@ public class OpenGripper extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    // if(gripperSystem.getEncoder() < 0.99){
-      gripperSystem.move(0.75);
-    // }
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    gripperSystem.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

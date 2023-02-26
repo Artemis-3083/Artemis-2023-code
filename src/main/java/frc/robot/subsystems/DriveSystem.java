@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.TurnToTag;
 
 public class DriveSystem extends SubsystemBase {
 
@@ -22,16 +24,15 @@ public class DriveSystem extends SubsystemBase {
   private AHRS navie;
   
   public DriveSystem() {
-
     talonLF = new WPI_TalonFX(4);
-    talonLR = new WPI_TalonFX(3);
+    talonLR = new WPI_TalonFX(3); 
     talonRR = new WPI_TalonFX(1);
     talonRF = new WPI_TalonFX(2);
 
-    talonLF.setInverted(false);
-    talonLR.setInverted(false);
-    talonRF.setInverted(true);
-    talonRR.setInverted(true);
+    talonLF.setInverted(true);
+    talonLR.setInverted(true);
+    talonRF.setInverted(false);
+    talonRR.setInverted(false);
 
     navie = new AHRS(SPI.Port.kMXP);
 
@@ -54,15 +55,15 @@ public class DriveSystem extends SubsystemBase {
       talonRF.set(-L2 * 0.5 + turn * 0.5);
     }else{
       if(turn > 0.05){
-        talonLF.set(-turn);
-        talonLR.set(-turn);
-        talonRR.set(turn);
-        talonRF.set(turn);
+        talonLF.set(turn);
+        talonLR.set(turn);
+        talonRR.set(-turn);
+        talonRF.set(-turn);
       }else if(turn < - 0.05){
-        talonLF.set(-turn);
-        talonLR.set(-turn);
-        talonRR.set(turn);
-        talonRF.set(turn);
+        talonLF.set(turn);
+        talonLR.set(turn);
+        talonRR.set(-turn);
+        talonRF.set(-turn);
       }else{
         talonLF.set(0);
         talonLR.set(0);
@@ -70,6 +71,13 @@ public class DriveSystem extends SubsystemBase {
         talonRF.set(0);
       }
     }
+  }
+
+  public void tankDrive(double right, double left){
+    talonLF.set(left);
+    talonLR.set(left);
+    talonRR.set(right);
+    talonRF.set(right);
   }
 
   public void stop(){

@@ -7,33 +7,31 @@ package frc.robot.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ElevatorSystem;
+import frc.robot.subsystems.GripperSystem;
 
-public class SetElevatorHeight extends CommandBase {
-  private static final double KP = 0.1;
+public class GripperPID extends CommandBase {
+
+  
+  private static final double KP = 0.3;
   private static final double KI = 0;
-  private static final double KD = 0.0;
+  private static final double KD = 0.4;
   private static final double PERIOD_SEC = 0.02;
   private static final double TIME_STABILIZED_SEC = 1;
 
-  private final PIDController controller;
+  private final PIDController pidController;
 
-  public ElevatorSystem elevator;
-  public double height;
   private double atSetpointStartTime;
+  
+  private final double goal;
+  private GripperSystem gripperSystem;
 
-  /** Creates a new SetElevatorHeight. */
-  public SetElevatorHeight(double height,ElevatorSystem elevator) {
-    controller = new PIDController(KP, KI, KD, PERIOD_SEC);
-    controller.setTolerance(0.01);
-
-    this.elevator=elevator;
-    this.height=height;
-    addRequirements(elevator);
-
-    SmartDashboard.putData("SetElevatorHeight.PID", controller);
+  public GripperPID(double goal, GripperSystem gripperSystem) {
+    this.goal = goal;
+    this.gripperSystem = gripperSystem;
+    pidController = new PIDController(KP, KI, KD, PERIOD_SEC);
+    pidController.setTolerance(0.01);
+    addRequirements(gripperSystem);
   }
 
   // Called when the command is initially scheduled.
@@ -45,31 +43,34 @@ public class SetElevatorHeight extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double processVariable = elevator.getHeight();
-    double output = controller.calculate(processVariable, height);
-    output = MathUtil.clamp(output, -1, 1);
-    elevator.move(output);
+    double output = pidController.calculate(gripperSystem.getEncoder(), goal);
+    if (gripperSystem.getEncoder() > 0){
+      output = MathUtil.clamp(output, 0.5, 1);
+    }else{
+      output = MathUtil.clamp(output, -1, -0.5);
+    }
+    gripperSystem.move(output);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevator.stop();
+    gripperSystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (controller.atSetpoint()) {
-      if (atSetpointStartTime <= 0) {
+    if(pidController.atSetpoint()){
+      if(atSetpointStartTime <= 0){
         atSetpointStartTime = RobotController.getFPGATime();
-      } else {
+      }else{
         return RobotController.getFPGATime() - atSetpointStartTime >= TIME_STABILIZED_SEC * 10e6;
       }
-    } else {
+    }else{
       atSetpointStartTime = -1;
     }
-
     return false;
+    //return gripperSystem.getEncoder() > goal - 5 && gripperSystem.getEncoder() < goal + 5;
   }
 }

@@ -4,15 +4,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
 
-
-public class OpenGripper extends CommandBase {
+public class GripperToDistance extends CommandBase {
   
   GripperSystem gripperSystem;
-  
-  public OpenGripper(GripperSystem gripperSystem) {
+  double goal;
+
+  public GripperToDistance(double goal, GripperSystem gripperSystem) {
+    this.goal = goal;
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
   }
@@ -24,20 +26,24 @@ public class OpenGripper extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if(gripperSystem.getEncoder() < 0.99){
-      gripperSystem.move(0.75);
-    // }
+    SmartDashboard.putBoolean("grip < goal?", gripperSystem.getEncoder() < goal);
+    SmartDashboard.putBoolean("grip > goal?", gripperSystem.getEncoder() > goal);
+    if(gripperSystem.getEncoder() > goal - 0.2 && gripperSystem.getEncoder() < goal + 0.2){
+      if(gripperSystem.getEncoder() < goal){
+        gripperSystem.move(0.3);
+      }else if(gripperSystem.getEncoder() > goal){
+        gripperSystem.move(-0.3);
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    gripperSystem.stop();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return gripperSystem.getEncoder() > goal - 0.2 && gripperSystem.getEncoder() < goal + 0.2;
   }
 }

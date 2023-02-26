@@ -54,7 +54,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public double getCloseJoint() {
-    return closeJoint.getSelectedSensorPosition();// * Constants.ARM_ANGLE_PER_PULSE;// / Constants.SPARK_MAX_PPR / Constants.ARM_CLOSE_MOTOR_GEAR_RATIO * Constants.ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M;
+    return closeJoint.getSelectedSensorPosition() * Constants.CLOSE_JOINT_ANGLE_PER_PULSE;// * Constants.ARM_ANGLE_PER_PULSE;// / Constants.SPARK_MAX_PPR / Constants.ARM_CLOSE_MOTOR_GEAR_RATIO * Constants.ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M;
   }
   
   public double getFarJoint() {
@@ -70,7 +70,11 @@ public class ArmSubsystem extends SubsystemBase {
   } 
 
   public void moveFarJoint(double speed) {
-    farJoint.set(speed);
+    if(!getFarSwitch()){
+      farJoint.set(speed);
+    }else{
+      stopFarJoint();
+    }
   }
  
   public double distance(double disstance,double hight) { //??????
@@ -83,6 +87,7 @@ public class ArmSubsystem extends SubsystemBase {
       resetCLose();
     }if(getFarSwitch()){
       resetFar();
+      stopFarJoint();
     }
   }
 }
