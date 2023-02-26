@@ -21,14 +21,11 @@ public class FarJointPID extends CommandBase {
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
     this.goal = goal;
-    pidController = new PIDController(1, 0, 0.01);
-    pidController.setTolerance(2);
+    pidController = new PIDController(0.15, 0, 0);
   }
 
   @Override
-  public void initialize() {
-    SmartDashboard.putString("Are we here?", "yep");
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override

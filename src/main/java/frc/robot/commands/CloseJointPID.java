@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
@@ -21,7 +20,7 @@ public class CloseJointPID extends CommandBase {
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
     this.goal = goal;
-    pidController = new PIDController(1, 0, 0.01);
+    pidController = new PIDController(0.175, 0, 0.01);
     pidController.setTolerance(2);
   }
 

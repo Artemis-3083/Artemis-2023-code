@@ -85,6 +85,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
     if(getCloseSwitch()){
       resetCLose();
+      stopCloseJoint();
     }if(getFarSwitch()){
       resetFar();
       stopFarJoint();

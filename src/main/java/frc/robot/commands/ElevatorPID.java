@@ -8,7 +8,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSystem;
 
 public class ElevatorPID extends CommandBase {
@@ -22,8 +21,7 @@ public class ElevatorPID extends CommandBase {
     this.elevatorSystem = elevatorSystem;
     addRequirements(elevatorSystem);
     this.goal = goal;
-    pidController = new PIDController(1, 0, 0);
-    pidController.setTolerance(2);
+    pidController = new PIDController(0.175, 0 ,0);
   }
 
   @Override
@@ -39,6 +37,7 @@ public class ElevatorPID extends CommandBase {
       calcuation = MathUtil.clamp(calcuation, 0, 0.1);
     }
     elevatorSystem.move(calcuation);
+    SmartDashboard.putNumber("Elevator PID calcuation", calcuation);
   }
 
   // Called once the command ends or is interrupted.

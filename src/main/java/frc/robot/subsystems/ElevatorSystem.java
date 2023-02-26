@@ -12,13 +12,12 @@ import frc.robot.sim.ElevatorSystemSim;
 
 public class ElevatorSystem extends SubsystemBase {
     
-    TalonFX  motor;
+    TalonFX motor;
     DigitalInput digitalInput;
-    static final int speed = 1;
     private final ElevatorSystemSim sim;
 
     public ElevatorSystem(){
-        digitalInput = new DigitalInput(0);
+        digitalInput = new DigitalInput(1);
         motor = new TalonFX(5);
 
         if (Robot.isSimulation()) {
@@ -28,15 +27,8 @@ public class ElevatorSystem extends SubsystemBase {
         }
     }
 
-    public void elevatorUp(){
-        motor.set(ControlMode.PercentOutput, speed);
-    }
 
-    public void elevatorDown(){
-        motor.set(ControlMode.PercentOutput, -speed);
-    }
-
-    public void elevatorSetSpeed(double speed){
+    public void move(double speed){
         motor.set(ControlMode.PercentOutput, speed);
     }
 
@@ -73,6 +65,10 @@ public class ElevatorSystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if(getLimitSwitch()){
+            resetEncoder();
+            stop();
+        }
         SmartDashboard.putNumber("Elevator.Height", getHeight());
         SmartDashboard.putBoolean("Elevator.Limit", getLimitSwitch());
     }

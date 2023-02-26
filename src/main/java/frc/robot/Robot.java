@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ArmPID;
 import frc.robot.commands.Balance;
 import frc.robot.commands.CloseArm;
 import frc.robot.commands.CloseCloseJoint;
@@ -48,6 +49,7 @@ import frc.robot.commands.OpenArm;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
+import frc.robot.commands.ResetArm;
 import frc.robot.commands.ResetCloseJoint;
 import frc.robot.commands.ResetFarJoint;
 import frc.robot.commands.ResetElevator;
@@ -97,8 +99,8 @@ public class Robot extends TimedRobot {
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
     //elevatorSystem.setDefaultCommand(new SetElevatorHeight(20, elevatorSystem));
-    // new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
-    // new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
+    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
+    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));*/
@@ -136,6 +138,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getTagDistance(), visionSystem.getTagHight(), visionSystem.getTagAngle()));
 
   }
+  /*
+   * robotinit - eipus 332
+   * button - hail
+   * bitton - floor
+   * button - eipus 332
+   */
 
   @Override
   public void disabledInit() {}
@@ -146,19 +154,22 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     //Command farJoint = new ResetFarJoint(armSystem).andThen(new FarJointPID(5, armSystem));
-    Command closeJoint = new ResetCloseJoint(armSystem).andThen(new CloseJointPID(10, armSystem));
+    //Command closeJoint = new ResetCloseJoint(armSystem).andThen(new CloseJointPID(10, armSystem));
+
+
     Command elevator = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
-    closeJoint.andThen(farjoint()).alongWith(elevator).schedule();
+    Command allPID = new ResetArm(armSystem).andThen(new ArmPID(90, 120, armSystem)).alongWith(elevator);
+    allPID.schedule();
+    // elevator.schedule();
+
+
+    //closeJoint.andThen(farjoint()).alongWith(elevator).schedule();
     //new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem)).schedule();
     //arm.alongWith(elevator).schedule();
     //new DriveForward(driveSystem).withTimeout(1).andThen(new Balance(driveSystem)).schedule();
     /*if (autoCommand != null) {
       autoCommand.schedule();
     }*/
-  }
-
-  public Command farjoint(){
-    return new ResetFarJoint(armSystem).andThen(new FarJointPID(5, armSystem));
   }
 
   @Override
