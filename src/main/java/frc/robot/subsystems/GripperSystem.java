@@ -23,13 +23,6 @@ public class GripperSystem extends SubsystemBase {
   }
 
   public void move(double speed){
-    if(speed < 0.5 && speed > -0.5){
-      if(speed > 0){
-        motor.set(0.5);
-      }else{
-        motor.set(-0.5);
-      }
-    }
     motor.set(speed);
   }
 
@@ -47,8 +40,8 @@ public class GripperSystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if(getEncoder() > 1.5){
-      resetEncoder();
+    if(getEncoder() > 1.2){
+      stop();
     }
     SmartDashboard.putNumber("Gripper encoder", getEncoder());
   }

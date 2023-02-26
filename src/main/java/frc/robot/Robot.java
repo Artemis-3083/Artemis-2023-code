@@ -5,7 +5,6 @@
 package frc.robot;
 
 import org.photonvision.PhotonCamera;
-import org.photonvision.RobotPoseEstimator;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -44,7 +43,6 @@ import frc.robot.commands.ElevatorPID;
 import frc.robot.commands.ElevatorUp;
 import frc.robot.commands.FarJointPID;
 import frc.robot.commands.GripperPID;
-import frc.robot.commands.GripperToDistance;
 import frc.robot.commands.OpenArm;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
@@ -52,6 +50,7 @@ import frc.robot.commands.OpenGripper;
 import frc.robot.commands.ResetArm;
 import frc.robot.commands.ResetCloseJoint;
 import frc.robot.commands.ResetFarJoint;
+import frc.robot.commands.ResetGripper;
 import frc.robot.commands.ResetElevator;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
@@ -77,6 +76,9 @@ public class Robot extends TimedRobot {
   PS4Controller driveController;
   PS4Controller controller;
   VisionSystem visionSystem;
+  Command resetCommand;
+  Command strightenArm;
+  Command lowerArm;
 
   /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
   MechanismObject2d elevator2d;
@@ -96,11 +98,22 @@ public class Robot extends TimedRobot {
     visionSystem = new VisionSystem();
     driveController = new PS4Controller(0);
 
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
+    strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
 
+    new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
+    new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
+    new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
+    //new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue();
+    // driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
     //elevatorSystem.setDefaultCommand(new SetElevatorHeight(20, elevatorSystem));
-    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
-    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
+    new POVButton(controller, 0).whileTrue(new GripperPID(1, gripperSystem));
+    new POVButton(controller, 180).whileTrue(new GripperPID(0, gripperSystem));
+    new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
+    new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
+
+    new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));*/
@@ -120,6 +133,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("elevator", mechanism2d);*/
 
     //driveSystem.setDefaultCommand(new DriveUntilDistanceFromTag(0.6, driveSystem, visionSystem));
+    resetCommand.schedule();
   }
  
   @Override
@@ -141,7 +155,7 @@ public class Robot extends TimedRobot {
   /*
    * robotinit - eipus 332
    * button - hail
-   * bitton - floor
+   * button - floor
    * button - eipus 332
    */
 

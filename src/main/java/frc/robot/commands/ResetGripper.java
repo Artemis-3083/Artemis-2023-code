@@ -4,17 +4,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
 
-public class GripperToDistance extends CommandBase {
+public class ResetGripper extends CommandBase {
   
   GripperSystem gripperSystem;
-  double goal;
 
-  public GripperToDistance(double goal, GripperSystem gripperSystem) {
-    this.goal = goal;
+  public ResetGripper(GripperSystem gripperSystem) {
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
   }
@@ -26,15 +23,7 @@ public class GripperToDistance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("grip < goal?", gripperSystem.getEncoder() < goal);
-    SmartDashboard.putBoolean("grip > goal?", gripperSystem.getEncoder() > goal);
-    if(gripperSystem.getEncoder() > goal - 0.2 && gripperSystem.getEncoder() < goal + 0.2){
-      if(gripperSystem.getEncoder() < goal){
-        gripperSystem.move(0.3);
-      }else if(gripperSystem.getEncoder() > goal){
-        gripperSystem.move(-0.3);
-      }
-    }
+    gripperSystem.resetEncoder();
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +33,6 @@ public class GripperToDistance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return gripperSystem.getEncoder() > goal - 0.2 && gripperSystem.getEncoder() < goal + 0.2;
+    return true;
   }
 }

@@ -6,50 +6,38 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.GripperSystem;
 
 public class GripperPID extends CommandBase {
-
   
-  private static final double KP = 0.3;
-  private static final double KI = 0;
-  private static final double KD = 0.4;
-  private static final double PERIOD_SEC = 0.02;
-  private static final double TIME_STABILIZED_SEC = 1;
-
-  private final PIDController pidController;
-
-  private double atSetpointStartTime;
-  
-  private final double goal;
-  private GripperSystem gripperSystem;
+  PIDController pidController;
+  GripperSystem gripperSystem;
+  double goal;
+  double calcuation;
 
   public GripperPID(double goal, GripperSystem gripperSystem) {
-    this.goal = goal;
     this.gripperSystem = gripperSystem;
-    pidController = new PIDController(KP, KI, KD, PERIOD_SEC);
-    pidController.setTolerance(0.01);
     addRequirements(gripperSystem);
+    this.goal = goal;
+    pidController = new PIDController(1, 0 ,0);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    atSetpointStartTime = -1;
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double output = pidController.calculate(gripperSystem.getEncoder(), goal);
-    if (gripperSystem.getEncoder() > 0){
-      output = MathUtil.clamp(output, 0.5, 1);
-    }else{
-      output = MathUtil.clamp(output, -1, -0.5);
+    calcuation = pidController.calculate(gripperSystem.getEncoder(), goal);
+    if(calcuation < 0){
+      calcuation = MathUtil.clamp(calcuation, -0.3, 0);
+    }else if(calcuation > 0){
+      calcuation = MathUtil.clamp(calcuation, 0, 0.3);
     }
-    gripperSystem.move(output);
+    gripperSystem.move(calcuation);
   }
 
   // Called once the command ends or is interrupted.
@@ -62,15 +50,8 @@ public class GripperPID extends CommandBase {
   @Override
   public boolean isFinished() {
     if(pidController.atSetpoint()){
-      if(atSetpointStartTime <= 0){
-        atSetpointStartTime = RobotController.getFPGATime();
-      }else{
-        return RobotController.getFPGATime() - atSetpointStartTime >= TIME_STABILIZED_SEC * 10e6;
-      }
-    }else{
-      atSetpointStartTime = -1;
+      return true;  
     }
     return false;
-    //return gripperSystem.getEncoder() > goal - 5 && gripperSystem.getEncoder() < goal + 5;
   }
 }
