@@ -49,9 +49,9 @@ public class GripperPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(pidController.atSetpoint()){
+    /*if(pidController.atSetpoint()){
       return true;  
-    }
+    }*/
     return false;
   }
 }

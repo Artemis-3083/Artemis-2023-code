@@ -30,6 +30,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AllPID;
 import frc.robot.commands.ArmPID;
 import frc.robot.commands.Balance;
 import frc.robot.commands.CloseArm;
@@ -98,15 +99,19 @@ public class Robot extends TimedRobot {
     visionSystem = new VisionSystem();
     driveController = new PS4Controller(0);
 
-    resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
-    strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
+    // resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
+    // strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    // lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
+
+    strightenArm = new AllPID(armSystem, elevatorSystem, 90, 120, -10);
+    resetCommand = new AllPID(armSystem, elevatorSystem, 0, 0, 0).andThen(new AllPID(armSystem, elevatorSystem, 3, 3, 2));
+    lowerArm = new AllPID(armSystem, elevatorSystem, 9.892, 62.542, -178.895);
 
     new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
     //new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue();
-    // driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
     //elevatorSystem.setDefaultCommand(new SetElevatorHeight(20, elevatorSystem));
     new POVButton(controller, 0).whileTrue(new GripperPID(1, gripperSystem));
     new POVButton(controller, 180).whileTrue(new GripperPID(0, gripperSystem));

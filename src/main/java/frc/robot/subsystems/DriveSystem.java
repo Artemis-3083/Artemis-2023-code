@@ -44,26 +44,26 @@ public class DriveSystem extends SubsystemBase {
     L2 = Math.min(1, Math.max(0, L2));
     
     if (R2 > 0){
-      talonLF.set(R2 * 0.5 - turn * 0.5);
-      talonLR.set(R2 * 0.5 - turn * 0.5);
-      talonRR.set(R2 * 0.5 + turn * 0.5);
-      talonRF.set(R2 * 0.5 + turn * 0.5);
+      talonLF.set(ControlMode.PercentOutput, R2 * 0.5 - turn * 0.5);
+      talonLR.set(ControlMode.PercentOutput, R2 * 0.5 - turn * 0.5);
+      talonRR.set(ControlMode.PercentOutput, R2 * 0.5 + turn * 0.5);
+      talonRF.set(ControlMode.PercentOutput, R2 * 0.5 + turn * 0.5);
     }else if (L2 > 0){
-      talonLF.set(-L2 * 0.5 - turn * 0.5);
-      talonLR.set(-L2 * 0.5 - turn * 0.5);
-      talonRR.set(-L2 * 0.5 + turn * 0.5);
-      talonRF.set(-L2 * 0.5 + turn * 0.5);
+      talonLF.set(ControlMode.PercentOutput, -L2 * 0.5 - turn * 0.5);
+      talonLR.set(ControlMode.PercentOutput, -L2 * 0.5 - turn * 0.5);
+      talonRR.set(ControlMode.PercentOutput, -L2 * 0.5 + turn * 0.5);
+      talonRF.set(ControlMode.PercentOutput, -L2 * 0.5 + turn * 0.5);
     }else{
       if(turn > 0.05){
-        talonLF.set(turn);
-        talonLR.set(turn);
-        talonRR.set(-turn);
-        talonRF.set(-turn);
+        talonLF.set(ControlMode.PercentOutput, turn);
+        talonLR.set(ControlMode.PercentOutput, turn);
+        talonRR.set(ControlMode.PercentOutput, -turn);
+        talonRF.set(ControlMode.PercentOutput, -turn);
       }else if(turn < - 0.05){
-        talonLF.set(turn);
-        talonLR.set(turn);
-        talonRR.set(-turn);
-        talonRF.set(-turn);
+        talonLF.set(ControlMode.PercentOutput, turn);
+        talonLR.set(ControlMode.PercentOutput, turn);
+        talonRR.set(ControlMode.PercentOutput, -turn);
+        talonRF.set(ControlMode.PercentOutput, -turn);
       }else{
         talonLF.set(0);
         talonLR.set(0);
@@ -74,17 +74,17 @@ public class DriveSystem extends SubsystemBase {
   }
 
   public void tankDrive(double right, double left){
-    talonLF.set(left);
-    talonLR.set(left);
-    talonRR.set(right);
-    talonRF.set(right);
+    talonLF.set(ControlMode.PercentOutput, left);
+    talonLR.set(ControlMode.PercentOutput, left);
+    talonRR.set(ControlMode.PercentOutput, right);
+    talonRF.set(ControlMode.PercentOutput, right);
   }
 
   public void stop(){
-    talonLF.set(0);
-    talonLR.set(0);
-    talonRR.set(0);
-    talonRF.set(0);
+    talonLF.set(ControlMode.PercentOutput, 0);
+    talonLR.set(ControlMode.PercentOutput, 0);
+    talonRR.set(ControlMode.PercentOutput, 0);
+    talonRF.set(ControlMode.PercentOutput, 0);
   }
 
   public double getDistancePassedLeftM() {
