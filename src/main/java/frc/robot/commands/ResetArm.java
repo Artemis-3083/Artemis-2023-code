@@ -24,9 +24,9 @@ public class ResetArm extends CommandBase {
   @Override
   public void execute() {
     if(!armSubsystem.getCloseSwitch()){
-      armSubsystem.moveCloseJoint(-0.1);
+      armSubsystem.moveCloseJoint(-0.2);
     }if(!armSubsystem.getFarSwitch()){
-      armSubsystem.moveFarJoint(-0.1);
+      armSubsystem.moveFarJoint(-0.2);
     }
   }
 

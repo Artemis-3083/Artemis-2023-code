@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSystem;
 
@@ -24,7 +25,7 @@ public class ResetElevator extends CommandBase {
   @Override
   public void execute() {
     if(!elevatorSystem.getLimitSwitch()){
-      elevatorSystem.move(0.1);
+      elevatorSystem.move(0.4);
     }
   }
 
@@ -37,6 +38,7 @@ public class ResetElevator extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("finished elevator reset", elevatorSystem.getLimitSwitch());
     return elevatorSystem.getLimitSwitch();
   }
 }

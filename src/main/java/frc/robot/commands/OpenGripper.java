@@ -25,7 +25,7 @@ public class OpenGripper extends CommandBase {
   @Override
   public void execute() {
     // if(gripperSystem.getEncoder() < 0.99){
-      gripperSystem.move(0.75);
+      gripperSystem.move(1);
     // }
   }
 

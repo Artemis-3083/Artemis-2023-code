@@ -42,17 +42,19 @@ public class DriveSystem extends SubsystemBase {
   public void drive(double R2, double L2, double turn){
     R2 = Math.min(1, Math.max(0, R2));
     L2 = Math.min(1, Math.max(0, L2));
+
+    double maxSpeed = 0.25;
     
     if (R2 > 0){
-      talonLF.set(ControlMode.PercentOutput, R2 * 0.5 - turn * 0.5);
-      talonLR.set(ControlMode.PercentOutput, R2 * 0.5 - turn * 0.5);
-      talonRR.set(ControlMode.PercentOutput, R2 * 0.5 + turn * 0.5);
-      talonRF.set(ControlMode.PercentOutput, R2 * 0.5 + turn * 0.5);
+      talonLF.set(ControlMode.PercentOutput, R2 * maxSpeed - turn * maxSpeed);
+      talonLR.set(ControlMode.PercentOutput, R2 * maxSpeed - turn * maxSpeed);
+      talonRR.set(ControlMode.PercentOutput, R2 * maxSpeed + turn * maxSpeed);
+      talonRF.set(ControlMode.PercentOutput, R2 * maxSpeed + turn * maxSpeed);
     }else if (L2 > 0){
-      talonLF.set(ControlMode.PercentOutput, -L2 * 0.5 - turn * 0.5);
-      talonLR.set(ControlMode.PercentOutput, -L2 * 0.5 - turn * 0.5);
-      talonRR.set(ControlMode.PercentOutput, -L2 * 0.5 + turn * 0.5);
-      talonRF.set(ControlMode.PercentOutput, -L2 * 0.5 + turn * 0.5);
+      talonLF.set(ControlMode.PercentOutput, -L2 * maxSpeed - turn * maxSpeed);
+      talonLR.set(ControlMode.PercentOutput, -L2 * maxSpeed - turn * maxSpeed);
+      talonRR.set(ControlMode.PercentOutput, -L2 * maxSpeed + turn * maxSpeed);
+      talonRF.set(ControlMode.PercentOutput, -L2 * maxSpeed + turn * maxSpeed);
     }else{
       if(turn > 0.05){
         talonLF.set(ControlMode.PercentOutput, turn);

@@ -21,7 +21,7 @@ public class CloseGripper extends CommandBase {
 
   @Override
   public void execute() {
-    gripperSystem.move(-0.75);
+    gripperSystem.move(-1);
   }
 
   @Override

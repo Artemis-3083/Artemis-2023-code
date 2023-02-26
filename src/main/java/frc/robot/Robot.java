@@ -102,10 +102,12 @@ public class Robot extends TimedRobot {
     // resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
     // strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
     // lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
-
-    strightenArm = new AllPID(armSystem, elevatorSystem, 90, 120, -10);
-    resetCommand = new AllPID(armSystem, elevatorSystem, 0, 0, 0).andThen(new AllPID(armSystem, elevatorSystem, 3, 3, 2));
-    lowerArm = new AllPID(armSystem, elevatorSystem, 9.892, 62.542, -178.895);
+//
+//close 49684518701
+//far 
+    strightenArm = new AllPID(armSystem, elevatorSystem, 120.687, 144.635, -2);
+    resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem)).andThen(new AllPID(armSystem, elevatorSystem, 3, 3, -2));
+    lowerArm = new AllPID(armSystem, elevatorSystem, 13.659, 71.418, -200.06);
 
     new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
@@ -113,12 +115,12 @@ public class Robot extends TimedRobot {
     //new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue();
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
     //elevatorSystem.setDefaultCommand(new SetElevatorHeight(20, elevatorSystem));
-    new POVButton(controller, 0).whileTrue(new GripperPID(1, gripperSystem));
-    new POVButton(controller, 180).whileTrue(new GripperPID(0, gripperSystem));
+    new POVButton(controller, 0).whileTrue(new ElevatorDown(elevatorSystem));
+    new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
     new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
     new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
 
-    new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
+    //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
     new JoystickButton(driveController, PS4Controller.Button.kCircle.value).toggleOnTrue(new Balance(driveSystem));*/
