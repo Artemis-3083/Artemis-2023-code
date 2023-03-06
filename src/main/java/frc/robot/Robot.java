@@ -61,6 +61,7 @@ import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.SetFarJointAngle;
+import frc.robot.commands.Suck;
 import frc.robot.commands.TurnToTag;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
@@ -143,6 +144,7 @@ public class Robot extends TimedRobot {
     new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));*/
 
     new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
+    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Suck(gripperSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));

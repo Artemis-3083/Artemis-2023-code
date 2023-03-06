@@ -15,9 +15,11 @@ import frc.robot.Constants;
 public class GripperSystem extends SubsystemBase {
   
   private CANSparkMax motor;
+  private CANSparkMax motorWheels;
 
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
+    motorWheels = new CANSparkMax(8, MotorType.kBrushed);
     motor.setInverted(true);
     resetEncoder();
   }
@@ -26,8 +28,13 @@ public class GripperSystem extends SubsystemBase {
     motor.set(speed);
   }
 
+  public void moveWheels(double speed){
+    motorWheels.set(speed);
+  }
+
   public void stop(){
     motor.set(0);
+    motorWheels.set(0);
   }
   
   public double getEncoder(){ 
