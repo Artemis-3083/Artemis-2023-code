@@ -6,6 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class Suck extends CommandBase {
   
@@ -17,11 +19,16 @@ public class Suck extends CommandBase {
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+
+  }
 
   @Override
   public void execute() {
     gripperSystem.moveWheels(1);
+    SmartDashboard.putString("SUCK", "SUCKING!!!!!!");
+
   }
 
   @Override

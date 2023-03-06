@@ -19,7 +19,7 @@ public class GripperSystem extends SubsystemBase {
 
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
-    motorWheels = new CANSparkMax(8, MotorType.kBrushed);
+    motorWheels = new CANSparkMax(9, MotorType.kBrushless);
     motor.setInverted(true);
     resetEncoder();
   }
@@ -38,18 +38,19 @@ public class GripperSystem extends SubsystemBase {
   }
   
   public double getEncoder(){ 
-    return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
+    // return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
+    return 0;
   }
 
   public void resetEncoder(){
-    motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+    // motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
   }
 
   @Override
   public void periodic() {
-    if(getEncoder() > 10){
-      motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
-    }
-    SmartDashboard.putNumber("Gripper encoder", getEncoder());
+    // if(getEncoder() > 10){
+    //   motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+    // }
+    // SmartDashboard.putNumber("Gripper encoder", getEncoder());
   }
 }

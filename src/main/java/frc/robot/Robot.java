@@ -144,7 +144,7 @@ public class Robot extends TimedRobot {
     new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));*/
 
     new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
-    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Suck(gripperSystem));
+    new JoystickButton(controller, PS4Controller.Button.kSquare.value).whileTrue(new Suck(gripperSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
@@ -170,7 +170,7 @@ public class Robot extends TimedRobot {
  
   @Override
   public void robotPeriodic() {
-
+    new Suck(gripperSystem).schedule();
     SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
     SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
     SmartDashboard.putBoolean("close limit", armSystem.getCloseSwitch());
