@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
 
@@ -21,13 +22,14 @@ public class Balance extends CommandBase {
 
   @Override
   public void execute() {
+    SmartDashboard.putString("started balance", "yes");
     if(driveSystem.getPitch() > 0){
       driveSystem.drive(driveSystem.getPitch()*0.017, 0, 0);
-    }else{ //if (driveSystem.getPitch() < -4)
+    }else if (driveSystem.getPitch() < 0){
       driveSystem.drive(0, -driveSystem.getPitch()*0.017, 0);
     }
   }
-
+//bsbhtgnjrgthj
   @Override
   public void end(boolean interrupted) {
     driveSystem.stop();
@@ -35,6 +37,6 @@ public class Balance extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return -4 < driveSystem.getPitch() && driveSystem.getPitch() < 4;
+    return false;//-4 < driveSystem.getPitch() && driveSystem.getPitch() < 4;
   }
 }

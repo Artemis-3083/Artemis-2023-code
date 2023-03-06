@@ -33,9 +33,9 @@ public class GripperPID extends CommandBase {
   public void execute() {
     calcuation = pidController.calculate(gripperSystem.getEncoder(), goal);
     if(calcuation < 0){
-      calcuation = MathUtil.clamp(calcuation, -0.3, 0);
+      calcuation = MathUtil.clamp(calcuation, -1, 0);
     }else if(calcuation > 0){
-      calcuation = MathUtil.clamp(calcuation, 0, 0.3);
+      calcuation = MathUtil.clamp(calcuation, 0, 1);
     }
     gripperSystem.move(calcuation);
   }
@@ -49,9 +49,9 @@ public class GripperPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    /*if(pidController.atSetpoint()){
+    if(pidController.atSetpoint()){
       return true;  
-    }*/
+    }
     return false;
   }
 }

@@ -4,16 +4,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.DriveSystem;
 
-public class ResetArm extends CommandBase {
+public class DriveBackwards extends CommandBase {
   
-  ArmSubsystem armSubsystem;
+  DriveSystem driveSystem;
 
-  public ResetArm(ArmSubsystem armSubsystem) {
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+  public DriveBackwards(DriveSystem driveSystem) {
+    this.driveSystem = driveSystem;
+    addRequirements(driveSystem);
   }
 
   // Called when the command is initially scheduled.
@@ -23,23 +24,19 @@ public class ResetArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!armSubsystem.getFarSwitch()){
-      armSubsystem.moveFarJoint(-0.15);
-    }if(!armSubsystem.getCloseSwitch()){
-      armSubsystem.moveCloseJoint(-0.15);
-    }
-  } 
+    driveSystem.drive(0, 0.5, 0);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSubsystem.stopFarJoint();
-    armSubsystem.stopCloseJoint();
+    driveSystem.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return armSubsystem.getCloseSwitch() && armSubsystem.getFarSwitch();
+    SmartDashboard.putBoolean("is backward done?", driveSystem.getDistancePassedM() < 50000);
+    return driveSystem.getDistancePassedM() < 65000;
   }
 }

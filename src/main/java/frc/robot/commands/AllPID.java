@@ -16,7 +16,7 @@ public class AllPID extends CommandBase {
   ElevatorSystem elevatorSystem;
   PIDController closeController;
   PIDController farController;
-  PIDController elevatorController;
+  PIDController elevatorController; 
   double closeGoal;
   double farGoal;
   double elevatorGoal;
@@ -25,8 +25,8 @@ public class AllPID extends CommandBase {
   double elevatorCalcuation;
   
   public AllPID(ArmSubsystem armSubsystem, ElevatorSystem elevatorSystem, double closeGoal, double farGoal, double elevatorGoal) {
-    closeController = new PIDController(0.1, 0, 0);
-    farController = new PIDController(0.15, 0, 0);
+    closeController = new PIDController(0.09, 0, 0);
+    farController = new PIDController(0.13, 0, 0);
     elevatorController = new PIDController(0.1, 0, 0);
     this.elevatorSystem = elevatorSystem;
     this.armSubsystem = armSubsystem;
@@ -48,21 +48,21 @@ public class AllPID extends CommandBase {
     farCalcuation = farController.calculate(armSubsystem.getFarJoint(), farGoal);
 
     if(closeCalcuation < 0){
-      closeCalcuation = MathUtil.clamp(closeCalcuation, -0.2, 0);
+      closeCalcuation = MathUtil.clamp(closeCalcuation, -0.22, 0);
     }else if(closeCalcuation > 0){
-      closeCalcuation = MathUtil.clamp(closeCalcuation, 0, 0.2);
+      closeCalcuation = MathUtil.clamp(closeCalcuation, 0, 0.22);
     }
 
     if(farCalcuation < 0){
-      farCalcuation = MathUtil.clamp(farCalcuation, -0.2, 0);
+      farCalcuation = MathUtil.clamp(farCalcuation, -0.175, 0);
     }else if(farCalcuation > 0){
       farCalcuation = MathUtil.clamp(farCalcuation, 0, 0.2);
     }
 
     if(elevatorCalcuation < 0){
-      elevatorCalcuation = MathUtil.clamp(elevatorCalcuation, -0.4, 0);
+      elevatorCalcuation = MathUtil.clamp(elevatorCalcuation, -0.3, 0);
     }else if(elevatorCalcuation > 0){
-      elevatorCalcuation = MathUtil.clamp(elevatorCalcuation, 0, 0.4);
+      elevatorCalcuation = MathUtil.clamp(elevatorCalcuation, 0, 0.3);
     }
     
     // if(!elevatorController.atSetpoint()){

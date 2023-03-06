@@ -28,12 +28,12 @@ public final class Constants {
 //
     //DRIVE
     public static final double DRIVE_GEAR_RATIO = 1/6;
-    public static final double DRIVE_WHEEL_CIRCUMEFERENCE_M = 1;
+    public static final double DRIVE_WHEEL_CIRCUMEFERENCE_M = Math.PI * 0.1524;
 
-    //GRIPPPER 0.1169 0.121 0.117 0.123
+    //GRIPPPER
     public static final double GRIPPER_1_PER_PULSE = 1/0.12;
 
-    //LIMELIGHT
+    //LIMELIGHT //2PI * 0.1524
     public static final double REFLECTIVE_HIGH_HEIGHT_M = 1.12;
     public static final double REFLECTIVE_LOW_HEIGHT_M = 0.6;
     public static final double LIMELIGHT_HEIGHT_M = 1;

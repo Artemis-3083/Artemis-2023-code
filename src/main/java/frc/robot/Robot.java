@@ -12,6 +12,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -33,11 +34,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AllPID;
 import frc.robot.commands.ArmPID;
 import frc.robot.commands.Balance;
+import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.CloseArm;
 import frc.robot.commands.CloseCloseJoint;
 import frc.robot.commands.CloseFarJoint;
 import frc.robot.commands.CloseGripper;
 import frc.robot.commands.CloseJointPID;
+import frc.robot.commands.DriveBackwards;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorPID;
@@ -50,6 +53,7 @@ import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.ResetArm;
 import frc.robot.commands.ResetCloseJoint;
+import frc.robot.commands.ResetDriveEncoders;
 import frc.robot.commands.ResetFarJoint;
 import frc.robot.commands.ResetGripper;
 import frc.robot.commands.ResetElevator;
@@ -99,27 +103,46 @@ public class Robot extends TimedRobot {
     visionSystem = new VisionSystem();
     driveController = new PS4Controller(0);
 
-    // resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
-    // strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    // lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
+    resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
+    strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
 //
 //close 49684518701
 //far 
-    strightenArm = new AllPID(armSystem, elevatorSystem, 120.687, 144.635, -2);
+
+//close 123.91297763868558
+  //146.87359831778787
+  //
+    /*strightenArm = new AllPID(armSystem, elevatorSystem, 140, 146.873, -34.674);
     resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem)).andThen(new AllPID(armSystem, elevatorSystem, 3, 3, -2));
-    lowerArm = new AllPID(armSystem, elevatorSystem, 13.659, 71.418, -200.06);
+    lowerArm = new AllPID(armSystem, elevatorSystem, 18.659, 71.418, -150.06);
+
 
     new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
-    new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
+    new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);*/
+
+
     //new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue();
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
     //elevatorSystem.setDefaultCommand(new SetElevatorHeight(20, elevatorSystem));
-    new POVButton(controller, 0).whileTrue(new ElevatorDown(elevatorSystem));
-    new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
-    new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
+    // new POVButton(controller, 0).whileTrue(new ElevatorDown(elevatorSystem));
+    // new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
+
+
+    /*new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
     new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
 
+    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
+    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
+
+    new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new OpenCloseJoint(armSystem));
+    new JoystickButton(controller, PS4Controller.Button.kL2.value).whileTrue(new CloseCloseJoint(armSystem));
+
+    new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new OpenFarJoint(armSystem));
+    new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));*/
+
+    new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
@@ -140,7 +163,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("elevator", mechanism2d);*/
 
     //driveSystem.setDefaultCommand(new DriveUntilDistanceFromTag(0.6, driveSystem, visionSystem));
-    resetCommand.schedule();
+    // resetCommand.schedule();
   }
  
   @Override
@@ -152,6 +175,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("far limit", armSystem.getFarSwitch());
     SmartDashboard.putNumber("elevator hight", elevatorSystem.getHeight());
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
+    SmartDashboard.putNumber("drive encoders", driveSystem.getDistancePassedRightM());
     CommandScheduler.getInstance().run();
     //firstArm.setAngle(180 - arm.getCloseEncoderAngleDegrees());
     //secondArm.setAngle(180 - arm.getFarEncoderAngleDegrees());
@@ -180,10 +204,18 @@ public class Robot extends TimedRobot {
 
     Command elevator = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
     Command allPID = new ResetArm(armSystem).andThen(new ArmPID(90, 120, armSystem)).alongWith(elevator);
-    allPID.schedule();
-    // elevator.schedule();
+    
+    // new DriveForward(driveSystem).schedule();
 
-
+    //actual auto command
+    // resetCommand.withTimeout(3.5).andThen(new DriveForward(driveSystem)).andThen(new DriveBackwards(driveSystem)).andThen(new Balance(driveSystem)).schedule();
+    // new ResetDriveEncoders(driveSystem).schedule();
+    new ResetDriveEncoders(driveSystem).andThen(new DriveForward(driveSystem)).andThen(new DriveBackwards(driveSystem)).andThen(new Balance(driveSystem)).schedule();
+    
+    // new BalanceCommand(driveSystem).schedule();
+    // resetCommand.schedule();
+    // new DriveForward(driveSystem).schedule();
+    // new Balance(driveSystem).schedule();
     //closeJoint.andThen(farjoint()).alongWith(elevator).schedule();
     //new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem)).schedule();
     //arm.alongWith(elevator).schedule();

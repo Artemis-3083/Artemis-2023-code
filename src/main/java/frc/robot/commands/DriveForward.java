@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
 
@@ -23,7 +24,7 @@ public class DriveForward extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSystem.drive(1, 0, 0);
+    driveSystem.drive(0.5, 0, 0);
   }
 
   // Called once the command ends or is interrupted.
@@ -35,6 +36,6 @@ public class DriveForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return driveSystem.getDistancePassedM() > 150000;
   }
 }
