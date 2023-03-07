@@ -15,9 +15,11 @@ import frc.robot.Constants;
 public class GripperSystem extends SubsystemBase {
   
   private CANSparkMax motor;
+  private CANSparkMax motorWheels;
 
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
+    motorWheels = new CANSparkMax(9, MotorType.kBrushless);
     motor.setInverted(true);
     resetEncoder();
   }
@@ -26,23 +28,29 @@ public class GripperSystem extends SubsystemBase {
     motor.set(speed);
   }
 
+  public void moveWheels(double speed){
+    motorWheels.set(speed);
+  }
+
   public void stop(){
     motor.set(0);
+    motorWheels.set(0);
   }
   
   public double getEncoder(){ 
-    return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
+    // return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
+    return 0;
   }
 
   public void resetEncoder(){
-    motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+    // motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
   }
 
   @Override
   public void periodic() {
-    if(getEncoder() > 10){
-      motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
-    }
-    SmartDashboard.putNumber("Gripper encoder", getEncoder());
+    // if(getEncoder() > 10){
+    //   motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+    // }
+    // SmartDashboard.putNumber("Gripper encoder", getEncoder());
   }
 }

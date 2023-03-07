@@ -4,40 +4,38 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class OpenGripper extends CommandBase {
+public class Suck extends CommandBase {
   
   GripperSystem gripperSystem;
-  
-  public OpenGripper(GripperSystem gripperSystem) {
+
+  public Suck(GripperSystem gripperSystem) {
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    // if(gripperSystem.getEncoder() < 0.99){
-    SmartDashboard.putString("SuckOpen", "SUCKING!!!!!!");
-    gripperSystem.move(1);
-    // }
+
   }
 
-  // Called once the command ends or is interrupted.
+  @Override
+  public void execute() {
+    gripperSystem.moveWheels(-1);
+    SmartDashboard.putString("SUCK", "SUCKING!!!!!!");
+
+  }
+
   @Override
   public void end(boolean interrupted) {
     gripperSystem.stop();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
