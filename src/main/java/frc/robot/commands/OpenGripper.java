@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
 
@@ -25,7 +26,8 @@ public class OpenGripper extends CommandBase {
   @Override
   public void execute() {
     // if(gripperSystem.getEncoder() < 0.99){
-      gripperSystem.move(1);
+    SmartDashboard.putString("SuckOpen", "SUCKING!!!!!!");
+    gripperSystem.move(1);
     // }
   }
 

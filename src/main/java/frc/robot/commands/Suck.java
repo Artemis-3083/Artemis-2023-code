@@ -26,7 +26,7 @@ public class Suck extends CommandBase {
 
   @Override
   public void execute() {
-    gripperSystem.moveWheels(1);
+    gripperSystem.moveWheels(-1);
     SmartDashboard.putString("SUCK", "SUCKING!!!!!!");
 
   }

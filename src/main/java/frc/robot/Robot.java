@@ -133,18 +133,19 @@ public class Robot extends TimedRobot {
 
     /*new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
     new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
-
+    
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
-
+    
     new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new OpenCloseJoint(armSystem));
     new JoystickButton(controller, PS4Controller.Button.kL2.value).whileTrue(new CloseCloseJoint(armSystem));
-
+    
     new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new OpenFarJoint(armSystem));
     new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));*/
-
+    new JoystickButton(driveController,PS4Controller.Button.kTriangle.value).whileTrue(new CloseGripper(gripperSystem));
+    new JoystickButton(driveController,PS4Controller.Button.kCross.value).whileTrue(new OpenGripper(gripperSystem));
     new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
-    new JoystickButton(controller, PS4Controller.Button.kSquare.value).whileTrue(new Suck(gripperSystem));
+    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Suck(gripperSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
@@ -170,7 +171,6 @@ public class Robot extends TimedRobot {
  
   @Override
   public void robotPeriodic() {
-    new Suck(gripperSystem).schedule();
     SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
     SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
     SmartDashboard.putBoolean("close limit", armSystem.getCloseSwitch());
