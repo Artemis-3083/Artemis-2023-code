@@ -19,7 +19,7 @@ public class ElevatorSystem extends SubsystemBase {
     public ElevatorSystem(){
         digitalInput = new DigitalInput(1);
         motor = new TalonFX(5);
-
+        
         if (Robot.isSimulation()) {
             sim = new ElevatorSystemSim();
         } else {

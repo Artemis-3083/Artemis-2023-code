@@ -15,8 +15,10 @@ public final class Constants {
     public static final double ARM_CLOSE_MOTOR_GEAR_RATIO = 1/50;
     public static final double ARM_FAR_WHEEL_CIRCUMEFERENCE_M = 1;
     public static final double ARM_CLOSE_WHEEL_CIRCUMEFERENCE_M = 1;
-    public static final double FAR_JOINT_ANGLE_PER_PULSE = 238.1 / 141.854;
-    public static final double CLOSE_JOINT_ANGLE_PER_PULSE = 180.0 / 118866;
+    // public static final double FAR_JOINT_ANGLE_PER_PULSE = 238.1 / 141.854; //219.2 pulses //27.428
+    public static final double FAR_JOINT_ANGLE_PER_PULSE = 60.0 / 27.428;
+    // public static final double CLOSE_JOINT_ANGLE_PER_PULSE = 180.0 / 118866;
+    public static final double CLOSE_JOINT_ANGLE_PER_PULSE = 90.0 / 60855.0;
 
     //ELEVATOR
     public static final double ELEVATOR_WHEEL_CIRCUMEFERENCE_M = 1.432 * 25.4 / 1000 * 2 * Math.PI;

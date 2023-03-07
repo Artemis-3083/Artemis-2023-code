@@ -22,8 +22,8 @@ public class ArmPID extends CommandBase {
   public ArmPID(double closeGoal, double farGoal, ArmSubsystem armSubsystem) {
     this.farGoal = farGoal;
     this.closeGoal = closeGoal;
-    closeController = new PIDController(0.175, 0, 0);
-    farController = new PIDController(0.15, 0, 0);
+    closeController = new PIDController(0.08, 0, 0);
+    farController = new PIDController(0.125, 0, 0);
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
   }
@@ -37,13 +37,13 @@ public class ArmPID extends CommandBase {
     farCalcuation = farController.calculate(armSubsystem.getFarJoint(), farGoal);
 
     if(closeCalcuation < 0){
-      closeCalcuation = MathUtil.clamp(closeCalcuation, -0.15, 0);
+      closeCalcuation = MathUtil.clamp(closeCalcuation, -0.3, 0);
     }else if(closeCalcuation > 0){
-      closeCalcuation = MathUtil.clamp(closeCalcuation, 0, 0.15);
+      closeCalcuation = MathUtil.clamp(closeCalcuation, 0, 0.3);
     }
 
     if(farCalcuation < 0){
-      farCalcuation = MathUtil.clamp(farCalcuation, -0.1, 0);
+      farCalcuation = MathUtil.clamp(farCalcuation, -0.4, 0);
     }else if(farCalcuation > 0){
       farCalcuation = MathUtil.clamp(farCalcuation, 0, 0.1);
     }

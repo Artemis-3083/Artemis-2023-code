@@ -21,7 +21,7 @@ public class ElevatorPID extends CommandBase {
     this.elevatorSystem = elevatorSystem;
     addRequirements(elevatorSystem);
     this.goal = goal;
-    pidController = new PIDController(0.175, 0 ,0);
+    pidController = new PIDController(0.09, 0 ,0);
   }
 
   @Override
@@ -32,9 +32,9 @@ public class ElevatorPID extends CommandBase {
   public void execute() {
     calcuation = pidController.calculate(elevatorSystem.getHeight(), goal);
     if(calcuation < 0){
-      calcuation = MathUtil.clamp(calcuation, -0.1, 0);
+      calcuation = MathUtil.clamp(calcuation, -0.8, 0);
     }else if(calcuation > 0){
-      calcuation = MathUtil.clamp(calcuation, 0, 0.1);
+      calcuation = MathUtil.clamp(calcuation, 0, 0.8);
     }
     elevatorSystem.move(calcuation);
     SmartDashboard.putNumber("Elevator PID calcuation", calcuation);

@@ -6,14 +6,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class Suck extends CommandBase {
+public class Blow extends CommandBase {
   
   GripperSystem gripperSystem;
 
-  public Suck(GripperSystem gripperSystem) {
+  public Blow(GripperSystem gripperSystem) {
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
   }
@@ -23,7 +22,7 @@ public class Suck extends CommandBase {
 
   @Override
   public void execute() {
-    gripperSystem.moveWheels(1);
+    gripperSystem.moveWheels(-1);
   }
 
   @Override

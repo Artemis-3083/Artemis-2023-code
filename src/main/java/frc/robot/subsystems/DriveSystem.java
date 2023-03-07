@@ -119,6 +119,16 @@ public class DriveSystem extends SubsystemBase {
     return talonRF.getSelectedSensorPosition(); // Constants.TALON_FX_PPR / Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M;
   }
 
+  /*
+  public double getDistancePassedLeftM() {
+    return (talonLF.getSelectedSensorPosition() + talonLR.getSelectedSensorPosition()) / 2.0; // Constants.TALON_FX_PPR / Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M;
+  }
+
+  public double getDistancePassedRightM() {
+    return (talonRF.getSelectedSensorPosition() + talonRR.getSelectedSensorPosition()) / 2.0; // Constants.TALON_FX_PPR / Constants.DRIVE_GEAR_RATIO * Constants.DRIVE_WHEEL_CIRCUMEFERENCE_M;
+  }
+ */
+
   public double getDistancePassedM() {
     return (getDistancePassedLeftM() + getDistancePassedRightM()) / 2.0;
   }
@@ -126,6 +136,8 @@ public class DriveSystem extends SubsystemBase {
   public void resetEncoders() {
     talonLF.setSelectedSensorPosition(0);
     talonRF.setSelectedSensorPosition(0);
+    talonLR.setSelectedSensorPosition(0);
+    talonRR.setSelectedSensorPosition(0);
   }
 
   public double getPitch(){

@@ -35,6 +35,7 @@ import frc.robot.commands.AllPID;
 import frc.robot.commands.ArmPID;
 import frc.robot.commands.Balance;
 import frc.robot.commands.BalanceCommand;
+import frc.robot.commands.Blow;
 import frc.robot.commands.CloseArm;
 import frc.robot.commands.CloseCloseJoint;
 import frc.robot.commands.CloseFarJoint;
@@ -104,48 +105,42 @@ public class Robot extends TimedRobot {
     visionSystem = new VisionSystem();
     driveController = new PS4Controller(0);
 
-    resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
-    strightenArm = new ArmPID(90, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    resetCommand = (new ResetArm(armSystem).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
+    // strightenArm = new ArmPID(110, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    // strightenArm = new ArmPID(124.531, 179.645, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    strightenArm = new ArmPID(125, 170, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
     lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
-//
-//close 49684518701
-//far 
 
-//close 123.91297763868558
-  //146.87359831778787
-  //
-    /*strightenArm = new AllPID(armSystem, elevatorSystem, 140, 146.873, -34.674);
-    resetCommand = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem)).andThen(new AllPID(armSystem, elevatorSystem, 3, 3, -2));
-    lowerArm = new AllPID(armSystem, elevatorSystem, 18.659, 71.418, -150.06);
-
+    // commands just for elevator:
+    // resetCommand = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
+    // strightenArm = new ElevatorPID(-10, elevatorSystem);
+    // lowerArm = new ElevatorPID(-178.895, elevatorSystem);
 
     new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
-    new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);*/
+    new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
 
 
-    //new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue();
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
-    //elevatorSystem.setDefaultCommand(new SetElevatorHeight(20, elevatorSystem));
-    // new POVButton(controller, 0).whileTrue(new ElevatorDown(elevatorSystem));
-    // new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
-
-    /*new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
-    new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
-    
     new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
     new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
+
+
+    new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
+    new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
     
-    new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new OpenCloseJoint(armSystem));
-    new JoystickButton(controller, PS4Controller.Button.kL2.value).whileTrue(new CloseCloseJoint(armSystem));
     
-    new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new OpenFarJoint(armSystem));
-    new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));*/
-    new JoystickButton(driveController,PS4Controller.Button.kTriangle.value).whileTrue(new CloseGripper(gripperSystem));
-    new JoystickButton(driveController,PS4Controller.Button.kCross.value).whileTrue(new OpenGripper(gripperSystem));
-    new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
-    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Suck(gripperSystem));
+    // new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new OpenCloseJoint(armSystem));
+    // new JoystickButton(controller, PS4Controller.Button.kL2.value).whileTrue(new CloseCloseJoint(armSystem));
+    
+    // new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new OpenFarJoint(armSystem));
+    // new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));
+
+    // new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
+    new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new Suck(gripperSystem));
+    new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new Blow(gripperSystem));
+    // new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kCross.value).onTrue(new DriveUntilDistanceFromTag(1, driveSystem, visionSystem));
@@ -171,6 +166,11 @@ public class Robot extends TimedRobot {
  
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Limelight tx", limelight.TxOffset());
+    SmartDashboard.putNumber("Limelight ty", limelight.TyOffset());
+
+
+
     SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
     SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
     SmartDashboard.putBoolean("close limit", armSystem.getCloseSwitch());
