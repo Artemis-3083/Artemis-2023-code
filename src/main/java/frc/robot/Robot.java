@@ -37,12 +37,13 @@ import frc.robot.commands.Blow;
 import frc.robot.commands.CloseCloseJoint;
 import frc.robot.commands.CloseFarJoint;
 import frc.robot.commands.CloseGripper;
+import frc.robot.commands.CloseGripperConst;
+import frc.robot.commands.Collect;
 import frc.robot.commands.DriveBackwards;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorPID;
 import frc.robot.commands.ElevatorUp;
-import frc.robot.commands.GripperPID;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
     // strightenArm = new ArmPID(110, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
     // strightenArm = new ArmPID(124.531, 179.645, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
     strightenArm = new ArmPID(125, 170, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    lowerArm = new ArmPID(9.892, 70.175, armSystem).alongWith(new ElevatorPID(-178.895, elevatorSystem));
+    lowerArm = new ArmPID(11.038, 81.563, armSystem).alongWith(new ElevatorPID(-172.04, elevatorSystem));
 
     // commands just for elevator:
     // resetCommand = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
@@ -117,7 +118,7 @@ public class Robot extends TimedRobot {
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
     // gripperSystem.setDefaultCommand(new GripperPID(0, gripperSystem));
-    gripperSystem.setDefaultCommand(new CloseGripper(gripperSystem));
+    gripperSystem.setDefaultCommand(new CloseGripperConst(gripperSystem));
     
     
     
@@ -136,7 +137,7 @@ public class Robot extends TimedRobot {
     // new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));
 
     // new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
-    new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new Suck(gripperSystem));
+    new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new Collect(gripperSystem));
     new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new Blow(gripperSystem));
     // new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));

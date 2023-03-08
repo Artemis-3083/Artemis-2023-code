@@ -24,16 +24,9 @@ public class DriveSystem extends SubsystemBase {
   private WPI_TalonFX talonRR;
   private WPI_TalonFX talonRF;
 
-  private double exp;
-  private double[] measurementArray;
-  private double[] weightsArray;
-  private int funcCount;
-  private double est;
-  private double est1;
-  private double est2;
-  private double eest;
-  private double check;
-  private int count;
+  private double e_est;
+  private double e_measure;
+  private double v_est;
 
   private AHRS navie;
   
@@ -50,14 +43,9 @@ public class DriveSystem extends SubsystemBase {
 
     navie = new AHRS(SPI.Port.kMXP);
 
-    resetEncoders();
-    
-    exp = 1;
-    measurementArray = new double[200];
-    weightsArray = new double[100];
-    funcCount = 0;
-    Arrays.fill(measurementArray, 0.0);
-    Arrays.fill(weightsArray, 0.0);
+    e_est = 0.05;
+    e_measure = 0.01;
+    v_est = 0.07;
   }
 
   public void drive(double R2, double L2, double turn){
@@ -144,92 +132,24 @@ public class DriveSystem extends SubsystemBase {
     return navie.getPitch();
   }
 
-  public double[] getAndAddToPitchArray(){
-    for(int i = 0; i < 200; i++){
-      if(measurementArray[i] == 0.0){
-        measurementArray[i] = getPitch();
-      }
-    }
-    return measurementArray;
+  public double kalmangain() {  
+    return (e_est / (e_est + e_measure));
+  }
+  //delta of the derivatives
+  //sets count to 0
+
+  public double kalmanEstametion() {
+    return v_est = v_est + kalmangain() * (getPitch() - v_est);
   }
 
-  public double pathPredict(){
-    exp += 0.02;
-    return 180 * exp * Math.acos((1 - Math.cos((double)getPitch() * Math.PI / 180))) / (2 * Math.PI);
+  public double eesst() {
+   if(e_est > 0.015) {
+    return e_est =  (1 - kalmangain()) * e_est;
+   }
+    return e_est = 0.013;
   }
-  public void addToWeightArry(){
-    exp = 1;
-    for(int i = 0; i<100;);
+
+  public void setV_est(double valueToSet){
+    v_est = valueToSet;
   }
-  //adds the path prediction values to an array
-  
-  public double[] predict() {
-    double c = getPitch();
-    int q = 30;
-    double weighted_error = 0.8;
-    getAndAddToPitchArray();
-    addToWeightArry();
-    int window;
-    int n = (int) measurementArray.length;
-    double[] y_pred = new double[n];
-    double[] epsilon = new double[n];
-    //defines all of our variables
-    Arrays.fill(y_pred, 0.0);
-    Arrays.fill(epsilon, 0.0);
-    //makes sure we wont get NaN values
-    for (int t = 0; t < n; t++) {
-       y_pred[t] = 0.0;
-         n = (int) measurementArray[t];
-        epsilon[t] = y_pred[t] - c;
-        weighted_error = 3.5;
-        //updates our view according to the current loop of the function
-         window = Math.min(t + 1, q);
-        for (int i = 1; i < window; i++) {
-            weighted_error += weightsArray[i - 1] * epsilon[Math.abs(t - i)];
-        }
-        //does the predicting:)
-        y_pred[t] = c + weighted_error; // weight error prediction
-    }
-    return y_pred; //moving average
-}
-//predicts the future path in close approximation
-
-public double kalmangain() {
-    count++;
-    return (predict()[Math.min(count, 99)] - getPitch()) / (0.2 + (predict()[Math.min(count, 99)] - getPitch()));//0.2 the navx musearing error
-}
-//delta of the derivatives
-
-public void setresetcount() {
-     count = 0;
-}
-//sets count to 0
-
-public double kalmanEstametion() {
-    double estt = est;//estt est at t-1s
-    double[] y_pred = predict(); 
-    if(count >= 30){
-        count = 0;
-    }
-    if (count == 0) {
-        est = getPitch() + kalmangain() * (pathPredict() - y_pred[0]);
-        est1 = est;
-        count++;
-        return est / 10;
-    }else if(count <= 2){
-        eest = est;
-        est = est + kalmangain() * (pathPredict() - est);
-        count++;
-
-        return  (est-est1)/20;
-    } else {
-        est = est + kalmangain() * (pathPredict() - est);
-        est2 = est1-est;
-        est1 = eest;
-        eest = est;
-        count++;
-        return  getPitch()*est2 / 20;
-    }
-}
-//graph smoothing and derivative calculation
 }

@@ -22,8 +22,8 @@ public class ArmPID extends CommandBase {
   public ArmPID(double closeGoal, double farGoal, ArmSubsystem armSubsystem) {
     this.farGoal = farGoal;
     this.closeGoal = closeGoal;
-    closeController = new PIDController(0.07, 0, 0);
-    farController = new PIDController(0.125, 0, 0);
+    closeController = new PIDController(0.06, 0, 0);
+    farController = new PIDController(0.09, 0, 0);
     this.armSubsystem = armSubsystem;
     addRequirements(armSubsystem);
   }

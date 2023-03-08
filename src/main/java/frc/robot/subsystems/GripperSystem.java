@@ -22,7 +22,6 @@ public class GripperSystem extends SubsystemBase {
     motorWheels = new CANSparkMax(9, MotorType.kBrushless);
     motor.setInverted(false);
     motorWheels.setInverted(true);
-    // resetEncoder();
   }
 
   public void move(double speed){
@@ -52,5 +51,6 @@ public class GripperSystem extends SubsystemBase {
       motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
     }
     SmartDashboard.putNumber("Gripper encoder", getEncoder());
+    SmartDashboard.putNumber("Gripper speed", motor.get());
   }
 }
