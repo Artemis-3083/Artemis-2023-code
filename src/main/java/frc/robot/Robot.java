@@ -31,37 +31,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AllPID;
 import frc.robot.commands.ArmPID;
 import frc.robot.commands.Balance;
-import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.Blow;
-import frc.robot.commands.CloseArm;
 import frc.robot.commands.CloseCloseJoint;
 import frc.robot.commands.CloseFarJoint;
 import frc.robot.commands.CloseGripper;
-import frc.robot.commands.CloseJointPID;
 import frc.robot.commands.DriveBackwards;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorPID;
 import frc.robot.commands.ElevatorUp;
-import frc.robot.commands.FarJointPID;
 import frc.robot.commands.GripperPID;
-import frc.robot.commands.OpenArm;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.ResetArm;
-import frc.robot.commands.ResetCloseJoint;
 import frc.robot.commands.ResetDriveEncoders;
-import frc.robot.commands.ResetFarJoint;
-import frc.robot.commands.ResetGripper;
+import frc.robot.commands.ResetGripperEncoders;
+import frc.robot.commands.ShootCube;
 import frc.robot.commands.ResetElevator;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.DriveUntilDistanceFromTag;
-import frc.robot.commands.SetElevatorHeight;
-import frc.robot.commands.SetFarJointAngle;
 import frc.robot.commands.Suck;
 import frc.robot.commands.TurnToTag;
 import frc.robot.commands.DriveForward;
@@ -120,11 +111,18 @@ public class Robot extends TimedRobot {
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
 
+    new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue(new ResetGripperEncoders(gripperSystem));
+
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
 
-    new POVButton(controller, 0).whileTrue(new ElevatorUp(elevatorSystem));
-    new POVButton(controller, 180).whileTrue(new ElevatorDown(elevatorSystem));
+    // gripperSystem.setDefaultCommand(new GripperPID(0, gripperSystem));
+    gripperSystem.setDefaultCommand(new CloseGripper(gripperSystem));
+    
+    
+    
+    new POVButton(controller, 0).whileTrue(new ShootCube(gripperSystem));
+    // new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
 
 
     new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));

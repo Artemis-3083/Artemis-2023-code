@@ -33,7 +33,7 @@ public final class Constants {
     public static final double DRIVE_WHEEL_CIRCUMEFERENCE_M = Math.PI * 0.1524;
 
     //GRIPPPER
-    public static final double GRIPPER_1_PER_PULSE = 1/0.12;
+    public static final double GRIPPER_1_PER_PULSE = 1/0.096923828125;
 
     //LIMELIGHT //2PI * 0.1524
     public static final double REFLECTIVE_HIGH_HEIGHT_M = 1.12;

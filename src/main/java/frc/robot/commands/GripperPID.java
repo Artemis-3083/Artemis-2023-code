@@ -22,7 +22,7 @@ public class GripperPID extends CommandBase {
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
     this.goal = goal;
-    pidController = new PIDController(1, 0 ,0);
+    pidController = new PIDController(0.1, 0 ,0);
   }
 
   @Override
@@ -32,12 +32,15 @@ public class GripperPID extends CommandBase {
   @Override
   public void execute() {
     calcuation = pidController.calculate(gripperSystem.getEncoder(), goal);
-    if(calcuation < 0){
-      calcuation = MathUtil.clamp(calcuation, -1, 0);
-    }else if(calcuation > 0){
-      calcuation = MathUtil.clamp(calcuation, 0, 1);
-    }
+    // if(calcuation < 0){
+    calcuation = MathUtil.clamp(calcuation, -1, -0.5);
+    // }else if(calcuation > 0){
+      // calcuation = MathUtil.clamp(calcuation, 0, 1);
+    // }
+    // calcuation = MathUtil.clamp(calcuation, -1, 1);
+    // calcuation = Math.min(1, Math.max(0, pidController.calculate(gripperSystem.getEncoder(), goal)));
     gripperSystem.move(calcuation);
+    SmartDashboard.putNumber("Gripper PID calcuation", calcuation);
   }
 
   // Called once the command ends or is interrupted.
@@ -49,9 +52,9 @@ public class GripperPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(pidController.atSetpoint()){
-      return true;  
-    }
-    return false;
+    // if(pidController.atSetpoint()){
+    //   return true;  
+    // }
+    return calcuation > -0.1 && calcuation < 0.1;
   }
 }

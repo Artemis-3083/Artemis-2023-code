@@ -20,9 +20,9 @@ public class GripperSystem extends SubsystemBase {
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
     motorWheels = new CANSparkMax(9, MotorType.kBrushless);
-    motor.setInverted(true);
+    motor.setInverted(false);
     motorWheels.setInverted(true);
-    resetEncoder();
+    // resetEncoder();
   }
 
   public void move(double speed){

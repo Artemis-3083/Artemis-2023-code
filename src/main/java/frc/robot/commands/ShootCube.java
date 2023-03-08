@@ -5,36 +5,31 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.GripperSystem;
 
-public class CloseArm extends CommandBase {
+public class ShootCube extends CommandBase {
   
-  ArmSubsystem armSubsystem;
+  GripperSystem gripperSystem;
 
-  public CloseArm(ArmSubsystem armSubsystem) {
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+  public ShootCube(GripperSystem gripperSystem) {
+    this.gripperSystem = gripperSystem;
+    addRequirements(gripperSystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!armSubsystem.getCloseSwitch()){
-      armSubsystem.moveCloseJoint(-0.3);
-    }if(!armSubsystem.getFarSwitch()){
-      armSubsystem.moveFarJoint(-0.3);
-    }
+    gripperSystem.move(-1);
+    gripperSystem.moveWheels(-1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    armSubsystem.stopCloseJoint();
-    armSubsystem.stopFarJoint();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
