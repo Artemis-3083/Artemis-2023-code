@@ -108,6 +108,8 @@ public class Robot extends TimedRobot {
     // strightenArm = new ElevatorPID(-10, elevatorSystem);
     // lowerArm = new ElevatorPID(-178.895, elevatorSystem);
 
+    driveSystem.setV_est(0);
+
     new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
@@ -168,7 +170,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Limelight tx", limelight.TxOffset());
     SmartDashboard.putNumber("Limelight ty", limelight.TyOffset());
 
-
+    SmartDashboard.putNumber("kalman",driveSystem.kalmanEstametion());
+    SmartDashboard.putNumber("gian",driveSystem.kalmangain());
+    SmartDashboard.putNumber("NavX", driveSystem.getPitch());
+    SmartDashboard.putNumber("eest",driveSystem.eesst());
 
     SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
     SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
@@ -177,12 +182,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("elevator hight", elevatorSystem.getHeight());
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     SmartDashboard.putNumber("drive encoders", driveSystem.getDistancePassedRightM());
-    CommandScheduler.getInstance().run();
-    //firstArm.setAngle(180 - arm.getCloseEncoderAngleDegrees());
-    //secondArm.setAngle(180 - arm.getFarEncoderAngleDegrees());
-
+    
     SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getTagDistance(), visionSystem.getTagHight(), visionSystem.getTagAngle()));
 
+    CommandScheduler.getInstance().run();
   }
   /*
    * robotinit - eipus 332
