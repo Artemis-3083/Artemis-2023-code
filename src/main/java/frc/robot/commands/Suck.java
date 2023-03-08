@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Suck extends CommandBase {
@@ -23,7 +22,7 @@ public class Suck extends CommandBase {
 
   @Override
   public void execute() {
-    gripperSystem.moveWheels(1);
+    gripperSystem.moveWheels(0.5);
   }
 
   @Override
@@ -33,6 +32,6 @@ public class Suck extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return gripperSystem.getWheelsCurrent() >= 12;
   }
 }

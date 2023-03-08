@@ -6,14 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ElevatorSystem;
 
-public class ResetArm extends CommandBase {
+public class LowerArm extends CommandBase {
   
-  ArmSubsystem armSubsystem;
+  AlwaysPID alwaysPID;
 
-  public ResetArm(ArmSubsystem armSubsystem) {
-    this.armSubsystem = armSubsystem;
-    addRequirements(armSubsystem);
+  public LowerArm(AlwaysPID alwaysPID) {
+    this.alwaysPID = alwaysPID;
   }
 
   // Called when the command is initially scheduled.
@@ -23,23 +23,18 @@ public class ResetArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!armSubsystem.getFarSwitch()){
-      armSubsystem.moveFarJoint(-0.15);
-    }if(!armSubsystem.getCloseSwitch()){
-      armSubsystem.moveCloseJoint(-0.15);
-    }
-  } 
+    alwaysPID.setElevatorGoal(-172.04);
+    alwaysPID.setCloseJointGoal(11.038);
+    alwaysPID.setFarJointGoal(81.563);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    armSubsystem.stopFarJoint();
-    armSubsystem.stopCloseJoint();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return armSubsystem.getCloseSwitch() && armSubsystem.getFarSwitch();
+    return false;
   }
 }

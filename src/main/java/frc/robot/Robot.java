@@ -31,12 +31,14 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AlwaysPID;
 import frc.robot.commands.ArmPID;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Blow;
 import frc.robot.commands.CloseCloseJoint;
 import frc.robot.commands.CloseFarJoint;
 import frc.robot.commands.CloseGripper;
+import frc.robot.commands.CloseGripperAmp;
 import frc.robot.commands.CloseGripperConst;
 import frc.robot.commands.Collect;
 import frc.robot.commands.DriveBackwards;
@@ -44,26 +46,27 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.commands.ElevatorDown;
 import frc.robot.commands.ElevatorPID;
 import frc.robot.commands.ElevatorUp;
+import frc.robot.commands.GripperPID;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
-import frc.robot.commands.ResetArm;
+import frc.robot.commands.LowerArm;
 import frc.robot.commands.ResetDriveEncoders;
 import frc.robot.commands.ResetGripperEncoders;
 import frc.robot.commands.ShootCube;
 import frc.robot.commands.ResetElevator;
 import frc.robot.commands.DriveForward;
-import frc.robot.commands.DriveUntilDistanceFromTag;
+// import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.commands.Suck;
-import frc.robot.commands.TurnToTag;
+// import frc.robot.commands.TurnToTag;
 import frc.robot.commands.DriveForward;
-import frc.robot.commands.DriveUntilDistanceFromTag;
+// import frc.robot.commands.DriveUntilDistanceFromTag;
 import frc.robot.subsystems.DriveSystem;
 import frc.robot.subsystems.ElevatorSystem;
 import frc.robot.subsystems.LimelightSystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GripperSystem;
-import frc.robot.subsystems.VisionSystem;
+// import frc.robot.subsystems.VisionSystem;
 
 public class Robot extends TimedRobot {
   
@@ -74,10 +77,12 @@ public class Robot extends TimedRobot {
   ArmSubsystem armSystem;
   PS4Controller driveController;
   PS4Controller controller;
-  VisionSystem visionSystem;
+  // VisionSystem visionSystem;
   Command resetCommand;
   Command strightenArm;
   Command lowerArm;
+  Command cubeMode;
+  AlwaysPID shablang;
 
   /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
   MechanismObject2d elevator2d;
@@ -94,33 +99,31 @@ public class Robot extends TimedRobot {
     armSystem = new ArmSubsystem();
     elevatorSystem = new ElevatorSystem();
     controller = new PS4Controller(2);
-    visionSystem = new VisionSystem();
+    // visionSystem = new VisionSystem();
     driveController = new PS4Controller(0);
+    shablang = new AlwaysPID(armSystem, elevatorSystem);
 
-    resetCommand = (new ResetArm(armSystem).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
-    // strightenArm = new ArmPID(110, 120, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    // strightenArm = new ArmPID(124.531, 179.645, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    strightenArm = new ArmPID(125, 170, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    lowerArm = new ArmPID(11.038, 81.563, armSystem).alongWith(new ElevatorPID(-172.04, elevatorSystem));
-
-    // commands just for elevator:
-    // resetCommand = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
-    // strightenArm = new ElevatorPID(-10, elevatorSystem);
-    // lowerArm = new ElevatorPID(-178.895, elevatorSystem);
+    // resetCommand = (new LowerArm(shablang).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
+    // strightenArm = new ArmPID(125, 170, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
+    // lowerArm = new ArmPID(11.038, 81.563, armSystem).alongWith(new ElevatorPID(-172.04, elevatorSystem));
+    // cubeMode = new CloseGripper(gripperSystem).withTimeout(1).andThen(new GripperPID(0.7, gripperSystem)).withTimeout(3).andThen(new Suck(gripperSystem));
+    // shablang = resetCommand.andThen(lowerArm).andThen(cubeMode);//.andThen(resetCommand);
+    
+    // lowerArm = shablang.setCloseJointGoal(11.038).alongWith(shablang.setElevatorGoal(-172.04).alongWith(shablang.setFarJointGoal(81.563)));
 
     driveSystem.setV_est(0);
 
-    new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
+    new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(new LowerArm(shablang));
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
 
-    new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue(new ResetGripperEncoders(gripperSystem));
+    new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue(shablang);
 
 
     driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
-
+    
     // gripperSystem.setDefaultCommand(new GripperPID(0, gripperSystem));
-    gripperSystem.setDefaultCommand(new CloseGripperConst(gripperSystem));
+    // gripperSystem.setDefaultCommand(new CloseGripperConst(gripperSystem));
     
     
     
@@ -128,8 +131,8 @@ public class Robot extends TimedRobot {
     // new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
 
 
-    new POVButton(controller, 90).whileTrue(new OpenGripper(gripperSystem));
-    new POVButton(controller, 270).whileTrue(new CloseGripper(gripperSystem));
+    new POVButton(controller, 90).toggleOnTrue(new OpenGripper(gripperSystem));
+    new POVButton(controller, 270).toggleOnTrue(new CloseGripperAmp(gripperSystem));
     
     
     // new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new OpenCloseJoint(armSystem));
@@ -141,6 +144,8 @@ public class Robot extends TimedRobot {
     // new JoystickButton(driveController,PS4Controller.Button.kCircle.value).whileTrue(new Balance(driveSystem));
     new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new Collect(gripperSystem));
     new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new Blow(gripperSystem));
+
+    // new POVButton(controller, 180).toggleOnTrue(new CloseGripperAmp(gripperSystem));
     // new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new CloseFarJoint(armSystem));
     //new JoystickButton(controller, PS4Controller.Button.kR2.value).whileTrue(new ResetGripper(gripperSystem));
     /*new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(new TurnToTag(visionSystem, driveSystem));
@@ -183,7 +188,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     SmartDashboard.putNumber("drive encoders", driveSystem.getDistancePassedRightM());
     
-    SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getTagDistance(), visionSystem.getTagHight(), visionSystem.getTagAngle()));
+    // SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getTagDistance(), visionSystem.getTagHight(), visionSystem.getTagAngle()));
 
     CommandScheduler.getInstance().run();
   }
@@ -205,9 +210,8 @@ public class Robot extends TimedRobot {
     //Command farJoint = new ResetFarJoint(armSystem).andThen(new FarJointPID(5, armSystem));
     //Command closeJoint = new ResetCloseJoint(armSystem).andThen(new CloseJointPID(10, armSystem));
 
-
-    Command elevator = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
-    Command allPID = new ResetArm(armSystem).andThen(new ArmPID(90, 120, armSystem)).alongWith(elevator);
+    // Command elevator = new ResetElevator(elevatorSystem).andThen(new ElevatorPID(-10, elevatorSystem));
+    // Command allPID = new LowerArm(armSystem).andThen(new ArmPID(90, 120, armSystem)).alongWith(elevator);
     
     // new DriveForward(driveSystem).schedule();
 

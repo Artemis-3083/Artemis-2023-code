@@ -37,6 +37,14 @@ public class GripperSystem extends SubsystemBase {
     motorWheels.set(0);
   }
   
+  public double getCurrent(){
+    return motor.getOutputCurrent();
+  }
+
+  public double getWheelsCurrent(){
+    return motorWheels.getOutputCurrent();
+  }
+
   public double getEncoder(){ 
     return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
   }
@@ -52,5 +60,7 @@ public class GripperSystem extends SubsystemBase {
     }
     SmartDashboard.putNumber("Gripper encoder", getEncoder());
     SmartDashboard.putNumber("Gripper speed", motor.get());
+    SmartDashboard.putNumber("Gripper open current", motor.getOutputCurrent());
+    SmartDashboard.putNumber("Gripper vroom current", motorWheels.getOutputCurrent());
   }
 }

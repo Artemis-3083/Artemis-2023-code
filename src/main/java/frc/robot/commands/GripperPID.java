@@ -8,20 +8,20 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ElevatorSystem;
+import frc.robot.subsystems.GripperSystem;
 
-public class ElevatorPID extends CommandBase {
+public class GripperPID extends CommandBase {
   
   PIDController pidController;
-  ElevatorSystem elevatorSystem;
+  GripperSystem gripperSystem;
   double goal;
   double calcuation;
 
-  public ElevatorPID(double goal, ElevatorSystem elevatorSystem) {
-    this.elevatorSystem = elevatorSystem;
+  public GripperPID(double goal, GripperSystem gripperSystem) {
+    this.gripperSystem = gripperSystem;
+    addRequirements(gripperSystem);
     this.goal = goal;
-    pidController = new PIDController(0.09, 0 ,0);
-    addRequirements(elevatorSystem);
+    pidController = new PIDController(1, 0 ,0);
   }
 
   @Override
@@ -30,20 +30,20 @@ public class ElevatorPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    calcuation = pidController.calculate(elevatorSystem.getHeight(), goal);
+    calcuation = pidController.calculate(gripperSystem.getEncoder(), goal);
     if(calcuation < 0){
       calcuation = MathUtil.clamp(calcuation, -0.8, 0);
     }else if(calcuation > 0){
       calcuation = MathUtil.clamp(calcuation, 0, 0.8);
     }
-    elevatorSystem.move(calcuation);
-    SmartDashboard.putNumber("Elevator PID calcuation", calcuation);
+    gripperSystem.move(calcuation);
+    SmartDashboard.putNumber("Gripper PID calcuation", calcuation);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSystem.stop();
+    gripperSystem.stop();
   }
 
   // Returns true when the command should end.
