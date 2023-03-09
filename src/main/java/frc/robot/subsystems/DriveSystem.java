@@ -37,7 +37,7 @@ public class DriveSystem extends SubsystemBase {
 
     navie = new AHRS(SPI.Port.kMXP);
 
-    e_est = 0.05;
+    e_est = 0.7;
     e_measure = 0.01;
     v_est = 0.07;
   }
@@ -140,7 +140,9 @@ public class DriveSystem extends SubsystemBase {
    if(e_est > 0.015) {
     return e_est =  (1 - kalmangain()) * e_est;
    }
+   else {
     return e_est = 0.013;
+   }
   }
 
   public void setV_est(double valueToSet){
