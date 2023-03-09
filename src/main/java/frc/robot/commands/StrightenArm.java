@@ -6,11 +6,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class LowerArm extends CommandBase {
+public class StrightenArm extends CommandBase {
   
   AlwaysPID alwaysPID;
 
-  public LowerArm(AlwaysPID alwaysPID) {
+  public StrightenArm(AlwaysPID alwaysPID) {
     this.alwaysPID = alwaysPID;
   }
 
@@ -21,9 +21,9 @@ public class LowerArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    alwaysPID.setElevatorGoal(-172.04);
-    alwaysPID.setCloseJointGoal(11.038);
-    alwaysPID.setFarJointGoal(81.563);
+    alwaysPID.setElevatorGoal(-10);
+    alwaysPID.setCloseJointGoal(125);
+    alwaysPID.setFarJointGoal(170);
   }
 
   // Called once the command ends or is interrupted.
