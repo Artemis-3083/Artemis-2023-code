@@ -45,7 +45,7 @@ public class ArmPID extends CommandBase {
     if(farCalcuation < 0){
       farCalcuation = MathUtil.clamp(farCalcuation, -0.4, 0);
     }else if(farCalcuation > 0){
-      farCalcuation = MathUtil.clamp(farCalcuation, 0, 0.1);
+      farCalcuation = MathUtil.clamp(farCalcuation, 0, 0.3);
     }
 
     if(!closeController.atSetpoint()){

@@ -23,7 +23,11 @@ public class CloseGripperAmp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripperSystem.move(-1);
+    if(gripperSystem.getCurrent() >= 16){
+      gripperSystem.stop();
+    }else{
+      gripperSystem.move(-1);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +40,6 @@ public class CloseGripperAmp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return gripperSystem.getCurrent() >= 10;
+    return gripperSystem.getCurrent() >= 16;
   }
 }

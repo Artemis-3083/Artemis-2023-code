@@ -20,7 +20,8 @@ public class ResetArmAndElevator extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {alwaysPID.setElevatorGoal(-10);
+  public void execute() {
+    alwaysPID.setElevatorGoal(-10);
     alwaysPID.setCloseJointGoal(2);
     alwaysPID.setFarJointGoal(2);
   }

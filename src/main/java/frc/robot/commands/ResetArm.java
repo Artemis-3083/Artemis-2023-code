@@ -4,17 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ElevatorSystem;
+import frc.robot.subsystems.ArmSubsystem;
 
-public class ResetElevator extends CommandBase {
+public class ResetArm extends CommandBase {
   
-  ElevatorSystem elevatorSystem;
+  ArmSubsystem armSubsystem;
 
-  public ResetElevator(ElevatorSystem elevatorSystem) {
-    this.elevatorSystem = elevatorSystem;
-    addRequirements(elevatorSystem);  
+  public ResetArm(ArmSubsystem armSubsystem) {
+    this.armSubsystem = armSubsystem;
+    addRequirements(armSubsystem);  
   }
 
   // Called when the command is initially scheduled.
@@ -24,21 +23,23 @@ public class ResetElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(!elevatorSystem.getLimitSwitch()){
-      elevatorSystem.move(0.5);
+    if(!armSubsystem.getFarSwitch()){
+      armSubsystem.moveFarJoint(-0.2);
+    }if(!armSubsystem.getCloseSwitch()){
+      armSubsystem.moveCloseJoint(-0.2);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSystem.stop();
+    armSubsystem.stopCloseJoint();
+    armSubsystem.stopFarJoint();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putBoolean("finished elevator reset", elevatorSystem.getLimitSwitch());
-    return elevatorSystem.getLimitSwitch();
+    return armSubsystem.getFarSwitch() && armSubsystem.getCloseSwitch();
   }
 }

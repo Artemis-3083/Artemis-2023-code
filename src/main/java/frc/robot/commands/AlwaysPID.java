@@ -17,7 +17,7 @@ public class AlwaysPID extends CommandBase {
   double closeJointGoal;
   double farJointGoal;
 
-  public AlwaysPID(ArmSubsystem armSubsystem,  ElevatorSystem elevatorSystem) {
+  public AlwaysPID(ArmSubsystem armSubsystem, ElevatorSystem elevatorSystem) {
     this.elevatorSystem = elevatorSystem;
     this.armSubsystem = armSubsystem;
     elevatorGoal = 0;

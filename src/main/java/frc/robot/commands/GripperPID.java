@@ -21,7 +21,7 @@ public class GripperPID extends CommandBase {
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
     this.goal = goal;
-    pidController = new PIDController(1, 0 ,0);
+    pidController = new PIDController(1.5, 0 ,0);
   }
 
   @Override

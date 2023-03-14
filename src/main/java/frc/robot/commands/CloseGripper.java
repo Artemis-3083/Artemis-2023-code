@@ -22,7 +22,6 @@ public class CloseGripper extends CommandBase {
 
   @Override
   public void execute() {
-    SmartDashboard.putString("SuckClose", "SUCKING!!!!!!");
     gripperSystem.move(-1);
   }
 

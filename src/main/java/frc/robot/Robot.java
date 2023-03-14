@@ -50,10 +50,13 @@ import frc.robot.commands.GripperPID;
 import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
+import frc.robot.commands.ResetArm;
+import frc.robot.commands.ResetArmAndElevator;
 import frc.robot.commands.LowerArm;
 import frc.robot.commands.ResetDriveEncoders;
 import frc.robot.commands.ResetGripperEncoders;
 import frc.robot.commands.ShootCube;
+import frc.robot.commands.StrightenArm;
 import frc.robot.commands.ResetElevator;
 import frc.robot.commands.DriveForward;
 // import frc.robot.commands.DriveUntilDistanceFromTag;
@@ -82,6 +85,8 @@ public class Robot extends TimedRobot {
   Command strightenArm;
   Command lowerArm;
   Command cubeMode;
+  Command coneMode;
+  Command armBalanceMode;
   AlwaysPID shablang;
 
   /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
@@ -103,32 +108,39 @@ public class Robot extends TimedRobot {
     driveController = new PS4Controller(0);
     shablang = new AlwaysPID(armSystem, elevatorSystem);
 
-    // resetCommand = (new LowerArm(shablang).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
-    // strightenArm = new ArmPID(125, 170, armSystem).alongWith(new ElevatorPID(-10, elevatorSystem));
-    // lowerArm = new ArmPID(11.038, 81.563, armSystem).alongWith(new ElevatorPID(-172.04, elevatorSystem));
-    // cubeMode = new CloseGripper(gripperSystem).withTimeout(1).andThen(new GripperPID(0.7, gripperSystem)).withTimeout(3).andThen(new Suck(gripperSystem));
+    resetCommand = (new ResetArm(armSystem).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
+    strightenArm = new ArmPID(125, 175, armSystem).alongWith(new ElevatorPID(-50, elevatorSystem));
+    
+    armBalanceMode = new ArmPID(40, 2, armSystem).alongWith(new ElevatorPID(-245.42, elevatorSystem));
+    lowerArm = new ArmPID(11.038, 76.563, armSystem).alongWith(new ElevatorPID(-144, elevatorSystem));
+    cubeMode = new CloseGripper(gripperSystem).withTimeout(1).andThen(new GripperPID(0.7, gripperSystem)).withTimeout(3).andThen(new Suck(gripperSystem));
+    coneMode = new GripperPID(0.05, gripperSystem);
     // shablang = resetCommand.andThen(lowerArm).andThen(cubeMode);//.andThen(resetCommand);
     
     // lowerArm = shablang.setCloseJointGoal(11.038).alongWith(shablang.setElevatorGoal(-172.04).alongWith(shablang.setFarJointGoal(81.563)));
 
     driveSystem.setV_est(0);
 
-    new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(new LowerArm(shablang));
-    new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
-    new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
-
-    new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue(shablang);
-
-
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, controller));
+    // new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
+    // new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
+    // new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue(armBalanceMode);
+    // new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
     
-    // gripperSystem.setDefaultCommand(new GripperPID(0, gripperSystem));
+    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Balance(driveSystem));
+
+
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
+
+
+    
+    
+    // gripperSystem.setDefaultCommand(new CloseGripperAmp(gripperSystem));
     // gripperSystem.setDefaultCommand(new CloseGripperConst(gripperSystem));
     
     
     
-    new POVButton(controller, 0).whileTrue(new ShootCube(gripperSystem));
-    // new POVButton(controller, 180).whileTrue(new ElevatorUp(elevatorSystem));
+    new POVButton(controller, 0).toggleOnTrue(new GripperPID(0.3, gripperSystem));
+    new POVButton(controller, 180).toggleOnTrue(new GripperPID(0, gripperSystem));
 
 
     new POVButton(controller, 90).toggleOnTrue(new OpenGripper(gripperSystem));
@@ -219,7 +231,7 @@ public class Robot extends TimedRobot {
     // resetCommand.withTimeout(3.5).andThen(new DriveForward(driveSystem)).andThen(new DriveBackwards(driveSystem)).andThen(new Balance(driveSystem)).schedule();
     // new ResetDriveEncoders(driveSystem).schedule();
     new ResetDriveEncoders(driveSystem).andThen(new DriveForward(driveSystem)).andThen(new DriveBackwards(driveSystem)).andThen(new Balance(driveSystem)).schedule();
-    
+    // resetCommand.schedule();
     // new BalanceCommand(driveSystem).schedule();
     // resetCommand.schedule();
     // new DriveForward(driveSystem).schedule();

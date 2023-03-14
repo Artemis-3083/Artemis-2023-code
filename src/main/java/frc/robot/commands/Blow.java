@@ -22,7 +22,7 @@ public class Blow extends CommandBase {
 
   @Override
   public void execute() {
-    gripperSystem.moveWheels(-1);
+    gripperSystem.moveWheels(1);
   }
 
   @Override
