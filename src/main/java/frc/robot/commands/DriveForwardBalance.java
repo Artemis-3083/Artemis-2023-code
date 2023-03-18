@@ -7,11 +7,11 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
 
-public class DriveForward extends CommandBase {
+public class DriveForwardBalance extends CommandBase {
   
   DriveSystem driveSystem;
 
-  public DriveForward(DriveSystem driveSystem) {
+  public DriveForwardBalance(DriveSystem driveSystem) {
     this.driveSystem = driveSystem;
     addRequirements(driveSystem);
   }
@@ -35,6 +35,6 @@ public class DriveForward extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return driveSystem.getDistancePassedM() > 150000; //
+    return driveSystem.getDistancePassedM() > 80000; //?
   }
 }
