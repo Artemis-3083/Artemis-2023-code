@@ -39,6 +39,8 @@ public final class Constants {
     public static final double REFLECTIVE_HIGH_HEIGHT_M = 1.12;
     public static final double REFLECTIVE_LOW_HEIGHT_M = 0.6;
     public static final double LIMELIGHT_HEIGHT_M = 1;
+    public static final double SCORE_TAG_HEIGHT_M = 0.45; //0.6 exluding considering the center of the tag
+    public static final double HUMAN_TAG_HEIGHT_M = 0.686; //0.836 exluding considering the center of the tag
     public static final double LIMELIGHT_ANGLE = 1;
 
     //GAME PIECES

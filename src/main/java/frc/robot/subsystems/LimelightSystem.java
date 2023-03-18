@@ -36,13 +36,21 @@ public class LimelightSystem extends SubsystemBase {
     return (Constants.REFLECTIVE_LOW_HEIGHT_M - Constants.LIMELIGHT_HEIGHT_M) / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
   }
 
-  public double getConeDistance(){
-    return (Constants.CONE_HEIGHT_M - Constants.LIMELIGHT_HEIGHT_M) / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
+  public double getScoreTagDistance(){
+    return Constants.SCORE_TAG_HEIGHT_M / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
   }
 
-  public double getCubeDistance(){
-    return (Constants.CUBE_HEIGHT_M - Constants.LIMELIGHT_HEIGHT_M) / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
+  public double getHumanTagDistance(){
+    return Constants.HUMAN_TAG_HEIGHT_M / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
   }
+
+  // public double getConeDistance(){
+  //   return (Constants.CONE_HEIGHT_M - Constants.LIMELIGHT_HEIGHT_M) / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
+  // }
+
+  // public double getCubeDistance(){
+  //   return (Constants.CUBE_HEIGHT_M - Constants.LIMELIGHT_HEIGHT_M) / Math.tan(Math.toRadians(Constants.LIMELIGHT_ANGLE + TyOffset()));
+  // }
 
   public boolean areVisableTarget(){
     if(limelightTable.getEntry("tv").getInteger(0) == 1){
