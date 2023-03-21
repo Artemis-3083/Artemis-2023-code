@@ -4,36 +4,35 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSystem;
 
-public class DriveCommand extends CommandBase {
-
+public class DriveBackwardScore extends CommandBase {
+  
   DriveSystem driveSystem;
-  PS4Controller controller;
 
-  public DriveCommand(DriveSystem driveSystem, PS4Controller controller) {
+  public DriveBackwardScore(DriveSystem driveSystem) {
     this.driveSystem = driveSystem;
-    this.controller = controller;
     addRequirements(driveSystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //driveSystem.tankDrive(controller.getRightX(), controller.getLeftX());
-
-    driveSystem.drive(controller.getR2Axis(), controller.getL2Axis(), controller.getRightX());
+    driveSystem.drive(0, 0.58, 0);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     driveSystem.stop();
   }
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

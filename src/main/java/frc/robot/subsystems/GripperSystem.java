@@ -53,6 +53,10 @@ public class GripperSystem extends SubsystemBase {
     motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
   }
 
+  public void setEncoder(double position){
+    motor.getEncoder(Type.kQuadrature, 8192).setPosition(position);
+  }
+
   @Override
   public void periodic() {
     if(getEncoder() > 10){

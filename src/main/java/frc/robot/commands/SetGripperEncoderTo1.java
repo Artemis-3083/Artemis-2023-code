@@ -7,30 +7,32 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.GripperSystem;
 
-public class CloseGripper extends CommandBase {
+public class SetGripperEncoderTo1 extends CommandBase {
   
   GripperSystem gripperSystem;
 
-  public CloseGripper(GripperSystem gripperSystem) {
+  public SetGripperEncoderTo1(GripperSystem gripperSystem) {
     this.gripperSystem = gripperSystem;
     addRequirements(gripperSystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    gripperSystem.move(-1);
+    gripperSystem.setEncoder(1);
   }
 
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    gripperSystem.stop();
-  }
+  public void end(boolean interrupted) {}
 
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

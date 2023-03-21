@@ -24,9 +24,9 @@ public class Balance extends CommandBase {
   public void execute() {
     SmartDashboard.putString("started balance", "yes");
     if(driveSystem.getPitch() > 0){
-      driveSystem.drive(driveSystem.getPitch()*0.017, 0, 0);
+      driveSystem.drive(driveSystem.getPitch()*0.015, 0, 0);
     }else if (driveSystem.getPitch() < 0){
-      driveSystem.drive(0, -driveSystem.getPitch()*0.017, 0);
+      driveSystem.drive(0, -driveSystem.getPitch()*0.015, 0);
     }
   }
 //bsbhtgnjrgthj

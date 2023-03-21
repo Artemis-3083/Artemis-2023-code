@@ -17,7 +17,7 @@ public class kalmanPID extends CommandBase {
 
   public kalmanPID(DriveSystem driveSystem) {
     this.driveSystem = driveSystem;
-    PIDController pid = new PIDController(0.3, 0.04, 0.07);
+    pid = new PIDController(0.2, 0.1, 0);
   }
 
   // Called when the command is initially scheduled.

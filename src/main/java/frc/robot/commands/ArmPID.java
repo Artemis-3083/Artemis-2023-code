@@ -33,19 +33,19 @@ public class ArmPID extends CommandBase {
 
   @Override
   public void execute() {
-    closeCalcuation = closeController.calculate(armSubsystem.getCloseJoint(), closeGoal);
     farCalcuation = farController.calculate(armSubsystem.getFarJoint(), farGoal);
+    closeCalcuation = closeController.calculate(armSubsystem.getCloseJoint(), closeGoal);
+
+    if(farCalcuation < 0){
+      farCalcuation = MathUtil.clamp(farCalcuation, -0.4, 0);
+    }else if(farCalcuation > 0){
+      farCalcuation = MathUtil.clamp(farCalcuation, 0, 0.2);
+    }
 
     if(closeCalcuation < 0){
       closeCalcuation = MathUtil.clamp(closeCalcuation, -0.3, 0);
     }else if(closeCalcuation > 0){
       closeCalcuation = MathUtil.clamp(closeCalcuation, 0, 0.3);
-    }
-
-    if(farCalcuation < 0){
-      farCalcuation = MathUtil.clamp(farCalcuation, -0.4, 0);
-    }else if(farCalcuation > 0){
-      farCalcuation = MathUtil.clamp(farCalcuation, 0, 0.3);
     }
 
     if(!closeController.atSetpoint()){
