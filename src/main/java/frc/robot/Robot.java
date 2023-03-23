@@ -10,6 +10,10 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.Joystick;
@@ -28,8 +32,9 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AlwaysPID;
+// import frc.robot.commands.AlwaysPID;
 import frc.robot.commands.ArmPID;
+import frc.robot.commands.ArmPIDForAuto;
 import frc.robot.commands.Balance;
 import frc.robot.commands.Blow;
 import frc.robot.commands.CloseCloseJoint;
@@ -39,6 +44,7 @@ import frc.robot.commands.CloseGripperAmp;
 import frc.robot.commands.CloseGripperConst;
 import frc.robot.commands.Collect;
 import frc.robot.commands.DriveBackwardScore;
+import frc.robot.commands.DriveBackwards;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.DriveForwardBalance;
 import frc.robot.commands.ElevatorDown;
@@ -49,13 +55,13 @@ import frc.robot.commands.OpenCloseJoint;
 import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.ResetArm;
-import frc.robot.commands.ResetArmAndElevator;
-import frc.robot.commands.LowerArm;
+// import frc.robot.commands.ResetArmAndElevator;
+// import frc.robot.commands.LowerArm;
 import frc.robot.commands.ResetDriveEncoders;
 import frc.robot.commands.ResetGripperEncoders;
 import frc.robot.commands.SetGripperEncoderTo1;
 import frc.robot.commands.ShootCube;
-import frc.robot.commands.StrightenArm;
+// import frc.robot.com8mands.StrightenArm;
 import frc.robot.commands.StrightenArmFinished;
 import frc.robot.commands.ResetElevator;
 import frc.robot.commands.DriveForwardCommunity;
@@ -89,11 +95,13 @@ public class Robot extends TimedRobot {
 
   Command tryOutPID;
   double farGoal = 0, closeGoal = 0, elevatorGoal = 0;
-  AlwaysPID shablang;
+  // AlwaysPID shablang;
 
   SendableChooser<String> autoChooser;
   SendableChooser<String> armChooser;
 
+  UsbCamera camera;
+  CvSource stream;
   /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
   MechanismObject2d elevator2d;
   MechanismLigament2d firstArm;
@@ -113,10 +121,15 @@ public class Robot extends TimedRobot {
     driveController = new PS4Controller(0);
     // shablang = new AlwaysPID(armSystem, elevatorSystem);
 
+    
+    camera = CameraServer.startAutomaticCapture();
+    camera.setResolution(426, 240);
+    // camera.setFPS(30);
+    
 
     shootCube = new ShootCube(gripperSystem);
     resetCommand = (new ResetArm(armSystem).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
-    strightenArm = new ArmPID(125, 168, armSystem).alongWith(new ElevatorPID(-50, elevatorSystem));
+    strightenArm = new ArmPIDForAuto(125, 168, armSystem).alongWith(new ElevatorPID(-50, elevatorSystem));
 
     armBalanceMode = new ArmPID(40, 2, armSystem).alongWith(new ElevatorPID(-245.42, elevatorSystem));
     lowerArm = new ArmPID(11.038, 75.563, armSystem).alongWith(new ElevatorPID(-204, elevatorSystem));
@@ -136,6 +149,7 @@ public class Robot extends TimedRobot {
     armChooser.addOption("Without arm", "withoutArm");
     SmartDashboard.putData("Arm choosing", armChooser);
 
+
     //autonomusFirstPart =  new ResetDriveEncoders(driveSystem).alongWith(new GripperPID(0.3,gripperSystem));
     //autonomusMidPart = strightenArm.andThen(shootCube.withTimeout(0.3));
     //autonomusLastPart = resetCommand;
@@ -147,7 +161,7 @@ public class Robot extends TimedRobot {
     // shablang = resetCommand.andThen(lowerArm).andThen(cubeMode);//.andThen(resetCommand);
 
 
-    driveSystem.setV_est(0);
+    // driveSystem.setV_est(0);
 
 
     // tryOutPID = new ArmPID(closeGoal, farGoal, armSystem).alongWith(new ElevatorPID(-elevatorGoal, elevatorSystem));
@@ -213,13 +227,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     
-    SmartDashboard.putNumber("Limelight tx", limelight.TxOffset());
-    SmartDashboard.putNumber("Limelight ty", limelight.TyOffset());
+    // SmartDashboard.putNumber("Limelight tx", limelight.TxOffset());
+    // SmartDashboard.putNumber("Limelight ty", limelight.TyOffset());
 
-    SmartDashboard.putNumber("kalman",driveSystem.kalmanEstametion());
-    SmartDashboard.putNumber("gian",driveSystem.kalmangain());
-    SmartDashboard.putNumber("NavX", driveSystem.getPitch());
-    SmartDashboard.putNumber("eest",driveSystem.eesst());
+    // SmartDashboard.putNumber("kalman",driveSystem.kalmanEstametion());
+    // SmartDashboard.putNumber("gian",driveSystem.kalmangain());
+    // SmartDashboard.putNumber("eest",driveSystem.eesst());
 
     SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
     SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
@@ -248,38 +261,51 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+
+    // Command demoReset = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
+    // Command autoResetCommand = demoReset.andThen((new ArmPID(2, 2, armSystem))).alongWith((new ElevatorPID(-10, elevatorSystem)));
     
-    Command scoreState1 = new GripperPID(0.3, gripperSystem).alongWith(new ArmPID(125, 162, armSystem).alongWith(new ElevatorPID(-50, elevatorSystem)));
-    Command scoreState2 = new ShootCube(gripperSystem).withTimeout(0.29).andThen(new DriveBackwardScore(driveSystem)).withTimeout(2).alongWith(resetCommand);
+    Command scoreState1 = new GripperPID(0.3, gripperSystem).alongWith(new ArmPIDForAuto(125, 162, armSystem).alongWith(new ElevatorPID(-20, elevatorSystem)));
+    Command scoreState2 = new ShootCube(gripperSystem).withTimeout(0.5).andThen(new DriveBackwardScore(driveSystem)).withTimeout(2).alongWith(resetCommand);
+    Command scoreState3 = new Balance(driveSystem).alongWith(new ArmPID(40, 2, armSystem).alongWith(new ElevatorPID(-245.42, elevatorSystem)));
+
+    Command communityState = new DriveBackwardScore(driveSystem).withTimeout(2).alongWith(armBalanceMode);
     
-    Command balanceState1 = resetCommand;//.alongWith(new DriveForwardBalance(driveSystem));
-    
+    // Command autoBalanceState = new DriveForwardBalance(driveSystem).alongWith(autoResetCommand);//.alongWith(new DriveForwardBalance(driveSystem));
+    // Command autoBalanceStateCommunity = new DriveForwardCommunity(driveSystem).alongWith(autoResetCommand);
+
+    // Command autoBalanceStateCommunity = new DriveForwardCommunity(driveSystem).alongWith(resetCommand);
+
     String armSelected = armChooser.getSelected();
 
     String autoSelected = autoChooser.getSelected();
     Command autoCommand = new ResetDriveEncoders(driveSystem);
 
-    if(armSelected == "withArm"){
-      if(autoSelected == "balance"){
-        autoCommand = resetCommand;
-        // autoCommand = autoCommand.andThen(balanceState1).andThen(armBalanceMode.alongWith(new Balance(driveSystem)));
-        // autoCommand = autoCommand.andThen((resetCommand.withTimeout(2).andThen(armBalanceMode)).alongWith(new DriveForwardBalance(driveSystem).andThen(new Balance(driveSystem))));
-      }else if(autoSelected == "communityAndBalance"){
-        autoCommand = autoCommand.andThen((resetCommand.withTimeout(2).andThen(armBalanceMode)).alongWith(new DriveForwardCommunity(driveSystem).andThen(new DriveBackwardScore(driveSystem)).andThen(new Balance(driveSystem))));
-      }else if(autoSelected == "scoreAndBalance"){
-        autoCommand = scoreState1.withTimeout(3.15).andThen(scoreState2).withTimeout(5).andThen(new Balance(driveSystem).alongWith(armBalanceMode));
-      }else if(autoSelected == "score"){
-        autoCommand = scoreState1.withTimeout(3).andThen(scoreState2);
+    if(armSelected.equals("withArm")){
+      if(autoSelected.equals("balance")){
+        // autoCommand = balanceState1;
+        // autoCommand = autoCommand.andThen(autoBalanceState.withTimeout(3)).andThen(armBalanceMode.alongWith(new Balance(driveSystem)));
+        // autoCommand = autoCommand.andThen((resetCo048mmand.withTimeout(2).andThen(armBalanceMode)).alongWith(new DriveForwardBalance(driveSystem).andThen(new Balance(driveSystem))));
+      }else if(autoSelected.equals("communityAndBalance")){
+        // autoCommand = autoResetCommand;
+        // autoCommand = (.andThen(new DriveBackwards(driveSystem))).andThen(new DriveBackwards(driveSystem)).andThen(new Balance(driveSystem));
+        // autoCommand = autoCommand.andThen((autoResetCommand.withTimeout(2).andThen(armBalanceMode)).alongWith(new DriveForwardCommunity(driveSystem).andThen(new DriveBackwardScore(driveSystem)).andThen(new Balance(driveSystem))));
+      }else if(autoSelected.equals("scoreAndBalance")){
+        // autoCommand = scoreState3;
+        autoCommand = scoreState1.withTimeout(3).andThen(scoreState2).withTimeout(7).andThen(scoreState3);
+      }else if(autoSelected.equals("score")){
+        autoCommand = scoreState1.withTimeout(5).andThen(scoreState2);
         // autoCommand = strightenArm.alongWith(new GripperPID(0.3, gripperSystem));//autoCommand.andThen(gripperState).alongWith(strightenArm);//.andThen(new ShootCube(gripperSystem).withTimeout(0.5)).withTimeout(3).andThen(resetCommand);
-      }else if(autoSelected == "scoreAndCommunity"){
-        autoCommand = scoreState1.withTimeout(3).andThen(scoreState2).andThen(new DriveBackwardScore(driveSystem));
-      }else if(autoSelected == "scoreAndCommunityAndBalance"){
+      }else if(autoSelected.equals("scoreAndCommunity")){//dis community
+        autoCommand = new DriveForwardCommunity(driveSystem).andThen(communityState).withTimeout(5.5).andThen(new Balance(driveSystem));
+        // autoCommand = scoreState1.withTimeout(5).andThen(scoreState2).andThen(new DriveBackwardScore(driveSystem));
+      }else if(autoSelected.equals("scoreAndCommunityAndBalance")){
   
       }
-    }else if(armSelected == "withoutArm"){
-      if(autoSelected == "balance"){
+    }else if(armSelected.equals("withoutArm")){
+      if(autoSelected.equals("balance")){
         autoCommand = autoCommand.andThen(new DriveForwardBalance(driveSystem)).andThen(new Balance(driveSystem));
-      }else if(autoSelected == "communityAndBalance"){
+      }else if(autoSelected.equals("communityAndBalance")){
         autoCommand = autoCommand.andThen(new DriveForwardCommunity(driveSystem)).andThen().andThen(new Balance(driveSystem));
       }
     }

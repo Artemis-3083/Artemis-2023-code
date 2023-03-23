@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxRelativeEncoder.Type;
 
@@ -16,10 +17,12 @@ public class GripperSystem extends SubsystemBase {
   
   private CANSparkMax motor;
   private CANSparkMax motorWheels;
+  private RelativeEncoder encoder;
 
   public GripperSystem() {
     motor = new CANSparkMax(7, MotorType.kBrushed);
     motorWheels = new CANSparkMax(9, MotorType.kBrushless);
+    encoder = motor.getEncoder(Type.kQuadrature, 8192);
     motor.setInverted(false);
     motorWheels.setInverted(true);
   }
@@ -46,21 +49,21 @@ public class GripperSystem extends SubsystemBase {
   }
 
   public double getEncoder(){ 
-    return motor.getEncoder(Type.kQuadrature, 8192).getPosition() * Constants.GRIPPER_1_PER_PULSE;
+    return encoder.getPosition() * Constants.GRIPPER_1_PER_PULSE;
   }
 
   public void resetEncoder(){
-    motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+    encoder.setPosition(0);
   }
 
   public void setEncoder(double position){
-    motor.getEncoder(Type.kQuadrature, 8192).setPosition(position);
+    encoder.setPosition(position);
   }
 
   @Override
   public void periodic() {
     if(getEncoder() > 10){
-      motor.getEncoder(Type.kQuadrature, 8192).setPosition(0);
+      encoder.setPosition(0);
     }
     SmartDashboard.putNumber("Gripper encoder", getEncoder());
     SmartDashboard.putNumber("Gripper speed", motor.get());

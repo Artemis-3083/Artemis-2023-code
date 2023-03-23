@@ -36,7 +36,9 @@ public class ElevatorPID extends CommandBase {
     }else if(calcuation > 0){
       calcuation = MathUtil.clamp(calcuation, 0, 0.8);
     }
+    // if(!elevatorSystem.isAtRiskElevator() && armSubsystem.isAtRiskArm()){
     elevatorSystem.move(calcuation);
+    // }
     SmartDashboard.putNumber("Elevator PID calcuation", calcuation);
   }
 

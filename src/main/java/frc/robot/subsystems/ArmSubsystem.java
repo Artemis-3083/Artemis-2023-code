@@ -82,6 +82,10 @@ public class ArmSubsystem extends SubsystemBase {
     return Math.sqrt(Math.pow(0.5,2) + Math.pow(0.4,2) - 2 * 0.5 * 0.4 * Math.cos(getFarJoint()));
   }
 
+  public boolean isAtRiskArm(){
+    return getCloseJoint() < 15;
+  }
+
   @Override
   public void periodic() {
     if(getCloseSwitch()){
@@ -91,7 +95,5 @@ public class ArmSubsystem extends SubsystemBase {
       resetFar();
       stopFarJoint();
     }
-    SmartDashboard.putNumber("new far joint", getFarJoint());
-
   }
 }

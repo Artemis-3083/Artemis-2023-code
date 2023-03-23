@@ -9,7 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ArmPID extends CommandBase {
+public class ArmPIDForAuto extends CommandBase {
   
   ArmSubsystem armSubsystem;
   PIDController closeController;
@@ -19,7 +19,7 @@ public class ArmPID extends CommandBase {
   double closeCalcuation;
   double farCalcuation;
 
-  public ArmPID(double closeGoal, double farGoal, ArmSubsystem armSubsystem) {
+  public ArmPIDForAuto(double closeGoal, double farGoal, ArmSubsystem armSubsystem) {
     this.farGoal = farGoal;
     this.closeGoal = closeGoal;
     closeController = new PIDController(0.06, 0, 0);
@@ -50,10 +50,11 @@ public class ArmPID extends CommandBase {
       }
     
 
-    if(!closeController.atSetpoint()){
-      armSubsystem.moveCloseJoint(closeCalcuation);
+    if(armSubsystem.getFarJoint() < farGoal + 150 && armSubsystem.getFarJoint() > farGoal - 150){
+      if(!closeController.atSetpoint()){
+        armSubsystem.moveCloseJoint(closeCalcuation);
+      }
     }
-    
     if(!farController.atSetpoint()){
       armSubsystem.moveFarJoint(farCalcuation);
     }

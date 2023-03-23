@@ -1,33 +1,35 @@
-// // Copyright (c) FIRST and other WPILib contributors.
-// // Open Source Software; you can modify and/or share it under the terms of
-// // the WPILib BSD license file in the root directory of this project.
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
-// package frc.robot.subsystems;
+package frc.robot.subsystems;
 
-// import org.photonvision.PhotonCamera;
-// import org.photonvision.targeting.PhotonPipelineResult;
-// import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
-// import edu.wpi.first.math.geometry.Transform3d;
-// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-// public class VisionSystem extends SubsystemBase {
+public class VisionSystem extends SubsystemBase {
 
-//   PhotonCamera camera;
+  PhotonCamera camera;
 //   PhotonPipelineResult result;
 //   PhotonTrackedTarget trackedResult;
 //   Transform3d transform3d;
   
-//   public VisionSystem() {
-//     camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
-//     camera.setDriverMode(false);
-//     camera.setPipelineIndex(0); 
-//   }
+  public VisionSystem() {
+    camera = new PhotonCamera("Microsoft_LifeCam_Studio(TM)");
+    // camera.setDriverMode(false);
+    // camera.setPipelineIndex(0); 
+  }
 
-//   @Override
-//   public void periodic() {
-//     update();
-//   }
+  @Override
+  public void periodic() {
+    // update();
+    // SmartDashboard.putdata
+  }
 
 //   public int getID(){
 //     return camera.getLatestResult().getBestTarget().getFiducialId();
@@ -63,4 +65,4 @@
 //   }
     
 
-// }
+}

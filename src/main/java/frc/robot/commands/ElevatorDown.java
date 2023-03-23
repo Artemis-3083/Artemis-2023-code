@@ -5,15 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ElevatorSystem;
 
 public class ElevatorDown extends CommandBase {
 
-  public ElevatorSystem elevator;
+  public ArmSubsystem armSubsystem;
+  public ElevatorSystem elevatorSystem;
   
-  public ElevatorDown(ElevatorSystem elevator) {
-    this.elevator = elevator;
-    addRequirements(elevator);
+  public ElevatorDown(ElevatorSystem elevator, ArmSubsystem armSubsystem) {
+    this.elevatorSystem = elevator;
+    this.armSubsystem = armSubsystem;
+    addRequirements(elevator, armSubsystem);
   }
 
   @Override
@@ -21,16 +24,18 @@ public class ElevatorDown extends CommandBase {
 
   @Override
   public void execute() {
-    elevator.move(-0.4);
+    if(!elevatorSystem.isAtRiskElevator() && armSubsystem.isAtRiskArm()){
+      elevatorSystem.move(-0.4);
+    }
   }
 
   @Override
   public void end(boolean interrupted) {
-    elevator.stop();
+    elevatorSystem.stop();
   }
 
   @Override
   public boolean isFinished() {
-    return false;//elevator.getLimitSwitch();
+    return false;
   }
 }

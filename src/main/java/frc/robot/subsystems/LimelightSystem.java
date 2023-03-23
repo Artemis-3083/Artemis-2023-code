@@ -76,7 +76,7 @@ public class LimelightSystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("limelight pipeline", getPipeline());
+    // SmartDashboard.putNumber("limelight pipeline", getPipeline());
   }
 
 }

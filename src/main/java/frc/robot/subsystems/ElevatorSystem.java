@@ -27,7 +27,6 @@ public class ElevatorSystem extends SubsystemBase {
         }
     }
 
-
     public void move(double speed){
         motor.set(ControlMode.PercentOutput, speed);
     }
@@ -63,6 +62,10 @@ public class ElevatorSystem extends SubsystemBase {
         }
     }
 
+    public boolean isAtRiskElevator(){
+        return getHeight() < -90;
+    }
+    
     @Override
     public void periodic() {
         if(getLimitSwitch()){
