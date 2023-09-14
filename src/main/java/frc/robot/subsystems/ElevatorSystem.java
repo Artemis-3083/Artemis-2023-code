@@ -70,7 +70,7 @@ public class ElevatorSystem extends SubsystemBase {
     public void periodic() {
         if(getLimitSwitch()){
             resetEncoder();
-            stop();
+            stop(); //?
         }
         SmartDashboard.putNumber("Elevator.Height", getHeight());
         SmartDashboard.putBoolean("Elevator.Limit", getLimitSwitch());

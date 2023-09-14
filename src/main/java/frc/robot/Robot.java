@@ -16,7 +16,6 @@ import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
@@ -56,13 +55,10 @@ import frc.robot.commands.OpenFarJoint;
 import frc.robot.commands.OpenGripper;
 import frc.robot.commands.ResetArm;
 // import frc.robot.commands.ResetArmAndElevator;
-// import frc.robot.commands.LowerArm;
 import frc.robot.commands.ResetDriveEncoders;
 import frc.robot.commands.ResetGripperEncoders;
 import frc.robot.commands.SetGripperEncoderTo1;
 import frc.robot.commands.ShootCube;
-// import frc.robot.com8mands.StrightenArm;
-import frc.robot.commands.StrightenArmFinished;
 import frc.robot.commands.ResetElevator;
 import frc.robot.commands.DriveForwardCommunity;
 // import frc.robot.commands.DriveUntilDistanceFromTag;
@@ -134,6 +130,9 @@ public class Robot extends TimedRobot {
     armBalanceMode = new ArmPID(40, 2, armSystem).alongWith(new ElevatorPID(-245.42, elevatorSystem));
     lowerArm = new ArmPID(11.038, 75.563, armSystem).alongWith(new ElevatorPID(-204, elevatorSystem));
 
+
+
+    //auto chooser in Shuffleboard:
     autoChooser = new SendableChooser<>();
     autoChooser.setDefaultOption("Default - Nothing", "resetEncoders");
     autoChooser.addOption("Balance", "balance");
@@ -150,90 +149,34 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Arm choosing", armChooser);
 
 
-    //autonomusFirstPart =  new ResetDriveEncoders(driveSystem).alongWith(new GripperPID(0.3,gripperSystem));
-    //autonomusMidPart = strightenArm.andThen(shootCube.withTimeout(0.3));
-    //autonomusLastPart = resetCommand;
-    //autonomus = autonomusFirstPart.andThen(DriveBackwardScore.along).andThen(autonomusLastPart);
-    
-    // cubeMode = new CloseGripper(gripperSystem).withTimeout(1).andThen(new GripperPID(0.7, gripperSystem)).withTimeout(3).andThen(new Suck(gripperSystem));
-    // coneMode = new GripperPID(0.05, gripperSystem);
-    
-    // shablang = resetCommand.andThen(lowerArm).andThen(cubeMode);//.andThen(resetCommand);
-
-
-    // driveSystem.setV_est(0);
-
-
-    // tryOutPID = new ArmPID(closeGoal, farGoal, armSystem).alongWith(new ElevatorPID(-elevatorGoal, elevatorSystem));
-    
-
-
-    // if(driveController.getCircleButton()){
-    //   // new WaitCommand(2);
-    //   farGoal = 2;
-    //   closeGoal = 2;
-    //   elevatorGoal = 10;
-    // }
-
-    // armSystem.setDefaultCommand(tryOutPID);
-
-
-
+    //Buttons:
+    //Arm:
     new JoystickButton(controller, PS4Controller.Button.kCross.value).toggleOnTrue(lowerArm);
     new JoystickButton(controller, PS4Controller.Button.kTriangle.value).toggleOnTrue(strightenArm);
     new JoystickButton(controller, PS4Controller.Button.kSquare.value).toggleOnTrue(armBalanceMode);
     new JoystickButton(controller, PS4Controller.Button.kCircle.value).toggleOnTrue(resetCommand);
     
-
-    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Balance(driveSystem));
-
-
-    
-    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
-
-
-    
-    
-    // gripperSystem.setDefaultCommand(new CloseGripperAmp(gripperSystem));
-    // gripperSystem.setDefaultCommand(new CloseGripperConst(gripperSystem));
-    
-    
-    
+    //Gripper:
     new POVButton(controller, 0).toggleOnTrue(new GripperPID(0.3, gripperSystem));
     new POVButton(controller, 180).toggleOnTrue(new GripperPID(0, gripperSystem));
-
 
     new POVButton(controller, 90).toggleOnTrue(new OpenGripper(gripperSystem));
     new POVButton(controller, 270).toggleOnTrue(new CloseGripperAmp(gripperSystem));
     
-    
     new JoystickButton(controller, PS4Controller.Button.kR1.value).whileTrue(new Collect(gripperSystem));
     new JoystickButton(controller, PS4Controller.Button.kL1.value).whileTrue(new Blow(gripperSystem));
-    
 
-    /*testCommand = new SetElevatorHeight(0.8, elevator);
-  
-    MechanismRoot2d root = mechanism2d.getRoot("root", 2, 0);
-    elevator2d = root.append(new MechanismLigament2d("Elevator", 1, 90, 6, new Color8Bit(Color.kOrange)));
-    firstArm = elevator2d.append(new MechanismLigament2d("FirstArm", 0.5, 90, 6, new Color8Bit(Color.kCyan)));
-    secondArm = firstArm.append(new MechanismLigament2d("SecondArm", 0.5, 90, 6, new Color8Bit(Color.kYellow)));
+    //Balance:
+    new JoystickButton(driveController, PS4Controller.Button.kSquare.value).whileTrue(new Balance(driveSystem));
 
-    SmartDashboard.putData("elevator", mechanism2d);*/
-
-    //driveSystem.setDefaultCommand(new DriveUntilDistanceFromTag(0.6, driveSystem, visionSystem));
-    
+    //Drive:
+    driveSystem.setDefaultCommand(new DriveCommand(driveSystem, driveController));
   }
  
   @Override
   public void robotPeriodic() {
-    
-    // SmartDashboard.putNumber("Limelight tx", limelight.TxOffset());
-    // SmartDashboard.putNumber("Limelight ty", limelight.TyOffset());
 
-    // SmartDashboard.putNumber("kalman",driveSystem.kalmanEstametion());
-    // SmartDashboard.putNumber("gian",driveSystem.kalmangain());
-    // SmartDashboard.putNumber("eest",driveSystem.eesst());
-
+    //input for Shuffleboard:
     SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
     SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
     SmartDashboard.putBoolean("close limit", armSystem.getCloseSwitch());
@@ -242,17 +185,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
     SmartDashboard.putNumber("drive encoders", driveSystem.getDistancePassedRightM());
     
-    // SmartDashboard.putString("TRANSFORM PHOTON", String.format("x: %.3f, y: %.3f, z: %.3f", visionSystem.getTagDistance(), visionSystem.getTagHight(), visionSystem.getTagAngle()));
-
     CommandScheduler.getInstance().run();
   }
-  /*
-   * robotinit - eipus 332
-   * button - hail
-   * button - floor
-   * button - eipus 332
-   */
-
+  
   @Override
   public void disabledInit() {}
 

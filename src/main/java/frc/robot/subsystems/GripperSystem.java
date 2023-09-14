@@ -35,9 +35,17 @@ public class GripperSystem extends SubsystemBase {
     motorWheels.set(speed);
   }
 
-  public void stop(){
+  public void stopMotor(){
     motor.set(0);
+  }
+
+  public void stopMotorWheels(){
     motorWheels.set(0);
+  }
+
+  public void stop(){
+    stopMotor();
+    stopMotorWheels();
   }
   
   public double getCurrent(){
