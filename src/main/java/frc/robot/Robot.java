@@ -80,7 +80,6 @@ public class Robot extends TimedRobot {
   ArmSubsystem armSystem;
   PS4Controller driveController;
   PS4Controller controller;
-  // VisionSystem visionSystem;
   Command resetCommand;
   Command strightenArm;
   Command lowerArm;
@@ -91,42 +90,35 @@ public class Robot extends TimedRobot {
 
   Command tryOutPID;
   double farGoal = 0, closeGoal = 0, elevatorGoal = 0;
-  // AlwaysPID shablang;
 
   SendableChooser<String> autoChooser;
   SendableChooser<String> armChooser;
 
   UsbCamera camera;
   CvSource stream;
-  /*Mechanism2d mechanism2d = new Mechanism2d(3, 3);
-  MechanismObject2d elevator2d;
-  MechanismLigament2d firstArm;
-  MechanismLigament2d secondArm;
-
-  Command testCommand;*/
 
   @Override
   public void robotInit() {
+
+    // Systems:
     gripperSystem = new GripperSystem();
-    limelight = new LimelightSystem();
     driveSystem = new DriveSystem();
     armSystem = new ArmSubsystem();
     elevatorSystem = new ElevatorSystem();
     controller = new PS4Controller(2);
-    // visionSystem = new VisionSystem();
     driveController = new PS4Controller(0);
-    // shablang = new AlwaysPID(armSystem, elevatorSystem);
 
-    
+    // Vision:
+    limelight = new LimelightSystem();
     camera = CameraServer.startAutomaticCapture();
     camera.setResolution(426, 240);
-    // camera.setFPS(30);
     
 
     shootCube = new ShootCube(gripperSystem);
+
+    // Arm states:
     resetCommand = (new ResetArm(armSystem).andThen(new ArmPID(2, 2, armSystem))).alongWith((new ResetElevator(elevatorSystem)).andThen(new ElevatorPID(-10, elevatorSystem)));
     strightenArm = new ArmPIDForAuto(125, 168, armSystem).alongWith(new ElevatorPID(-50, elevatorSystem));
-
     armBalanceMode = new ArmPID(40, 2, armSystem).alongWith(new ElevatorPID(-245.42, elevatorSystem));
     lowerArm = new ArmPID(11.038, 75.563, armSystem).alongWith(new ElevatorPID(-204, elevatorSystem));
 
@@ -176,14 +168,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    //input for Shuffleboard:
-    SmartDashboard.putNumber("close distance", armSystem.getCloseJoint());
-    SmartDashboard.putNumber("far distance", armSystem.getFarJoint());
-    SmartDashboard.putBoolean("close limit", armSystem.getCloseSwitch());
-    SmartDashboard.putBoolean("far limit", armSystem.getFarSwitch());
-    SmartDashboard.putNumber("elevator hight", elevatorSystem.getHeight());
+    // Input for Shuffleboard:
+    SmartDashboard.putNumber("Close joint encoder", armSystem.getCloseJoint());
+    SmartDashboard.putNumber("Far joint encoder", armSystem.getFarJoint());
+    SmartDashboard.putBoolean("Limit switch close joint", armSystem.getCloseSwitch());
+    SmartDashboard.putBoolean("Limit switch far joint", armSystem.getFarSwitch());
+    SmartDashboard.putNumber("Elevator hight", elevatorSystem.getHeight());
     SmartDashboard.putNumber("Pitch", driveSystem.getPitch());
-    SmartDashboard.putNumber("drive encoders", driveSystem.getDistancePassedRightM());
+    SmartDashboard.putNumber("Right front drive encoder", driveSystem.getDistancePassedRightM());
     
     CommandScheduler.getInstance().run();
   }
@@ -197,23 +189,24 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
 
-    // Command demoReset = new ResetArm(armSystem).alongWith(new ResetElevator(elevatorSystem));
-    // Command autoResetCommand = demoReset.andThen((new ArmPID(2, 2, armSystem))).alongWith((new ElevatorPID(-10, elevatorSystem)));
-    
+    /*
+     * scoreState1 - holding the cube and getting the arm to the right position to score 
+     * scoreState2 - shooting the cube, then driving backwards while reseting the arm
+     * scoreState3 - balancing on the charge station while getting the arm into a certian position?
+     * communityState - driving backwards while putting the arm to balance state
+    */
+
     Command scoreState1 = new GripperPID(0.3, gripperSystem).alongWith(new ArmPIDForAuto(125, 162, armSystem).alongWith(new ElevatorPID(-20, elevatorSystem)));
     Command scoreState2 = new ShootCube(gripperSystem).withTimeout(0.5).andThen(new DriveBackwardScore(driveSystem)).withTimeout(2).alongWith(resetCommand);
     Command scoreState3 = new Balance(driveSystem).alongWith(new ArmPID(40, 2, armSystem).alongWith(new ElevatorPID(-245.42, elevatorSystem)));
 
     Command communityState = new DriveBackwardScore(driveSystem).withTimeout(2).alongWith(armBalanceMode);
-    
-    // Command autoBalanceState = new DriveForwardBalance(driveSystem).alongWith(autoResetCommand);//.alongWith(new DriveForwardBalance(driveSystem));
-    // Command autoBalanceStateCommunity = new DriveForwardCommunity(driveSystem).alongWith(autoResetCommand);
 
-    // Command autoBalanceStateCommunity = new DriveForwardCommunity(driveSystem).alongWith(resetCommand);
-
+    //getting the auto from Shuffleboard:
     String armSelected = armChooser.getSelected();
-
     String autoSelected = autoChooser.getSelected();
+
+    //
     Command autoCommand = new ResetDriveEncoders(driveSystem);
 
     if(armSelected.equals("withArm")){
