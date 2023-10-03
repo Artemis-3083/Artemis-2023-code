@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSystem extends SubsystemBase {
@@ -126,27 +127,8 @@ public class DriveSystem extends SubsystemBase {
     return navie.getPitch();
   }
 
-  public double kalmangain() {  
-    return (e_est / (e_est + e_measure));
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Pitch", getPitch());
   }
-  //delta of the derivatives
-  //sets count to 0
-
-  public double kalmanEstametion() {
-    return v_est = v_est + kalmangain() * (getPitch() - v_est);
-  }
-
-  public double eesst() {
-   if(e_est > 0.015) {
-    return e_est =  (1 - kalmangain()) * e_est;
-   }
-   else {
-    return e_est = 0.013;
-   }
-  }
-
-  public void setV_est(double valueToSet){
-    v_est = valueToSet;
-  }
-
 }
