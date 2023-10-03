@@ -25,8 +25,8 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     closeJoint = new TalonFX(8);
     farJoint = new CANSparkMax(6, MotorType.kBrushless);
-    closeSwitch = new DigitalInput(7);
     farSwitch = new DigitalInput(6);
+    closeSwitch = new DigitalInput(7);
     farJoint.setInverted(false);
   }
 
@@ -95,5 +95,9 @@ public class ArmSubsystem extends SubsystemBase {
       resetFar();
       stopFarJoint();
     }
+    SmartDashboard.putBoolean("Limit switch close joint", getCloseSwitch());
+    SmartDashboard.putBoolean("Limit switch far joint", getFarSwitch());
+    SmartDashboard.putNumber("Close joint encoder", getCloseJoint());
+    SmartDashboard.putNumber("Far joint encoder", getFarJoint());
   }
 }

@@ -22,7 +22,6 @@ public class Balance extends CommandBase {
 
   @Override
   public void execute() {
-    SmartDashboard.putString("started balance", "yes");
     if(driveSystem.getPitch() > 0){
       driveSystem.drive(driveSystem.getPitch()*0.015, 0, 0);
     }else if (driveSystem.getPitch() < 0){

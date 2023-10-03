@@ -23,7 +23,6 @@ public class OpenFarJoint extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
     armSubsystem.moveFarJoint(0.2);
   }
 
