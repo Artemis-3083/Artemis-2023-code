@@ -70,9 +70,9 @@ public class ArmPIDForAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(closeController.atSetpoint() && farController.atSetpoint()){
-      return true;  
-    }
+    // if(closeController.atSetpoint() && farController.atSetpoint()){
+    //   return true;  
+    // }
     return false;
   }
 }
